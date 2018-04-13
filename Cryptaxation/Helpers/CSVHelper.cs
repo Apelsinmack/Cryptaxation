@@ -10,7 +10,7 @@ namespace Cryptaxation
 {
     public class CSVHelper
     {
-        public List<BitstampTransaction> CreateBitstampTransactions(string path)
+        public List<BitstampTransaction> CreateBitstampTransactionList(string path)
         {
             List<BitstampTransaction> bitstampTransactions = new List<BitstampTransaction>();
             using (TextFieldParser parser = new TextFieldParser(path))
@@ -25,8 +25,24 @@ namespace Cryptaxation
                         BitstampTransaction bitstampTransaction = new BitstampTransaction();
                         for (int i = 0; i < fields.Length; i++)
                         {
-                            switch (i)
+                            switch ((BitstampTransactionFields)i)
                             {
+                                case BitstampTransactionFields.Type:
+                                    break;
+                                case BitstampTransactionFields.Datetime:
+                                    break;
+                                case BitstampTransactionFields.Account:
+                                    break;
+                                case BitstampTransactionFields.Amount:
+                                    break;
+                                case BitstampTransactionFields.Value:
+                                    break;
+                                case BitstampTransactionFields.Rate:
+                                    break;
+                                case BitstampTransactionFields.Fee:
+                                    break;
+                                case BitstampTransactionFields.SubType:
+                                    break;
                                 default:
                                     throw new Exception("Invalid field");
                             }
@@ -42,15 +58,52 @@ namespace Cryptaxation
             return bitstampTransactions;
         }
 
-        /*public List<Rate> CreateRate(string path)
+        public List<Rate> CreateRateList(string path)
         {
             List<Rate> rates = new List<Rate>();
+            using (TextFieldParser parser = new TextFieldParser(path))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                while (!parser.EndOfData)
+                {
+                    string[] fields = parser.ReadFields();
+                    if (fields != null)
+                    {
+                        Rate rate = new Rate();
+                        for (int i = 0; i < fields.Length; i++)
+                        {
+                            switch (i)
+                            {
+                                default:
+                                    throw new Exception("Invalid field");
+                            }
+                        }
+                        rates.Add(rate);
+                    }
+                    else
+                    {
+                        throw new Exception("Now rows found.");
+                    }
+                }
+            }
             return rates;
-        }*/
+        }
 
         private enum BitstampTransactionFields
         {
-            
+            Type = 0,
+            Datetime = 1,
+            Account = 2,
+            Amount = 3,
+            Value = 4,
+            Rate = 5,
+            Fee = 6,
+            SubType = 7
+        };
+
+        private enum RateFields
+        {
         };
     }
 }
