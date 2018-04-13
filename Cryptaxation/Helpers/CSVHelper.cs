@@ -8,12 +8,18 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace Cryptaxation
 {
-    public class CSVHelper
+    public class CsvHelper
     {
-        public List<BitstampTransaction> CreateBitstampTransactionList(string path)
+        private string _path;
+        public CsvHelper(string path)
+        {
+            _path = path;
+        }
+
+        public List<BitstampTransaction> CreateBitstampTransactionList()
         {
             List<BitstampTransaction> bitstampTransactions = new List<BitstampTransaction>();
-            using (TextFieldParser parser = new TextFieldParser(path))
+            using (TextFieldParser parser = new TextFieldParser(_path))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
@@ -28,12 +34,21 @@ namespace Cryptaxation
                             switch ((BitstampTransactionFields)i)
                             {
                                 case BitstampTransactionFields.Type:
+                                    bitstampTransaction.Type = (BitstampTransactionType)Enum.Parse(typeof(BitstampTransactionType), fields[i], true);
                                     break;
                                 case BitstampTransactionFields.Datetime:
+                                    bitstampTransaction.DateTime = DateTime.ParseExact(fields[i], "MMM. dd, yyyy, hh:mm tt", System.Globalization.CultureInfo.InvariantCulture);
                                     break;
                                 case BitstampTransactionFields.Account:
+                                    bitstampTransaction.Account = fields[i];
                                     break;
                                 case BitstampTransactionFields.Amount:
+                                    string[] amount = fields[i].Split(' ');
+                                    bitstampTransaction.Amount = new Currency()
+                                    {
+                                        Code = (Code)Enum.Parse(typeof(Code), amount[1], true),
+                                        //CurrencyType = (CurrencyType)Enum.Parse(typeof(CurrencyType), amount[1], true),
+                                    };
                                     break;
                                 case BitstampTransactionFields.Value:
                                     break;
@@ -51,7 +66,7 @@ namespace Cryptaxation
                     }
                     else
                     {
-                        throw new Exception("Now rows found.");
+                        throw new Exception("No rows found.");
                     }
                 }
             }
@@ -83,7 +98,7 @@ namespace Cryptaxation
                     }
                     else
                     {
-                        throw new Exception("Now rows found.");
+                        throw new Exception("No rows found.");
                     }
                 }
             }
