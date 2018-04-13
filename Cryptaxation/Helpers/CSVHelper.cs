@@ -8,12 +8,18 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace Cryptaxation
 {
-    public class CSVHelper
+    public class CsvHelper
     {
-        public List<BitstampTransaction> CreateBitstampTransactionList(string path)
+        private string _path;
+        public CsvHelper(string path)
+        {
+            _path = path;
+        }
+
+        public List<BitstampTransaction> CreateBitstampTransactionList()
         {
             List<BitstampTransaction> bitstampTransactions = new List<BitstampTransaction>();
-            using (TextFieldParser parser = new TextFieldParser(path))
+            using (TextFieldParser parser = new TextFieldParser(_path))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
@@ -28,6 +34,7 @@ namespace Cryptaxation
                             switch ((BitstampTransactionFields)i)
                             {
                                 case BitstampTransactionFields.Type:
+                                    //bitstampTransaction.Type = (BitstampTransactionFields)Enum.Parse(typeof(BitstampTransactionFields), fields[i], true);
                                     break;
                                 case BitstampTransactionFields.Datetime:
                                     break;
@@ -51,7 +58,7 @@ namespace Cryptaxation
                     }
                     else
                     {
-                        throw new Exception("Now rows found.");
+                        throw new Exception("No rows found.");
                     }
                 }
             }
@@ -83,7 +90,7 @@ namespace Cryptaxation
                     }
                     else
                     {
-                        throw new Exception("Now rows found.");
+                        throw new Exception("No rows found.");
                     }
                 }
             }

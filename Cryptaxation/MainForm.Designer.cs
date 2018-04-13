@@ -28,64 +28,85 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.FullNameTextBox = new System.Windows.Forms.TextBox();
-            this.FullNameLabel = new System.Windows.Forms.Label();
-            this.PersonNumberLabel = new System.Windows.Forms.Label();
-            this.PersonNumberTextBox = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.fullNameTextBox = new System.Windows.Forms.TextBox();
+            this.fullNameLabel = new System.Windows.Forms.Label();
+            this.personNumberLabel = new System.Windows.Forms.Label();
+            this.personNumberTextBox = new System.Windows.Forms.TextBox();
+            this.executeButton = new System.Windows.Forms.Button();
+            this.processNameTextBox = new System.Windows.Forms.TextBox();
+            this.processNameLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // FullNameTextBox
+            // fullNameTextBox
             // 
-            this.FullNameTextBox.Location = new System.Drawing.Point(358, 101);
-            this.FullNameTextBox.Name = "FullNameTextBox";
-            this.FullNameTextBox.Size = new System.Drawing.Size(100, 22);
-            this.FullNameTextBox.TabIndex = 0;
+            this.fullNameTextBox.Location = new System.Drawing.Point(358, 101);
+            this.fullNameTextBox.Name = "fullNameTextBox";
+            this.fullNameTextBox.Size = new System.Drawing.Size(100, 22);
+            this.fullNameTextBox.TabIndex = 0;
             // 
-            // button1
+            // fullNameLabel
             // 
-            this.button1.Location = new System.Drawing.Point(611, 338);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.fullNameLabel.AutoSize = true;
+            this.fullNameLabel.Location = new System.Drawing.Point(358, 78);
+            this.fullNameLabel.Name = "fullNameLabel";
+            this.fullNameLabel.Size = new System.Drawing.Size(69, 17);
+            this.fullNameLabel.TabIndex = 2;
+            this.fullNameLabel.Text = "Full name";
             // 
-            // FullNameLabel
+            // personNumberLabel
             // 
-            this.FullNameLabel.AutoSize = true;
-            this.FullNameLabel.Location = new System.Drawing.Point(358, 78);
-            this.FullNameLabel.Name = "FullNameLabel";
-            this.FullNameLabel.Size = new System.Drawing.Size(46, 17);
-            this.FullNameLabel.TabIndex = 2;
-            this.FullNameLabel.Text = "FullNameLabel";
+            this.personNumberLabel.AutoSize = true;
+            this.personNumberLabel.Location = new System.Drawing.Point(381, 229);
+            this.personNumberLabel.Name = "personNumberLabel";
+            this.personNumberLabel.Size = new System.Drawing.Size(105, 17);
+            this.personNumberLabel.TabIndex = 4;
+            this.personNumberLabel.Text = "Person number";
             // 
-            // PersonNumberLabel
+            // personNumberTextBox
             // 
-            this.PersonNumberLabel.AutoSize = true;
-            this.PersonNumberLabel.Location = new System.Drawing.Point(381, 229);
-            this.PersonNumberLabel.Name = "PersonNumberLabel";
-            this.PersonNumberLabel.Size = new System.Drawing.Size(46, 17);
-            this.PersonNumberLabel.TabIndex = 4;
-            this.PersonNumberLabel.Text = "PersonNumberLabel";
+            this.personNumberTextBox.Location = new System.Drawing.Point(381, 252);
+            this.personNumberTextBox.Name = "personNumberTextBox";
+            this.personNumberTextBox.Size = new System.Drawing.Size(100, 22);
+            this.personNumberTextBox.TabIndex = 3;
             // 
-            // PersonNumberTextBox
+            // executeButton
             // 
-            this.PersonNumberTextBox.Location = new System.Drawing.Point(381, 252);
-            this.PersonNumberTextBox.Name = "PersonNumberTextBox";
-            this.PersonNumberTextBox.Size = new System.Drawing.Size(100, 22);
-            this.PersonNumberTextBox.TabIndex = 3;
+            this.executeButton.Location = new System.Drawing.Point(611, 338);
+            this.executeButton.Name = "executeButton";
+            this.executeButton.Size = new System.Drawing.Size(75, 23);
+            this.executeButton.TabIndex = 1;
+            this.executeButton.Text = "button1";
+            this.executeButton.UseVisualStyleBackColor = true;
+            this.executeButton.Click += new System.EventHandler(this.execute_Click);
+            // 
+            // processNameTextBox
+            // 
+            this.processNameTextBox.Location = new System.Drawing.Point(611, 252);
+            this.processNameTextBox.Name = "processNameTextBox";
+            this.processNameTextBox.Size = new System.Drawing.Size(100, 22);
+            this.processNameTextBox.TabIndex = 7;
+            // 
+            // processNameLabel
+            // 
+            this.processNameLabel.AutoSize = true;
+            this.processNameLabel.Location = new System.Drawing.Point(611, 229);
+            this.processNameLabel.Name = "processNameLabel";
+            this.processNameLabel.Size = new System.Drawing.Size(98, 17);
+            this.processNameLabel.TabIndex = 8;
+            this.processNameLabel.Text = "Process name";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(863, 503);
-            this.Controls.Add(this.PersonNumberLabel);
-            this.Controls.Add(this.PersonNumberTextBox);
-            this.Controls.Add(this.FullNameLabel);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.FullNameTextBox);
+            this.Controls.Add(this.processNameLabel);
+            this.Controls.Add(this.processNameTextBox);
+            this.Controls.Add(this.personNumberLabel);
+            this.Controls.Add(this.personNumberTextBox);
+            this.Controls.Add(this.fullNameLabel);
+            this.Controls.Add(this.executeButton);
+            this.Controls.Add(this.fullNameTextBox);
             this.Name = "MainForm";
             this.Text = "MainForm";
             this.ResumeLayout(false);
@@ -95,11 +116,13 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox FullNameTextBox;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label FullNameLabel;
-        private System.Windows.Forms.Label PersonNumberLabel;
-        private System.Windows.Forms.TextBox PersonNumberTextBox;
+        private System.Windows.Forms.TextBox fullNameTextBox;
+        private System.Windows.Forms.Button executeButton;
+        private System.Windows.Forms.Label fullNameLabel;
+        private System.Windows.Forms.Label personNumberLabel;
+        private System.Windows.Forms.TextBox personNumberTextBox;
+        private System.Windows.Forms.TextBox processNameTextBox;
+        private System.Windows.Forms.Label processNameLabel;
     }
 }
 

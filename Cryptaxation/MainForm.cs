@@ -16,5 +16,12 @@ namespace Cryptaxation
         {
             InitializeComponent();
         }
+
+        private void execute_Click(object sender, EventArgs e)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            Logic logic = new Logic(fullNameTextBox.Text, personNumberTextBox.Text, path, processNameTextBox.Text);
+            logic.Execute();
+        }
     }
 }
