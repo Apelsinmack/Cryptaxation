@@ -17,23 +17,94 @@ namespace Cryptaxation.Helpers
 		{
 			List<K4Transaction> k4Transactions = new List<K4Transaction>();
 			List<Currency> costBases = new List<Currency>();
-			//For each Bitstamp transaction
+			// For each Bitstamp transaction
 			foreach (BitstampTransaction bitstampTransaction in bitstampTransactions)
 			{
+				// If the BitstampTransactionType is Market
+				if (bitstampTransaction.Type == BitstampTransactionType.Market)
+				{
+					// If the BitstampTransactionSubType is Buy
+					if (bitstampTransaction.SubType == SubType.Buy)
+					{
+						//If the Amount type is FiatCurrency
+						if (bitstampTransaction.Amount.Type == CurrencyType.FiatCurrency)
+						{
+							//Update costbasis, if fee has a value add it.
+							if (bitstampTransaction.Fee.Value > 0)
+							{
 
-				//	om typen är "Market"
-				//		om amounttyp är kryptovaluta och subtyp är "Buy"
-				//			om fee har ett värde lägg till det till amount. plussa på omkostnadsbelopp.
-				//		om value är kryptovaluta och subtyp är "Buy"
-				//		om amount är kryptovaluta och subtyp är "Sell"
-				//		om value är kryptovaluta och subtyp är "Sell"
-				//			om fee har ett värde lägg till det till value. plussa på omkostnadsbelopp.
-				//		om amounttyp är fiatvaluta och subtyp är "Buy"
-				//			om fee har ett värde lägg till det till amount. plussa på omkostnadsbelopp.
-				//		om value är fiatvaluta och subtyp är "Buy"
-				//		om amount är fiatvaluta och subtyp är "Sell"
-				//		om value är fiatvaluta och subtyp är "Sell"
-				//			om fee har ett värde lägg till det till value. plussa på omkostnadsbelopp.
+							}
+							else
+							{
+
+							}
+						}
+						//If the Value type is FiatCurrency
+						if (bitstampTransaction.Value.Type == CurrencyType.FiatCurrency)
+						{
+
+						}
+						//If the Amount type is CryptoCurrency
+						if (bitstampTransaction.Amount.Type == CurrencyType.CryptoCurrency)
+						{
+							//Update costbasis, if fee has a value add it.
+							if (bitstampTransaction.Fee.Value > 0)
+							{
+
+							}
+							else
+							{
+
+							}
+						}
+						//If the Value type is CryptoCurrency
+						if (bitstampTransaction.Value.Type == CurrencyType.CryptoCurrency)
+						{
+
+						}
+					}
+					// If the BitstampTransactionSubType is Sell
+					if (bitstampTransaction.SubType == SubType.Sell)
+					{
+						//If the Amount type is FiatCurrency
+						if (bitstampTransaction.Amount.Type == CurrencyType.FiatCurrency)
+						{
+							
+						}
+						//If the Value type is FiatCurrency
+						if (bitstampTransaction.Value.Type == CurrencyType.FiatCurrency)
+						{
+							//Update costbasis, if fee has a value add it.
+							if (bitstampTransaction.Fee.Value > 0)
+							{
+
+							}
+							else
+							{
+
+							}
+						}
+						//	om fee har ett värde lägg till det till value. plussa på omkostnadsbelopp.
+						//If the Amount type is CryptoCurrency
+						if (bitstampTransaction.Amount.Type == CurrencyType.CryptoCurrency)
+						{
+							
+						}
+						//If the Value type is CryptoCurrency
+						if (bitstampTransaction.Value.Type == CurrencyType.CryptoCurrency)
+						{
+							//Update costbasis, if fee has a value add it.
+							if (bitstampTransaction.Fee.Value > 0)
+							{
+
+							}
+							else
+							{
+
+							}
+						}
+					}
+				}
 			}
 		}
 	}
