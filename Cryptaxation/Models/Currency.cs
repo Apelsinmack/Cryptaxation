@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 
 namespace Cryptaxation.Models
 {
-	public class Rate
+	public class Currency
 	{
-		public DateTime Date { get; set; }
-		public Code OriginCurrency { get; set; }
-		public Code DestinationCurrency { get; set; }
+		public Code Code { get; set; }
 		public Decimal Value { get; set; }
 	}
-}
 
+	public enum Code
+	{
+		SEK,
+		USD,
+		EUR,
+		BTC
+	}
+}
