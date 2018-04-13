@@ -9,8 +9,8 @@ namespace Cryptaxation.Models
 	public class Rate
 	{
 		public DateTime Date { get; set; }
-		public Code OriginCurrency { get; set; }
-		public Code DestinationCurrency { get; set; }
+		public CurrencyCode OriginCurrency { get; set; }
+		public CurrencyCode DestinationCurrency { get; set; }
 		public Decimal Value { get; set; }
 	}
 }
