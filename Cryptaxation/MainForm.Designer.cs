@@ -43,6 +43,7 @@
             this.fullNameTextBox.Name = "fullNameTextBox";
             this.fullNameTextBox.Size = new System.Drawing.Size(100, 22);
             this.fullNameTextBox.TabIndex = 0;
+            this.fullNameTextBox.Text = "Tolvan Tolvansson";
             // 
             // fullNameLabel
             // 
@@ -68,6 +69,7 @@
             this.personNumberTextBox.Name = "personNumberTextBox";
             this.personNumberTextBox.Size = new System.Drawing.Size(100, 22);
             this.personNumberTextBox.TabIndex = 3;
+            this.personNumberTextBox.Text = "1212121212";
             // 
             // executeButton
             // 
@@ -85,6 +87,7 @@
             this.processNameTextBox.Name = "processNameTextBox";
             this.processNameTextBox.Size = new System.Drawing.Size(100, 22);
             this.processNameTextBox.TabIndex = 7;
+            this.processNameTextBox.Text = "AcroRd32";
             // 
             // processNameLabel
             // 

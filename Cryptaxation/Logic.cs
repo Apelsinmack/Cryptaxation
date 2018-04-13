@@ -12,22 +12,22 @@ namespace Cryptaxation
     {
         private string _fullName;
         private string _personNumber;
-        private string _filePath;
+        private string _path;
         private string _processName;
         private CsvHelper _csvHelper;
         private PdfHelper _pdfHelper;
         private TransactionHelper _transactionHelper;
 
-        public Logic(string fullName, string personNumber, string filePath, string processName)
+        public Logic(string fullName, string personNumber, string path, string processName)
         {
             _fullName = fullName;
             _personNumber = personNumber;
-            _filePath = filePath;
+            _path = path;
             _processName = processName;
 
             ValidateInput();
 
-            _csvHelper = new CsvHelper(_filePath);
+            _csvHelper = new CsvHelper(_path);
             _pdfHelper = new PdfHelper(_processName);
 
             
@@ -58,6 +58,12 @@ namespace Cryptaxation
 
         public void Execute()
         {
+            DateTime myDate = DateTime.ParseExact("2009-05-08 14:40:52,531", "yyyy-MM-dd HH:mm:ss,fff",
+                                       System.Globalization.CultureInfo.InvariantCulture);
+
+            DateTime myDate2 = DateTime.ParseExact("Aug. 21, 2014, 08:02 AM", "MMM. dd, yyyy, hh:mm tt",
+                System.Globalization.CultureInfo.InvariantCulture);
+
             List<BitstampTransaction> bitstampTransactionList = _csvHelper.CreateBitstampTransactionList();
         }
     }
