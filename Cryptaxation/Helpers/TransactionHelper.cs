@@ -9,11 +9,11 @@ namespace Cryptaxation.Helpers
 {
     public class TransactionHelper
     {
-		public List<K4Transaction> K4CurrencyTransactions;
+		public List<K4Transaction> K4FiatCurrencyTransactions;
 
 		public List<K4Transaction> K4CryptocurrencyTransactions;
 
-		public void UpdateK4TransactionListFromBitstampTransactions(List<BitstampTransaction> bitstampTransactions, List<Rate> rates)
+		public void UpdateK4TransactionListsFromBitstampTransactions(List<BitstampTransaction> bitstampTransactions, List<Rate> rates)
 		{
 			List<K4Transaction> k4Transactions = new List<K4Transaction>();
 			List<Currency> costBases = new List<Currency>();
