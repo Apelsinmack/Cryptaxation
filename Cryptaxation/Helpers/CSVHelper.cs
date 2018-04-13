@@ -46,17 +46,36 @@ namespace Cryptaxation
                                     string[] amount = fields[i].Split(' ');
                                     bitstampTransaction.Amount = new Currency()
                                     {
-                                        Code = (Code)Enum.Parse(typeof(Code), amount[1], true),
-                                        //CurrencyType = (CurrencyType)Enum.Parse(typeof(CurrencyType), amount[1], true),
+                                        Value = decimal.Parse(amount[0]),
+                                        CurrencyCode = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), amount[1], true)
                                     };
                                     break;
                                 case BitstampTransactionFields.Value:
+                                    string[] value = fields[i].Split(' ');
+                                    bitstampTransaction.Value = new Currency()
+                                    {
+                                        Value = decimal.Parse(value[0]),
+                                        CurrencyCode = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), value[1], true)
+                                    };
                                     break;
                                 case BitstampTransactionFields.Rate:
+                                    string[] rate = fields[i].Split(' ');
+                                    bitstampTransaction.Value = new Currency()
+                                    {
+                                        Value = decimal.Parse(rate[0]),
+                                        CurrencyCode = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), rate[1], true)
+                                    };
                                     break;
                                 case BitstampTransactionFields.Fee:
+                                    string[] fee = fields[i].Split(' ');
+                                    bitstampTransaction.Value = new Currency()
+                                    {
+                                        Value = decimal.Parse(fee[0]),
+                                        CurrencyCode = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), fee[1], true)
+                                    };
                                     break;
                                 case BitstampTransactionFields.SubType:
+                                    bitstampTransaction.SubType = (SubType)Enum.Parse(typeof(SubType), fields[i], true);
                                     break;
                                 default:
                                     throw new Exception("Invalid field");

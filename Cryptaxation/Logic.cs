@@ -58,12 +58,6 @@ namespace Cryptaxation
 
         public void Execute()
         {
-            DateTime myDate = DateTime.ParseExact("2009-05-08 14:40:52,531", "yyyy-MM-dd HH:mm:ss,fff",
-                                       System.Globalization.CultureInfo.InvariantCulture);
-
-            DateTime myDate2 = DateTime.ParseExact("Aug. 21, 2014, 08:02 AM", "MMM. dd, yyyy, hh:mm tt",
-                System.Globalization.CultureInfo.InvariantCulture);
-
             List<BitstampTransaction> bitstampTransactionList = _csvHelper.CreateBitstampTransactionList();
         }
     }

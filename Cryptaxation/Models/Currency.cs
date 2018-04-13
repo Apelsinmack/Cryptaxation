@@ -8,12 +8,22 @@ namespace Cryptaxation.Models
 {
 	public class Currency
 	{
-		public Code Code { get; set; }
-		public CurrencyType Type { get; set; }
+		public CurrencyCode CurrencyCode { get; set; }
+		public CurrencyType Type {
+		    get
+		    {
+		        // TODO: Add other cryptos here.
+                if (CurrencyCode == CurrencyCode.BTC)
+		        {
+		            return CurrencyType.CryptoCurrency;
+		        }
+		        return CurrencyType.FiatCurrency;
+		    }
+		}
 		public Decimal Value { get; set; }
 	}
 
-	public enum Code
+	public enum CurrencyCode
 	{
 		SEK,
 		USD,
