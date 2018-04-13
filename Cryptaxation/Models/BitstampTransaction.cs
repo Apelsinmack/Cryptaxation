@@ -8,7 +8,7 @@ namespace Cryptaxation.Models
 {
     public class BitstampTransaction
     {
-		public Type Type { get; set; }
+		public BitstampTransactionType Type { get; set; }
 		public DateTime DateTime { get; set; }
 		public string Account { get; set; }
 		public Currency Amount { get; set; }
@@ -18,7 +18,7 @@ namespace Cryptaxation.Models
 		public SubType SubType { get; set; }
 	}
 
-	public enum Type
+	public enum BitstampTransactionType
 	{
 		Deposit,
 		Witdrawal,

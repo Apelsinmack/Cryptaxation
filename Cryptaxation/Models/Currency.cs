@@ -9,6 +9,7 @@ namespace Cryptaxation.Models
 	public class Currency
 	{
 		public Code Code { get; set; }
+		public CurrencyType Type { get; set; }
 		public Decimal Value { get; set; }
 	}
 
@@ -18,5 +19,11 @@ namespace Cryptaxation.Models
 		USD,
 		EUR,
 		BTC
+	}
+
+	public enum CurrencyType
+	{
+		FiatCurrency,
+		CryptoCurrency
 	}
 }
