@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cryptaxation.Models
 {
-    class BitstampTransaction
+    public class BitstampTransaction
     {
     }
 }
