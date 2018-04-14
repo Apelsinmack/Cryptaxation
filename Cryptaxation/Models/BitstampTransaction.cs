@@ -20,13 +20,15 @@ namespace Cryptaxation.Models
 
 	public enum BitstampTransactionType
 	{
-		Deposit,
-		Witdrawal,
+	    Undefined,
+        Deposit,
+		Withdrawal,
 		Market
 	}
 
 	public enum SubType
 	{
+        Undefined,
 		Buy,
 		Sell
 	}

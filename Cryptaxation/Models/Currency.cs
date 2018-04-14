@@ -12,6 +12,10 @@ namespace Cryptaxation.Models
 		public CurrencyType Type {
 		    get
 		    {
+		        if (CurrencyCode == CurrencyCode.Undefined)
+		        {
+		            return CurrencyType.Undefined;
+		        }
 		        // TODO: Add other cryptos here.
                 if (CurrencyCode == CurrencyCode.BTC)
 		        {
@@ -25,15 +29,19 @@ namespace Cryptaxation.Models
 
 	public enum CurrencyCode
 	{
+        Undefined,
 		SEK,
 		USD,
 		EUR,
-		BTC
+		BTC,
+        LTC,
+        ETH
 	}
 
 	public enum CurrencyType
 	{
-		FiatCurrency,
+	    Undefined,
+        FiatCurrency,
 		CryptoCurrency
 	}
 }

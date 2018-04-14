@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,77 +11,27 @@ namespace Cryptaxation
 {
     public class CsvHelper
     {
-        private string _path;
-        public CsvHelper(string path)
+        public CsvHelper()
         {
-            _path = path;
         }
 
-        public List<BitstampTransaction> CreateBitstampTransactionList()
+        public List<BitstampTransaction> CreateBitstampTransactionList(string path)
         {
             List<BitstampTransaction> bitstampTransactions = new List<BitstampTransaction>();
-            using (TextFieldParser parser = new TextFieldParser(_path))
+            using (TextFieldParser parser = new TextFieldParser(path))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
-                while (!parser.EndOfData)
+                for (int rowIndex = 0; !parser.EndOfData; rowIndex++)
                 {
-                    string[] fields = parser.ReadFields();
-                    if (fields != null)
+                    string[] row = parser.ReadFields();
+                    if (rowIndex == 0)
                     {
-                        BitstampTransaction bitstampTransaction = new BitstampTransaction();
-                        for (int i = 0; i < fields.Length; i++)
-                        {
-                            switch ((BitstampTransactionFields)i)
-                            {
-                                case BitstampTransactionFields.Type:
-                                    bitstampTransaction.Type = (BitstampTransactionType)Enum.Parse(typeof(BitstampTransactionType), fields[i], true);
-                                    break;
-                                case BitstampTransactionFields.Datetime:
-                                    bitstampTransaction.DateTime = DateTime.ParseExact(fields[i], "MMM. dd, yyyy, hh:mm tt", System.Globalization.CultureInfo.InvariantCulture);
-                                    break;
-                                case BitstampTransactionFields.Account:
-                                    bitstampTransaction.Account = fields[i];
-                                    break;
-                                case BitstampTransactionFields.Amount:
-                                    string[] amount = fields[i].Split(' ');
-                                    bitstampTransaction.Amount = new Currency()
-                                    {
-                                        Value = decimal.Parse(amount[0]),
-                                        CurrencyCode = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), amount[1], true)
-                                    };
-                                    break;
-                                case BitstampTransactionFields.Value:
-                                    string[] value = fields[i].Split(' ');
-                                    bitstampTransaction.Value = new Currency()
-                                    {
-                                        Value = decimal.Parse(value[0]),
-                                        CurrencyCode = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), value[1], true)
-                                    };
-                                    break;
-                                case BitstampTransactionFields.Rate:
-                                    string[] rate = fields[i].Split(' ');
-                                    bitstampTransaction.Value = new Currency()
-                                    {
-                                        Value = decimal.Parse(rate[0]),
-                                        CurrencyCode = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), rate[1], true)
-                                    };
-                                    break;
-                                case BitstampTransactionFields.Fee:
-                                    string[] fee = fields[i].Split(' ');
-                                    bitstampTransaction.Value = new Currency()
-                                    {
-                                        Value = decimal.Parse(fee[0]),
-                                        CurrencyCode = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), fee[1], true)
-                                    };
-                                    break;
-                                case BitstampTransactionFields.SubType:
-                                    bitstampTransaction.SubType = (SubType)Enum.Parse(typeof(SubType), fields[i], true);
-                                    break;
-                                default:
-                                    throw new Exception("Invalid field");
-                            }
-                        }
+                        continue;
+                    }
+                    if (row != null)
+                    {
+                        BitstampTransaction bitstampTransaction  = CreateBitstampTransaction(row);
                         bitstampTransactions.Add(bitstampTransaction);
                     }
                     else
@@ -90,6 +41,50 @@ namespace Cryptaxation
                 }
             }
             return bitstampTransactions;
+        }
+
+        public BitstampTransaction CreateBitstampTransaction(string[] row)
+        {
+            BitstampTransaction bitstampTransaction = new BitstampTransaction();
+            for (int i = 0; i < row.Length; i++)
+            {
+                switch ((BitstampTransactionFields)i)
+                {
+                    case BitstampTransactionFields.Type:
+                        if (!string.IsNullOrWhiteSpace(row[i]))
+                        {
+                            bitstampTransaction.Type = (BitstampTransactionType) Enum.Parse(typeof(BitstampTransactionType), row[i], true);
+                        }
+                        break;
+                    case BitstampTransactionFields.Datetime:
+                        bitstampTransaction.DateTime = DateTime.ParseExact(row[i], "MMM. dd, yyyy, hh:mm tt", CultureInfo.InvariantCulture);
+                        break;
+                    case BitstampTransactionFields.Account:
+                        bitstampTransaction.Account = row[i];
+                        break;
+                    case BitstampTransactionFields.Amount:
+                        bitstampTransaction.Amount = ConvertFieldToCurrency(row[i]);
+                        break;
+                    case BitstampTransactionFields.Value:
+                        bitstampTransaction.Value = ConvertFieldToCurrency(row[i]);
+                        break;
+                    case BitstampTransactionFields.Rate:
+                        bitstampTransaction.Rate = ConvertFieldToCurrency(row[i]);
+                        break;
+                    case BitstampTransactionFields.Fee:
+                        bitstampTransaction.Fee = ConvertFieldToCurrency(row[i]);
+                        break;
+                    case BitstampTransactionFields.SubType:
+                        if (!string.IsNullOrWhiteSpace(row[i]))
+                        {
+                            bitstampTransaction.SubType = (SubType)Enum.Parse(typeof(SubType), row[i], true);
+                        }
+                        break;
+                    default:
+                        throw new Exception("Invalid field");
+                }
+            }
+            return bitstampTransaction;
         }
 
         public List<Rate> CreateRateList(string path)
@@ -122,6 +117,24 @@ namespace Cryptaxation
                 }
             }
             return rates;
+        }
+        
+        private Currency ConvertFieldToCurrency(string field, CultureInfo cultureInfo = null, NumberStyles numberStyle = NumberStyles.Any)
+        {
+            if (!string.IsNullOrWhiteSpace(field))
+            {
+                if (cultureInfo == null)
+                {
+                    cultureInfo = CultureInfo.InvariantCulture;
+                }
+                string[] valueCurrency = field.Split(' ');
+                return new Currency()
+                {
+                    Value = decimal.Parse(valueCurrency[0], numberStyle, cultureInfo),
+                    CurrencyCode = (CurrencyCode) Enum.Parse(typeof(CurrencyCode), valueCurrency[1], true)
+                };
+            }
+            return new Currency();
         }
 
         private enum BitstampTransactionFields
