@@ -20,7 +20,7 @@ namespace Cryptaxation
         private void execute_Click(object sender, EventArgs e)
         {
             //string path = AppDomain.CurrentDomain.BaseDirectory;
-            Logic logic = new Logic(fullNameTextBox.Text, personNumberTextBox.Text, @"C:\Test\Bitstamp transactions to 20180119.csv", @"C:\Test\", @"C:\Test\2017.pdf", @"C:\Test\output", processNameTextBox.Text);
+            Logic logic = new Logic(fullNameTextBox.Text, personNumberTextBox.Text, @"C:\Test\Bitstamp transactions to 20180119.csv", @"C:\Test\Valutakurser SEK EUR USD 2014-2017.csv", @"C:\Test\2017.pdf", @"C:\Test\output", processNameTextBox.Text);
             logic.Execute();
         }
     }

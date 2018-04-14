@@ -65,6 +65,7 @@ namespace Cryptaxation
         public void Execute()
         {
             List<BitstampTransaction> bitstampTransactionList = _csvHelper.CreateBitstampTransactionList(_bitstampTransactionsPath);
+            List<Rate> rateList = _csvHelper.CreateRateList(_ratesPath);
         }
     }
 }
