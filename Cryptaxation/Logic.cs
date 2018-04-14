@@ -35,8 +35,8 @@ namespace Cryptaxation
 
             _csvHelper = new CsvHelper();
             _pdfHelper = new PdfHelper(_processName);
+            _transactionHelper = new TransactionHelper();
 
-            
         }
 
         public void ValidateInput()
@@ -65,6 +65,8 @@ namespace Cryptaxation
         public void Execute()
         {
             List<BitstampTransaction> bitstampTransactionList = _csvHelper.CreateBitstampTransactionList(_bitstampTransactionsPath);
+            List<Rate> rateList = _csvHelper.CreateRateList(_ratesPath);
+            _transactionHelper.UpdateK4TransactionListsFromBitstampTransactions(bitstampTransactionList, rateList);
         }
     }
 }
