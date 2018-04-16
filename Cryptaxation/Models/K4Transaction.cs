@@ -8,11 +8,11 @@ namespace Cryptaxation
 {
     public class K4Transaction
     {
-        public string Amount { get; set; }
+        public decimal Amount { get; set; }
         public string Currency { get; set; }
-        public string SalesPrice { get; set; }
-        public string TaxBasis { get; set; }
-        public string Gain { get; set; }
-        public string Loss { get; set; }
+        public decimal SalesPrice { get; set; }
+        public decimal TaxBasis { get; set; }
+        public decimal Gain { get; set; }
+        public decimal Loss { get; set; }
     }
 }

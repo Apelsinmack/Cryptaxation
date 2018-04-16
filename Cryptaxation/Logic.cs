@@ -65,19 +65,19 @@ namespace Cryptaxation
             List<BitstampTransaction> bitstampTransactionList = _csvHelper.CreateBitstampTransactionList(_bitstampTransactionsPath);
             List<Rate> rateList = _csvHelper.CreateRateList(_ratesPath);
             _transactionHelper.UpdateK4TransactionListsFromBitstampTransactions(bitstampTransactionList, rateList);
-            K4Helper k4Helper = new K4Helper(_fullName, _personNumber, _k4Path, _outputPath, _processName, _transactionHelper.K4FiatCurrencyTransactions, _transactionHelper.K4CryptocurrencyTransactions);
+            K4Helper k4Helper = new K4Helper(_fullName, _personNumber, _k4Path, _outputPath, _processName, _transactionHelper.K4FiatCurrencyTransactions, _transactionHelper.K4CryptoCurrencyTransactions);
 
             List<K4Transaction> fiatTestList = new List<K4Transaction>();
             for (int i = 0; i < 8; i++)
             {
                 fiatTestList.Add(new K4Transaction()
                 {
-                    Amount = "famount" + i,
-                    Currency = "fcurrency" + i,
-                    SalesPrice = "fsales price" + i,
-                    TaxBasis = "ftax basis" + i,
-                    Gain = "fgain" + i,
-                    Loss = "floss" + i
+                    Amount = i,
+                    Currency = "Fiat",
+                    SalesPrice = i,
+                    TaxBasis = i,
+                    Gain = i,
+                    Loss = i
                 });
             }
 
@@ -86,12 +86,12 @@ namespace Cryptaxation
             {
                 cryptoTestList.Add(new K4Transaction()
                 {
-                    Amount = "camount" + i,
-                    Currency = "ccurrency" + i,
-                    SalesPrice = "csales price" + i,
-                    TaxBasis = "ctax basis" + i,
-                    Gain = "cgain" + i,
-                    Loss = "closs" + i
+                    Amount = i,
+                    Currency = "Crypto",
+                    SalesPrice = i,
+                    TaxBasis = i,
+                    Gain = i,
+                    Loss = i
                 });
             }
 
