@@ -60,7 +60,6 @@
             this.fullNameTextBox.Name = "fullNameTextBox";
             this.fullNameTextBox.Size = new System.Drawing.Size(200, 22);
             this.fullNameTextBox.TabIndex = 0;
-            this.fullNameTextBox.Text = "Tolvan Tolvansson";
             // 
             // fullNameLabel
             // 
@@ -86,7 +85,6 @@
             this.personNumberTextBox.Name = "personNumberTextBox";
             this.personNumberTextBox.Size = new System.Drawing.Size(200, 22);
             this.personNumberTextBox.TabIndex = 3;
-            this.personNumberTextBox.Text = "1212121212";
             // 
             // executeButton
             // 
@@ -153,7 +151,7 @@
             // 
             // outputPathTextBox
             // 
-            this.outputPathTextBox.Location = new System.Drawing.Point(9, 188);
+            this.outputPathTextBox.Location = new System.Drawing.Point(9, 193);
             this.outputPathTextBox.Name = "outputPathTextBox";
             this.outputPathTextBox.Size = new System.Drawing.Size(500, 22);
             this.outputPathTextBox.TabIndex = 16;
@@ -161,7 +159,7 @@
             // outputPathLabel
             // 
             this.outputPathLabel.AutoSize = true;
-            this.outputPathLabel.Location = new System.Drawing.Point(6, 168);
+            this.outputPathLabel.Location = new System.Drawing.Point(6, 173);
             this.outputPathLabel.Name = "outputPathLabel";
             this.outputPathLabel.Size = new System.Drawing.Size(83, 17);
             this.outputPathLabel.TabIndex = 15;
@@ -169,7 +167,7 @@
             // 
             // outputPathButton
             // 
-            this.outputPathButton.Location = new System.Drawing.Point(515, 190);
+            this.outputPathButton.Location = new System.Drawing.Point(515, 195);
             this.outputPathButton.Name = "outputPathButton";
             this.outputPathButton.Size = new System.Drawing.Size(75, 23);
             this.outputPathButton.TabIndex = 14;
