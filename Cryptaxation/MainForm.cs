@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -27,14 +28,20 @@ namespace Cryptaxation
         {
             try
             {
-                //Logic logic = new Logic(fullNameTextBox.Text, personNumberTextBox.Text, @"C:\Test\Bitstamp transactions to 20180119.csv", @"C:\Test\Valutakurser SEK EUR USD 2014-2017.csv", @"C:\Test\2017.pdf", @"C:\Test\output", processNameTextBox.Text);
-                Logic logic = new Logic(fullNameTextBox.Text, personNumberTextBox.Text, BitstampTransactionsPathTextBox.Text, ratesPathTextBox.Text, k4PathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
-                logic.Execute(useTestDataCheckBox.Checked);
+                Thread thread = new Thread(Execute);
+                thread.Start();
             }
             catch(Exception exception)
             {
                 MessageBox.Show(exception.StackTrace, exception.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void Execute()
+        {
+            Logic logic = new Logic(fullNameTextBox.Text, personNumberTextBox.Text, BitstampTransactionsPathTextBox.Text, ratesPathTextBox.Text, k4PathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
+            logic.Execute(useTestDataCheckBox.Checked);
+            MessageBox.Show("Execution complete.", "Status");
         }
 
         private void bitstampTransactionsPathButton_Click(object sender, EventArgs e)

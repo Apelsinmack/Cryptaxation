@@ -38,12 +38,13 @@ namespace Cryptaxation.Helpers
             cryptoTransactionIndex = 0;
         }
 
-        public void FillForms()
+        public void FillForms() 
         {
             while (fiatTransactionIndex < _fiatTransactions.Count || cryptoTransactionIndex < _cryptoTransactions.Count)
             {
                 FillForm();
             }
+            _pdfHelper.SaveAndClose();
         }
 
         private void FillForm()

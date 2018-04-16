@@ -55,17 +55,20 @@ namespace Cryptaxation
             Thread.Sleep(5000);
         }
 
-        public void SaveAndClosePdf()
+        public void SaveAndClose()
         {
-            SendKeys.SendWait("^+s");
-            Thread.Sleep(1000);
-            SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(1000);
-            SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(1000);
-            SendKeys.SendWait("y");
-            Thread.Sleep(1000);
             SendKeys.SendWait("%{F4}");
+            for (int i = 0; i < _numberOfCreatedPdfs; i++)
+            {
+                Thread.Sleep(1000);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(1000);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(1000);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(1000);
+                SendKeys.SendWait("y");
+            }
         }
 
         public void WriteText(string text, bool nextField = true)

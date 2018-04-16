@@ -84,14 +84,14 @@
             this.personNumberTextBox.Location = new System.Drawing.Point(9, 93);
             this.personNumberTextBox.Name = "personNumberTextBox";
             this.personNumberTextBox.Size = new System.Drawing.Size(200, 22);
-            this.personNumberTextBox.TabIndex = 3;
+            this.personNumberTextBox.TabIndex = 1;
             // 
             // executeButton
             // 
             this.executeButton.Location = new System.Drawing.Point(758, 254);
             this.executeButton.Name = "executeButton";
             this.executeButton.Size = new System.Drawing.Size(75, 23);
-            this.executeButton.TabIndex = 1;
+            this.executeButton.TabIndex = 11;
             this.executeButton.Text = "Execute";
             this.executeButton.UseVisualStyleBackColor = true;
             this.executeButton.Click += new System.EventHandler(this.execute_Click);
@@ -101,7 +101,7 @@
             this.processNameTextBox.Location = new System.Drawing.Point(9, 143);
             this.processNameTextBox.Name = "processNameTextBox";
             this.processNameTextBox.Size = new System.Drawing.Size(200, 22);
-            this.processNameTextBox.TabIndex = 7;
+            this.processNameTextBox.TabIndex = 2;
             this.processNameTextBox.Text = "AcroRd32";
             // 
             // processNameLabel
@@ -119,7 +119,7 @@
             this.useTestDataCheckBox.Location = new System.Drawing.Point(616, 256);
             this.useTestDataCheckBox.Name = "useTestDataCheckBox";
             this.useTestDataCheckBox.Size = new System.Drawing.Size(136, 21);
-            this.useTestDataCheckBox.TabIndex = 9;
+            this.useTestDataCheckBox.TabIndex = 12;
             this.useTestDataCheckBox.Text = "Use dummy data";
             this.useTestDataCheckBox.UseVisualStyleBackColor = true;
             // 
@@ -128,7 +128,7 @@
             this.browseK4Button.Location = new System.Drawing.Point(515, 143);
             this.browseK4Button.Name = "browseK4Button";
             this.browseK4Button.Size = new System.Drawing.Size(75, 23);
-            this.browseK4Button.TabIndex = 11;
+            this.browseK4Button.TabIndex = 8;
             this.browseK4Button.Text = "Browse K4";
             this.browseK4Button.UseVisualStyleBackColor = true;
             this.browseK4Button.Click += new System.EventHandler(this.browseK4Button_Click);
@@ -147,14 +147,14 @@
             this.k4PathTextBox.Location = new System.Drawing.Point(9, 143);
             this.k4PathTextBox.Name = "k4PathTextBox";
             this.k4PathTextBox.Size = new System.Drawing.Size(500, 22);
-            this.k4PathTextBox.TabIndex = 13;
+            this.k4PathTextBox.TabIndex = 7;
             // 
             // outputPathTextBox
             // 
             this.outputPathTextBox.Location = new System.Drawing.Point(9, 193);
             this.outputPathTextBox.Name = "outputPathTextBox";
             this.outputPathTextBox.Size = new System.Drawing.Size(500, 22);
-            this.outputPathTextBox.TabIndex = 16;
+            this.outputPathTextBox.TabIndex = 9;
             // 
             // outputPathLabel
             // 
@@ -170,7 +170,7 @@
             this.outputPathButton.Location = new System.Drawing.Point(515, 195);
             this.outputPathButton.Name = "outputPathButton";
             this.outputPathButton.Size = new System.Drawing.Size(75, 23);
-            this.outputPathButton.TabIndex = 14;
+            this.outputPathButton.TabIndex = 10;
             this.outputPathButton.Text = "Browse K4";
             this.outputPathButton.UseVisualStyleBackColor = true;
             this.outputPathButton.Click += new System.EventHandler(this.outputPathButton_Click);
@@ -180,7 +180,7 @@
             this.ratesPathTextBox.Location = new System.Drawing.Point(9, 93);
             this.ratesPathTextBox.Name = "ratesPathTextBox";
             this.ratesPathTextBox.Size = new System.Drawing.Size(500, 22);
-            this.ratesPathTextBox.TabIndex = 19;
+            this.ratesPathTextBox.TabIndex = 5;
             // 
             // ratesPathLabel
             // 
@@ -196,7 +196,7 @@
             this.ratesPathButton.Location = new System.Drawing.Point(515, 93);
             this.ratesPathButton.Name = "ratesPathButton";
             this.ratesPathButton.Size = new System.Drawing.Size(75, 23);
-            this.ratesPathButton.TabIndex = 17;
+            this.ratesPathButton.TabIndex = 6;
             this.ratesPathButton.Text = "Browse K4";
             this.ratesPathButton.UseVisualStyleBackColor = true;
             this.ratesPathButton.Click += new System.EventHandler(this.ratesPathButton_Click);
@@ -206,7 +206,7 @@
             this.BitstampTransactionsPathTextBox.Location = new System.Drawing.Point(9, 43);
             this.BitstampTransactionsPathTextBox.Name = "BitstampTransactionsPathTextBox";
             this.BitstampTransactionsPathTextBox.Size = new System.Drawing.Size(500, 22);
-            this.BitstampTransactionsPathTextBox.TabIndex = 22;
+            this.BitstampTransactionsPathTextBox.TabIndex = 3;
             // 
             // BitstampTransactionsPathLabel
             // 
@@ -222,7 +222,7 @@
             this.bitstampTransactionsPathButton.Location = new System.Drawing.Point(515, 43);
             this.bitstampTransactionsPathButton.Name = "bitstampTransactionsPathButton";
             this.bitstampTransactionsPathButton.Size = new System.Drawing.Size(75, 23);
-            this.bitstampTransactionsPathButton.TabIndex = 20;
+            this.bitstampTransactionsPathButton.TabIndex = 4;
             this.bitstampTransactionsPathButton.Text = "Browse K4";
             this.bitstampTransactionsPathButton.UseVisualStyleBackColor = true;
             this.bitstampTransactionsPathButton.Click += new System.EventHandler(this.bitstampTransactionsPathButton_Click);
