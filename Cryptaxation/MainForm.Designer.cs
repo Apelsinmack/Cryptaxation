@@ -60,6 +60,7 @@
             this.fullNameTextBox.Name = "fullNameTextBox";
             this.fullNameTextBox.Size = new System.Drawing.Size(200, 22);
             this.fullNameTextBox.TabIndex = 0;
+            this.fullNameTextBox.Text = "Tolvan Tolvansson";
             // 
             // fullNameLabel
             // 
@@ -85,6 +86,7 @@
             this.personNumberTextBox.Name = "personNumberTextBox";
             this.personNumberTextBox.Size = new System.Drawing.Size(200, 22);
             this.personNumberTextBox.TabIndex = 1;
+            this.personNumberTextBox.Text = "1212121212";
             // 
             // executeButton
             // 
@@ -148,6 +150,7 @@
             this.k4PathTextBox.Name = "k4PathTextBox";
             this.k4PathTextBox.Size = new System.Drawing.Size(500, 22);
             this.k4PathTextBox.TabIndex = 7;
+            this.k4PathTextBox.Text = "C:\\Test\\2017.pdf";
             // 
             // outputPathTextBox
             // 
@@ -155,6 +158,7 @@
             this.outputPathTextBox.Name = "outputPathTextBox";
             this.outputPathTextBox.Size = new System.Drawing.Size(500, 22);
             this.outputPathTextBox.TabIndex = 9;
+            this.outputPathTextBox.Text = "C:\\Test\\output";
             // 
             // outputPathLabel
             // 
@@ -181,6 +185,7 @@
             this.ratesPathTextBox.Name = "ratesPathTextBox";
             this.ratesPathTextBox.Size = new System.Drawing.Size(500, 22);
             this.ratesPathTextBox.TabIndex = 5;
+            this.ratesPathTextBox.Text = "C:\\Test\\Valutakurser SEK EUR USD 2014-2017.csv";
             // 
             // ratesPathLabel
             // 
@@ -207,6 +212,7 @@
             this.BitstampTransactionsPathTextBox.Name = "BitstampTransactionsPathTextBox";
             this.BitstampTransactionsPathTextBox.Size = new System.Drawing.Size(500, 22);
             this.BitstampTransactionsPathTextBox.TabIndex = 3;
+            this.BitstampTransactionsPathTextBox.Text = "C:\\Test\\Bitstamp transactions to 20180119.csv";
             // 
             // BitstampTransactionsPathLabel
             // 
