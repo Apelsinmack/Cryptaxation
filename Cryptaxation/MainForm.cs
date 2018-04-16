@@ -26,22 +26,23 @@ namespace Cryptaxation
 
         private void execute_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Thread thread = new Thread(Execute);
-                thread.Start();
-            }
-            catch(Exception exception)
-            {
-                MessageBox.Show(exception.StackTrace, exception.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            Thread thread = new Thread(Execute);
+            thread.Start();
         }
 
         private void Execute()
         {
-            Logic logic = new Logic(fullNameTextBox.Text, personNumberTextBox.Text, BitstampTransactionsPathTextBox.Text, ratesPathTextBox.Text, k4PathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
-            logic.Execute(useTestDataCheckBox.Checked);
-            MessageBox.Show("Execution complete.", "Status");
+            try
+            {
+                Logic logic = new Logic(fullNameTextBox.Text, personNumberTextBox.Text, BitstampTransactionsPathTextBox.Text, ratesPathTextBox.Text, k4PathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
+                logic.Execute(useTestDataCheckBox.Checked);
+                MessageBox.Show("Execution complete.", "Status");
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.StackTrace, exception.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         private void bitstampTransactionsPathButton_Click(object sender, EventArgs e)

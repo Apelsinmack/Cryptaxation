@@ -52,7 +52,7 @@ namespace Cryptaxation
         public void OpenPdf()
         {
             _currentPdf = Process.Start(GetPdfPath(_numberOfCreatedPdfs));
-            Thread.Sleep(5000);
+            Thread.Sleep(10000);
         }
 
         public void SaveAndClose()
