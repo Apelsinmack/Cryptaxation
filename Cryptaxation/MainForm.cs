@@ -21,10 +21,9 @@ namespace Cryptaxation
         public MainForm()
         {
             InitializeComponent();
-            outputPathTextBox.Text = AppDomain.CurrentDomain.BaseDirectory + "output";
         }
 
-        private void execute_Click(object sender, EventArgs e)
+        private void ExecuteClick(object sender, EventArgs e)
         {
             Thread thread = new Thread(Execute);
             thread.Start();
@@ -34,7 +33,7 @@ namespace Cryptaxation
         {
             try
             {
-                Logic logic = new Logic(fullNameTextBox.Text, personNumberTextBox.Text, BitstampTransactionsPathTextBox.Text, ratesPathTextBox.Text, k4PathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
+                Logic logic = new Logic(fullNameTextBox.Text, personalIdentificationNumberTextBox.Text, BitstampTransactionsPathTextBox.Text, ratesPathTextBox.Text, k4PathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
                 logic.Execute(useTestDataCheckBox.Checked);
                 MessageBox.Show("Execution complete.", "Status");
             }
@@ -45,7 +44,7 @@ namespace Cryptaxation
 
         }
 
-        private void bitstampTransactionsPathButton_Click(object sender, EventArgs e)
+        private void BitstampTransactionsPathButtonClick(object sender, EventArgs e)
         {
             _browseBitstampTransactionsDialog = new OpenFileDialog();
             if (_browseBitstampTransactionsDialog.ShowDialog() == DialogResult.OK)
@@ -54,7 +53,7 @@ namespace Cryptaxation
             }
         }
 
-        private void ratesPathButton_Click(object sender, EventArgs e)
+        private void RatesPathButtonClick(object sender, EventArgs e)
         {
             _browseRatesDialog = new OpenFileDialog();
             if (_browseRatesDialog.ShowDialog() == DialogResult.OK)
@@ -63,7 +62,7 @@ namespace Cryptaxation
             }
         }
 
-        private void browseK4Button_Click(object sender, EventArgs e)
+        private void BrowseK4ButtonClick(object sender, EventArgs e)
         {
             _browseK4Dialog = new OpenFileDialog();
             if (_browseK4Dialog.ShowDialog() == DialogResult.OK)
@@ -72,13 +71,25 @@ namespace Cryptaxation
             }
         }
 
-        private void outputPathButton_Click(object sender, EventArgs e)
+        private void OutputPathButtonClick(object sender, EventArgs e)
         {
             _browseOutputDialog = new FolderBrowserDialog();
             if (_browseOutputDialog.ShowDialog() == DialogResult.OK)
             {
                 outputPathTextBox.Text = _browseOutputDialog.SelectedPath;
             }
+        }
+
+        private void SaveSettings(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.FullName = fullNameTextBox.Text;
+            Properties.Settings.Default.PersonalIdentificationNumber = personalIdentificationNumberTextBox.Text;
+            Properties.Settings.Default.ProcessName = processNameTextBox.Text;
+            Properties.Settings.Default.BitstampTransactionsPath = BitstampTransactionsPathTextBox.Text;
+            Properties.Settings.Default.RatesPath = ratesPathTextBox.Text;
+            Properties.Settings.Default.K4Path = k4PathTextBox.Text;
+            Properties.Settings.Default.OutputPath = outputPathTextBox.Text;
+            Properties.Settings.Default.Save();
         }
     }
 }

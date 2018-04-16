@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.fullNameTextBox = new System.Windows.Forms.TextBox();
             this.fullNameLabel = new System.Windows.Forms.Label();
-            this.personNumberLabel = new System.Windows.Forms.Label();
-            this.personNumberTextBox = new System.Windows.Forms.TextBox();
+            this.personalIdentificationNumberLabel = new System.Windows.Forms.Label();
             this.executeButton = new System.Windows.Forms.Button();
             this.processNameTextBox = new System.Windows.Forms.TextBox();
             this.processNameLabel = new System.Windows.Forms.Label();
@@ -50,17 +48,11 @@
             this.bitstampTransactionsPathButton = new System.Windows.Forms.Button();
             this.personalInformationGroup = new System.Windows.Forms.GroupBox();
             this.PathsGroup = new System.Windows.Forms.GroupBox();
+            this.fullNameTextBox = new System.Windows.Forms.TextBox();
+            this.personalIdentificationNumberTextBox = new System.Windows.Forms.TextBox();
             this.personalInformationGroup.SuspendLayout();
             this.PathsGroup.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // fullNameTextBox
-            // 
-            this.fullNameTextBox.Location = new System.Drawing.Point(9, 43);
-            this.fullNameTextBox.Name = "fullNameTextBox";
-            this.fullNameTextBox.Size = new System.Drawing.Size(200, 22);
-            this.fullNameTextBox.TabIndex = 0;
-            this.fullNameTextBox.Text = "Tolvan Tolvansson";
             // 
             // fullNameLabel
             // 
@@ -71,22 +63,14 @@
             this.fullNameLabel.TabIndex = 2;
             this.fullNameLabel.Text = "Full name";
             // 
-            // personNumberLabel
+            // personalIdentificationNumberLabel
             // 
-            this.personNumberLabel.AutoSize = true;
-            this.personNumberLabel.Location = new System.Drawing.Point(6, 73);
-            this.personNumberLabel.Name = "personNumberLabel";
-            this.personNumberLabel.Size = new System.Drawing.Size(105, 17);
-            this.personNumberLabel.TabIndex = 4;
-            this.personNumberLabel.Text = "Person number";
-            // 
-            // personNumberTextBox
-            // 
-            this.personNumberTextBox.Location = new System.Drawing.Point(9, 93);
-            this.personNumberTextBox.Name = "personNumberTextBox";
-            this.personNumberTextBox.Size = new System.Drawing.Size(200, 22);
-            this.personNumberTextBox.TabIndex = 1;
-            this.personNumberTextBox.Text = "1212121212";
+            this.personalIdentificationNumberLabel.AutoSize = true;
+            this.personalIdentificationNumberLabel.Location = new System.Drawing.Point(6, 73);
+            this.personalIdentificationNumberLabel.Name = "personalIdentificationNumberLabel";
+            this.personalIdentificationNumberLabel.Size = new System.Drawing.Size(199, 17);
+            this.personalIdentificationNumberLabel.TabIndex = 4;
+            this.personalIdentificationNumberLabel.Text = "Personal identification number";
             // 
             // executeButton
             // 
@@ -96,7 +80,7 @@
             this.executeButton.TabIndex = 11;
             this.executeButton.Text = "Execute";
             this.executeButton.UseVisualStyleBackColor = true;
-            this.executeButton.Click += new System.EventHandler(this.execute_Click);
+            this.executeButton.Click += new System.EventHandler(this.ExecuteClick);
             // 
             // processNameTextBox
             // 
@@ -104,7 +88,7 @@
             this.processNameTextBox.Name = "processNameTextBox";
             this.processNameTextBox.Size = new System.Drawing.Size(200, 22);
             this.processNameTextBox.TabIndex = 2;
-            this.processNameTextBox.Text = "AcroRd32";
+            this.processNameTextBox.Text = global::Cryptaxation.Properties.Settings.Default.ProcessName;
             // 
             // processNameLabel
             // 
@@ -133,7 +117,7 @@
             this.browseK4Button.TabIndex = 8;
             this.browseK4Button.Text = "Browse K4";
             this.browseK4Button.UseVisualStyleBackColor = true;
-            this.browseK4Button.Click += new System.EventHandler(this.browseK4Button_Click);
+            this.browseK4Button.Click += new System.EventHandler(this.BrowseK4ButtonClick);
             // 
             // k4PathLabel
             // 
@@ -150,7 +134,7 @@
             this.k4PathTextBox.Name = "k4PathTextBox";
             this.k4PathTextBox.Size = new System.Drawing.Size(500, 22);
             this.k4PathTextBox.TabIndex = 7;
-            this.k4PathTextBox.Text = "C:\\Test\\2017.pdf";
+            this.k4PathTextBox.Text = global::Cryptaxation.Properties.Settings.Default.K4Path;
             // 
             // outputPathTextBox
             // 
@@ -158,7 +142,7 @@
             this.outputPathTextBox.Name = "outputPathTextBox";
             this.outputPathTextBox.Size = new System.Drawing.Size(500, 22);
             this.outputPathTextBox.TabIndex = 9;
-            this.outputPathTextBox.Text = "C:\\Test\\output";
+            this.outputPathTextBox.Text = global::Cryptaxation.Properties.Settings.Default.OutputPath;
             // 
             // outputPathLabel
             // 
@@ -177,7 +161,7 @@
             this.outputPathButton.TabIndex = 10;
             this.outputPathButton.Text = "Browse K4";
             this.outputPathButton.UseVisualStyleBackColor = true;
-            this.outputPathButton.Click += new System.EventHandler(this.outputPathButton_Click);
+            this.outputPathButton.Click += new System.EventHandler(this.OutputPathButtonClick);
             // 
             // ratesPathTextBox
             // 
@@ -185,7 +169,7 @@
             this.ratesPathTextBox.Name = "ratesPathTextBox";
             this.ratesPathTextBox.Size = new System.Drawing.Size(500, 22);
             this.ratesPathTextBox.TabIndex = 5;
-            this.ratesPathTextBox.Text = "C:\\Test\\Valutakurser SEK EUR USD 2014-2017.csv";
+            this.ratesPathTextBox.Text = global::Cryptaxation.Properties.Settings.Default.RatesPath;
             // 
             // ratesPathLabel
             // 
@@ -204,7 +188,7 @@
             this.ratesPathButton.TabIndex = 6;
             this.ratesPathButton.Text = "Browse K4";
             this.ratesPathButton.UseVisualStyleBackColor = true;
-            this.ratesPathButton.Click += new System.EventHandler(this.ratesPathButton_Click);
+            this.ratesPathButton.Click += new System.EventHandler(this.RatesPathButtonClick);
             // 
             // BitstampTransactionsPathTextBox
             // 
@@ -212,7 +196,7 @@
             this.BitstampTransactionsPathTextBox.Name = "BitstampTransactionsPathTextBox";
             this.BitstampTransactionsPathTextBox.Size = new System.Drawing.Size(500, 22);
             this.BitstampTransactionsPathTextBox.TabIndex = 3;
-            this.BitstampTransactionsPathTextBox.Text = "C:\\Test\\Bitstamp transactions to 20180119.csv";
+            this.BitstampTransactionsPathTextBox.Text = global::Cryptaxation.Properties.Settings.Default.BitstampTransactionsPath;
             // 
             // BitstampTransactionsPathLabel
             // 
@@ -231,14 +215,14 @@
             this.bitstampTransactionsPathButton.TabIndex = 4;
             this.bitstampTransactionsPathButton.Text = "Browse K4";
             this.bitstampTransactionsPathButton.UseVisualStyleBackColor = true;
-            this.bitstampTransactionsPathButton.Click += new System.EventHandler(this.bitstampTransactionsPathButton_Click);
+            this.bitstampTransactionsPathButton.Click += new System.EventHandler(this.BitstampTransactionsPathButtonClick);
             // 
             // personalInformationGroup
             // 
             this.personalInformationGroup.Controls.Add(this.fullNameTextBox);
             this.personalInformationGroup.Controls.Add(this.fullNameLabel);
-            this.personalInformationGroup.Controls.Add(this.personNumberTextBox);
-            this.personalInformationGroup.Controls.Add(this.personNumberLabel);
+            this.personalInformationGroup.Controls.Add(this.personalIdentificationNumberTextBox);
+            this.personalInformationGroup.Controls.Add(this.personalIdentificationNumberLabel);
             this.personalInformationGroup.Controls.Add(this.processNameLabel);
             this.personalInformationGroup.Controls.Add(this.processNameTextBox);
             this.personalInformationGroup.Location = new System.Drawing.Point(12, 14);
@@ -269,6 +253,22 @@
             this.PathsGroup.TabStop = false;
             this.PathsGroup.Text = "Paths";
             // 
+            // fullNameTextBox
+            // 
+            this.fullNameTextBox.Location = new System.Drawing.Point(9, 43);
+            this.fullNameTextBox.Name = "fullNameTextBox";
+            this.fullNameTextBox.Size = new System.Drawing.Size(200, 22);
+            this.fullNameTextBox.TabIndex = 0;
+            this.fullNameTextBox.Text = global::Cryptaxation.Properties.Settings.Default.FullName;
+            // 
+            // personalIdentificationNumberTextBox
+            // 
+            this.personalIdentificationNumberTextBox.Location = new System.Drawing.Point(9, 93);
+            this.personalIdentificationNumberTextBox.Name = "personalIdentificationNumberTextBox";
+            this.personalIdentificationNumberTextBox.Size = new System.Drawing.Size(200, 22);
+            this.personalIdentificationNumberTextBox.TabIndex = 1;
+            this.personalIdentificationNumberTextBox.Text = global::Cryptaxation.Properties.Settings.Default.PersonalIdentificationNumber;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -280,6 +280,7 @@
             this.Controls.Add(this.executeButton);
             this.Name = "MainForm";
             this.Text = "Cryptaxation";
+            this.Closed += new System.EventHandler(this.SaveSettings);
             this.personalInformationGroup.ResumeLayout(false);
             this.personalInformationGroup.PerformLayout();
             this.PathsGroup.ResumeLayout(false);
@@ -294,8 +295,8 @@
         private System.Windows.Forms.TextBox fullNameTextBox;
         private System.Windows.Forms.Button executeButton;
         private System.Windows.Forms.Label fullNameLabel;
-        private System.Windows.Forms.Label personNumberLabel;
-        private System.Windows.Forms.TextBox personNumberTextBox;
+        private System.Windows.Forms.Label personalIdentificationNumberLabel;
+        private System.Windows.Forms.TextBox personalIdentificationNumberTextBox;
         private System.Windows.Forms.TextBox processNameTextBox;
         private System.Windows.Forms.Label processNameLabel;
         private System.Windows.Forms.CheckBox useTestDataCheckBox;

@@ -20,17 +20,17 @@ namespace Cryptaxation.Helpers
         private const int TAB_INDEX_FIRST_SUM_RESOURCE_FIELD = 153;
 
         private readonly string _name;
-        private readonly string _personNumber;
+        private readonly string _personalIdentificationNumber;
         private List<K4Transaction> _cryptoTransactions;
         private List<K4Transaction> _fiatTransactions;
         private PdfHelper _pdfHelper;
         private int fiatTransactionIndex;
         private int cryptoTransactionIndex;
 
-        public K4Helper(string name, string personNumber, string originalk4Path, string outputPath, string processName, List<K4Transaction> fiatTransactions, List<K4Transaction> cryptoTransactions)
+        public K4Helper(string name, string personalIdentificationNumber, string originalk4Path, string outputPath, string processName, List<K4Transaction> fiatTransactions, List<K4Transaction> cryptoTransactions)
         {
             _name = name;
-            _personNumber = personNumber;
+            _personalIdentificationNumber = personalIdentificationNumber;
             _cryptoTransactions = cryptoTransactions;
             _fiatTransactions = fiatTransactions;
             _pdfHelper = new PdfHelper(originalk4Path, outputPath, processName);
@@ -54,7 +54,7 @@ namespace Cryptaxation.Helpers
             FillDate();
             FillNumbering();
             FillName();
-            FillPersonNumber();
+            FillPersonalIdentificationNumber();
             FillCurrencies();
             FillResources();
         }
@@ -77,10 +77,10 @@ namespace Cryptaxation.Helpers
             _pdfHelper.WriteText(_name);
         }
 
-        private void FillPersonNumber()
+        private void FillPersonalIdentificationNumber()
         {
             _pdfHelper.GotoField(TAB_INDEX_PERSON_NUMBER);
-            _pdfHelper.WriteText(_personNumber);
+            _pdfHelper.WriteText(_personalIdentificationNumber);
         }
 
         private void FillCurrencies()

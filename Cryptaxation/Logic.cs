@@ -12,7 +12,7 @@ namespace Cryptaxation
     public class Logic
     {
         private string _fullName;
-        private string _personNumber;
+        private string _personalIdentificationNumber;
         private string _bitstampTransactionsPath;
         private string _ratesPath;
         private string _k4Path;
@@ -21,10 +21,10 @@ namespace Cryptaxation
         private CsvHelper _csvHelper;
         private TransactionHelper _transactionHelper;
 
-        public Logic(string fullName, string personNumber, string bitstampTransactionsPath, string ratesPath, string k4Path, string outputPath, string processName)
+        public Logic(string fullName, string personalIdentificationNumber, string bitstampTransactionsPath, string ratesPath, string k4Path, string outputPath, string processName)
         {
             _fullName = fullName;
-            _personNumber = personNumber;
+            _personalIdentificationNumber = personalIdentificationNumber;
             _bitstampTransactionsPath = bitstampTransactionsPath;
             _ratesPath = ratesPath;
             _k4Path = k4Path;
@@ -40,7 +40,7 @@ namespace Cryptaxation
         private void ValidateInput()
         {
             ValidateFullName();
-            ValidatePersonNumber();
+            ValidatePersonalIdentificationNumber();
             ValidateBitstampTransactionsPath();
             ValidateRatesPath();
             ValidateK4Path();
@@ -55,10 +55,10 @@ namespace Cryptaxation
             }
         }
 
-        private void ValidatePersonNumber()
+        private void ValidatePersonalIdentificationNumber()
         {
             // TODO
-            if (string.IsNullOrWhiteSpace(_personNumber))
+            if (string.IsNullOrWhiteSpace(_personalIdentificationNumber))
             {
                 throw new Exception("Invalid person number.");
             }
@@ -124,7 +124,7 @@ namespace Cryptaxation
             else
             {
                 _transactionHelper.UpdateK4TransactionListsFromBitstampTransactions(bitstampTransactionList, rateList);
-                K4Helper k4Helper = new K4Helper(_fullName, _personNumber, _k4Path, _outputPath, _processName, _transactionHelper.K4FiatCurrencyTransactions, _transactionHelper.K4CryptoCurrencyTransactions);
+                K4Helper k4Helper = new K4Helper(_fullName, _personalIdentificationNumber, _k4Path, _outputPath, _processName, _transactionHelper.K4FiatCurrencyTransactions, _transactionHelper.K4CryptoCurrencyTransactions);
                 k4Helper.FillForms();
             }
         }
@@ -159,7 +159,7 @@ namespace Cryptaxation
                 });
             }
 
-            K4Helper k4Helper = new K4Helper(_fullName, _personNumber, _k4Path, _outputPath, _processName, fiatTestList, cryptoTestList);
+            K4Helper k4Helper = new K4Helper(_fullName, _personalIdentificationNumber, _k4Path, _outputPath, _processName, fiatTestList, cryptoTestList);
             k4Helper.FillForms();
         }
     }
