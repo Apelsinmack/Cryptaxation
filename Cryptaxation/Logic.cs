@@ -18,7 +18,6 @@ namespace Cryptaxation
         private string _outputPath;
         private string _processName;
         private CsvHelper _csvHelper;
-        private PdfHelper _pdfHelper;
         private TransactionHelper _transactionHelper;
 
         public Logic(string fullName, string personNumber, string bitstampTransactionsPath, string ratesPath, string k4Path, string outputPath, string processName)
@@ -34,7 +33,6 @@ namespace Cryptaxation
             ValidateInput();
 
             _csvHelper = new CsvHelper();
-            _pdfHelper = new PdfHelper(_processName);
             _transactionHelper = new TransactionHelper();
 
         }
@@ -67,6 +65,41 @@ namespace Cryptaxation
             List<BitstampTransaction> bitstampTransactionList = _csvHelper.CreateBitstampTransactionList(_bitstampTransactionsPath);
             List<Rate> rateList = _csvHelper.CreateRateList(_ratesPath);
             _transactionHelper.UpdateK4TransactionListsFromBitstampTransactions(bitstampTransactionList, rateList);
+            K4Helper k4Helper = new K4Helper(_fullName, _personNumber, _k4Path, _outputPath, _processName, _transactionHelper.K4FiatCurrencyTransactions, _transactionHelper.K4CryptocurrencyTransactions);
+
+            List<K4Transaction> fiatTestList = new List<K4Transaction>();
+            for (int i = 0; i < 8; i++)
+            {
+                fiatTestList.Add(new K4Transaction()
+                {
+                    Amount = "famount" + i,
+                    Currency = "fcurrency" + i,
+                    SalesPrice = "fsales price" + i,
+                    TaxBasis = "ftax basis" + i,
+                    Gain = "fgain" + i,
+                    Loss = "floss" + i
+                });
+            }
+
+            List<K4Transaction> cryptoTestList = new List<K4Transaction>();
+            for (int i = 0; i < 20; i++)
+            {
+                cryptoTestList.Add(new K4Transaction()
+                {
+                    Amount = "camount" + i,
+                    Currency = "ccurrency" + i,
+                    SalesPrice = "csales price" + i,
+                    TaxBasis = "ctax basis" + i,
+                    Gain = "cgain" + i,
+                    Loss = "closs" + i
+                });
+            }
+
+            k4Helper = new K4Helper(_fullName, _personNumber, _k4Path, _outputPath, _processName, fiatTestList, cryptoTestList);
+
+            //k4Helper = new K4Helper(_fullName, _personNumber, _k4Path, _outputPath, _processName, _transactionHelper.K4FiatCurrencyTransactions, _transactionHelper.K4CryptocurrencyTransactions);
+            k4Helper.FillForms();
+
         }
     }
 }

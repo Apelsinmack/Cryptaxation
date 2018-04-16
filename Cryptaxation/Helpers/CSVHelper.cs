@@ -11,10 +11,6 @@ namespace Cryptaxation
 {
     public class CsvHelper
     {
-        public CsvHelper()
-        {
-        }
-
         public List<BitstampTransaction> CreateBitstampTransactionList(string path)
         {
             List<BitstampTransaction> bitstampTransactions = new List<BitstampTransaction>();
