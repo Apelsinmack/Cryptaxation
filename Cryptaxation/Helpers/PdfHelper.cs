@@ -77,6 +77,15 @@ namespace Cryptaxation
             }
         }
 
+        public void WriteText(decimal text, bool nextField = true)
+        {
+            SendKeys.SendWait(text.ToString());
+            if (nextField)
+            {
+                NextField();
+            }
+        }
+
         public void NextField()
         {
             _tabIndex++;

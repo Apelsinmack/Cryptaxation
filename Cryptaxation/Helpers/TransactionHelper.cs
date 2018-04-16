@@ -179,24 +179,24 @@ namespace Cryptaxation.Helpers
                 {
                     K4FiatCurrencyTransactions.Add(new K4Transaction()
                     {
-                        Amount = currency.Value.ToString(),
+                        Amount = currency.Value,
                         Currency = currency.CurrencyCode.ToString(),
-                        SalesPrice = totalSalesPrice.ToString(),
-                        TaxBasis = taxBasis.ToString(),
-                        Gain = gain.ToString(),
-                        Loss = loss.ToString()
+                        SalesPrice = totalSalesPrice,
+                        TaxBasis = taxBasis,
+                        Gain = gain,
+                        Loss = loss
                     });
                 }
                 else if (currency.Type == CurrencyType.CryptoCurrency)
                 {
                     K4CryptoCurrencyTransactions.Add(new K4Transaction()
                     {
-                        Amount = currency.Value.ToString(),
+                        Amount = currency.Value,
                         Currency = currency.CurrencyCode.ToString(),
-                        SalesPrice = totalSalesPrice.ToString(),
-                        TaxBasis = taxBasis.ToString(),
-                        Gain = gain.ToString(),
-                        Loss = loss.ToString()
+                        SalesPrice = totalSalesPrice,
+                        TaxBasis = taxBasis,
+                        Gain = gain,
+                        Loss = loss
                     });
                 }
             }
