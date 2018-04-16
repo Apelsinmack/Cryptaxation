@@ -122,7 +122,7 @@ namespace Cryptaxation.Helpers
                     else ErrorMessage("UpdateTaxBases", "CurrencyType for sold undefined.");
 
                     // (10 USD * 10 + 5 USD * 20) / (10 + 5) = 200 / 15 = 13,333...   (Old amount * Old rate + New value * Rate at that time) / Sum amount = New rate
-                    taxBaseRateSold.Value = (taxBasePriceSold + soldPrice / (taxBaseAmountSold.Value + sold.Value));
+                    taxBaseRateSold.Value = ((taxBasePriceSold - soldPrice) / (taxBaseAmountSold.Value - sold.Value));
                     taxBaseAmountSold.Value -= sold.Value;
                 }
             }
@@ -139,9 +139,9 @@ namespace Cryptaxation.Helpers
                 if (currencyCodeFrom == currencyCodeTo) return 1;
 
                 // TODO! SEK can be set to tax currency, as per settings.
-                if (rates.Exists(r => r.OriginCurrency == currencyCodeFrom && r.DestinationCurrency == currencyCodeTo))
+                if (rates.Exists(r => r.OriginCurrency == currencyCodeFrom && r.DestinationCurrency == currencyCodeTo && r.Date <= date))
                 {
-                    return parentRate * rates.FirstOrDefault(r => r.OriginCurrency == currencyCodeFrom && r.DestinationCurrency == currencyCodeTo).Value;
+                    return parentRate * rates.FirstOrDefault(r => r.OriginCurrency == currencyCodeFrom && r.DestinationCurrency == currencyCodeTo && r.Date <= date).Value;
                 }
                 foreach (Rate rate in rates.Where(r => r.OriginCurrency == currencyCodeFrom && r.Date <= date).ToList().OrderBy(r => r.DestinationCurrency).ThenBy(r => r.OriginCurrency).ThenByDescending(r => r.Date))
                 {
