@@ -20,6 +20,7 @@ namespace Cryptaxation.Helpers
             {
                 List<Currency> taxBaseAmounts = new List<Currency>();
                 List<Currency> taxBaseRates = new List<Currency>();
+                lineNumber = 0;
 
                 rates.OrderBy(r => r.DestinationCurrency).ThenBy(r => r.OriginCurrency).ThenByDescending(r => r.Date);
 
@@ -52,7 +53,7 @@ namespace Cryptaxation.Helpers
         {
             try
             {
-                Decimal totalSalesPrice = 0, taxBasis = 0, gain = 0, loss = 0;
+                decimal totalSalesPrice = 0, taxBasis = 0, gain = 0, loss = 0;
 
                 // Total sales price
                 if (sold.Type == CurrencyType.FiatCurrency) totalSalesPrice = sold.Value * GetRate(date, sold.CurrencyCode, rates);
@@ -108,7 +109,7 @@ namespace Cryptaxation.Helpers
             }
         }
 
-        private Decimal GetRate(DateTime date, CurrencyCode currencyCode, List<Rate> rates, Decimal parentRate = 1)
+        private decimal GetRate(DateTime date, CurrencyCode currencyCode, List<Rate> rates, decimal parentRate = 1)
         {
             try
             {
@@ -131,7 +132,7 @@ namespace Cryptaxation.Helpers
             }
         }
 
-        private Decimal GetTaxBasis(CurrencyCode currencyCode, List<Currency> taxBaseAmounts, List<Currency> taxBaseRates)
+        private decimal GetTaxBasis(CurrencyCode currencyCode, List<Currency> taxBaseAmounts, List<Currency> taxBaseRates)
         {
             try
             {
@@ -144,7 +145,7 @@ namespace Cryptaxation.Helpers
             }
         }
 
-        private Decimal GetTaxBaseAmount(CurrencyCode currencyCode, List<Currency> taxBaseAmounts, List<Currency> taxBaseRates)
+        private decimal GetTaxBaseAmount(CurrencyCode currencyCode, List<Currency> taxBaseAmounts, List<Currency> taxBaseRates)
         {
             try
             {
@@ -157,7 +158,7 @@ namespace Cryptaxation.Helpers
             }
         }
 
-        private Decimal GetTaxBaseRate(CurrencyCode currencyCode, List<Currency> taxBaseAmounts, List<Currency> taxBaseRates)
+        private decimal GetTaxBaseRate(CurrencyCode currencyCode, List<Currency> taxBaseAmounts, List<Currency> taxBaseRates)
         {
             try
             {
@@ -170,7 +171,7 @@ namespace Cryptaxation.Helpers
             }
         }
 
-        private void AddK4Transaction(Currency currency, Decimal totalSalesPrice, Decimal taxBasis, Decimal gain, Decimal loss)
+        private void AddK4Transaction(Currency currency, decimal totalSalesPrice, decimal taxBasis, decimal gain, decimal loss)
         {
             try
             {
