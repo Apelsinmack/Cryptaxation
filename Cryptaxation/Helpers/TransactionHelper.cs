@@ -116,16 +116,11 @@ namespace Cryptaxation.Helpers
 
                 if (sold.CurrencyCode != _taxCurrencyCode)
                 {
-                    decimal taxBasePriceSold = taxBaseAmountSold.Value * taxBaseRateSold.Value;
-
                     // Quick fix before rate exploration is properly implemented.
                     decimal soldPrice = 0;
                     if (sold.Type == CurrencyType.FiatCurrency) soldPrice = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates);
                     else if (sold.Type == CurrencyType.FiatCurrency) soldPrice = sold.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates, rate.Value);
                     else ErrorMessage("UpdateTaxBases", "CurrencyType for sold undefined.");
-
-                    // (10 USD * 10 + 5 USD * 20) / (10 + 5) = 200 / 15 = 13,333...   (Old amount * Old rate + New value * Rate at that time) / Sum amount = New rate
-                    taxBaseRateSold.Value = ((taxBasePriceSold - soldPrice) / (taxBaseAmountSold.Value - sold.Value));
                     taxBaseAmountSold.Value -= sold.Value;
                 }
             }
@@ -252,16 +247,13 @@ namespace Cryptaxation.Helpers
 
             if (sold.CurrencyCode != _taxCurrencyCode)
             {
-                decimal taxBasePriceSold = taxBaseAmountSold.Value * taxBaseRateSold.Value;
+                taxBasisRateSold = taxBaseAmountSold.Value * taxBaseRateSold.Value;
 
                 // Quick fix before rate exploration is properly implemented.
                 decimal soldPrice = 0;
                 if (sold.Type == CurrencyType.FiatCurrency) soldPrice = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates);
                 else if (sold.Type == CurrencyType.FiatCurrency) soldPrice = sold.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates, rate.Value);
                 else ErrorMessage("UpdateTaxBases", "CurrencyType for sold undefined.");
-
-                // (10 USD * 10 + 5 USD * 20) / (10 + 5) = 200 / 15 = 13,333...   (Old amount * Old rate + New value * Rate at that time) / Sum amount = New rate
-                taxBasisRateSold = ((taxBasePriceSold - soldPrice) / (taxBaseAmountSold.Value - sold.Value));
 
                 taxBasisAmountBeforeSold = taxBaseAmountSold.Value;
                 taxBasisAmountAfterSold = taxBasisAmountBeforeSold - sold.Value;
