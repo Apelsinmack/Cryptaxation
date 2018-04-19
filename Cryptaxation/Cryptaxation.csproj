@@ -58,6 +58,7 @@
     <Compile Include="Helpers\TransactionHelper.cs" />
     <Compile Include="Models\BitstampTransaction.cs" />
     <Compile Include="Models\Currency.cs" />
+    <Compile Include="Models\DetailedTransaction.cs" />
     <Compile Include="Models\K4Transaction.cs" />
     <Compile Include="Logic.cs" />
     <Compile Include="Models\Rate.cs" />

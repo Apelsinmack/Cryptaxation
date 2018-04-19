@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,6 +82,32 @@ namespace Cryptaxation
                 }
             }
             return bitstampTransaction;
+        }
+
+        public void CreateDetailedTransactionsCsv(string path, List<DetailedTransaction> detailedTransactions)
+        {
+            string delimter = ";";
+            using (TextWriter writer = File.CreateText(path))
+            {
+                List<string> headers = new List<string>();
+                foreach (var property in typeof(DetailedTransaction).GetProperties())
+                {
+                    headers.Add(property.Name);
+                }
+                writer.WriteLine(string.Join(delimter, headers));
+                foreach (var detailedTransaction in detailedTransactions) {
+                    List<string> columns = new List<string>();
+                    foreach (var property in typeof(DetailedTransaction).GetProperties())
+                    {
+                        object csvProperty = detailedTransaction.GetType().GetProperty(property.Name).GetValue(detailedTransaction, null);
+                        if (csvProperty != null)
+                        {
+                            columns.Add((csvProperty.ToString().Equals("Undefined") ? string.Empty : csvProperty.ToString()));
+                        }
+                    }
+                    writer.WriteLine(string.Join(delimter, columns));
+                }
+            }
         }
 
         private Currency ConvertFieldToCurrency(string field, CultureInfo cultureInfo = null, NumberStyles numberStyle = NumberStyles.Any)

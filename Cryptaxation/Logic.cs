@@ -116,16 +116,17 @@ namespace Cryptaxation
         {
             List<BitstampTransaction> bitstampTransactionList = _csvHelper.CreateBitstampTransactionList(_bitstampTransactionsPath);
             List<Rate> rateList = _csvHelper.CreateRateList(_ratesPath);
-
+            
             if (useTestData)
             {
                 ExecuteWithTestData();
             }
             else
             {
-                _transactionHelper.UpdateK4TransactionListsFromBitstampTransactions(bitstampTransactionList, rateList);
-                K4Helper k4Helper = new K4Helper(_fullName, _personalIdentificationNumber, _k4Path, _outputPath, _processName, _transactionHelper.K4FiatCurrencyTransactions, _transactionHelper.K4CryptoCurrencyTransactions);
-                k4Helper.FillForms();
+                _transactionHelper.UpdateK4TransactionListsFromBitstampTransactions(bitstampTransactionList, rateList, 2014);
+                _csvHelper.CreateDetailedTransactionsCsv(_outputPath + @"\Detailed transactions.csv", _transactionHelper.DetailedTransactions);
+                //K4Helper k4Helper = new K4Helper(_fullName, _personalIdentificationNumber, _k4Path, _outputPath, _processName, _transactionHelper.K4FiatCurrencyTransactions, _transactionHelper.K4CryptoCurrencyTransactions);
+                //k4Helper.FillForms();
             }
         }
 
