@@ -44,7 +44,7 @@ namespace Cryptaxation.Helpers
             {
                 FillForm();
             }
-            //_pdfHelper.SaveAndClose();
+            _pdfHelper.SaveAndClose();
         }
 
         private void FillForm()
