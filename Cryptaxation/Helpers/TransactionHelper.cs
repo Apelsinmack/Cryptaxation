@@ -114,15 +114,7 @@ namespace Cryptaxation.Helpers
                     taxBaseAmountBought.Value += bought.Value;
                 }
 
-                if (sold.CurrencyCode != _taxCurrencyCode)
-                {
-                    // Quick fix before rate exploration is properly implemented.
-                    decimal soldPrice = 0;
-                    if (sold.Type == CurrencyType.FiatCurrency) soldPrice = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates);
-                    else if (sold.Type == CurrencyType.FiatCurrency) soldPrice = sold.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates, rate.Value);
-                    else ErrorMessage("UpdateTaxBases", "CurrencyType for sold undefined.");
-                    taxBaseAmountSold.Value -= sold.Value;
-                }
+                if (sold.CurrencyCode != _taxCurrencyCode) taxBaseAmountSold.Value -= sold.Value;
             }
             catch
             {
@@ -247,14 +239,6 @@ namespace Cryptaxation.Helpers
 
             if (sold.CurrencyCode != _taxCurrencyCode)
             {
-                taxBasisRateSold = taxBaseAmountSold.Value * taxBaseRateSold.Value;
-
-                // Quick fix before rate exploration is properly implemented.
-                decimal soldPrice = 0;
-                if (sold.Type == CurrencyType.FiatCurrency) soldPrice = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates);
-                else if (sold.Type == CurrencyType.FiatCurrency) soldPrice = sold.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates, rate.Value);
-                else ErrorMessage("UpdateTaxBases", "CurrencyType for sold undefined.");
-
                 taxBasisAmountBeforeSold = taxBaseAmountSold.Value;
                 taxBasisAmountAfterSold = taxBasisAmountBeforeSold - sold.Value;
             }
