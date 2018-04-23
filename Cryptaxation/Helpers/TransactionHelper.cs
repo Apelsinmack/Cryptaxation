@@ -10,14 +10,14 @@ namespace Cryptaxation.Helpers
 {
     public class TransactionHelper
     {
-		public List<K4Transaction> K4FiatCurrencyTransactions = new List<K4Transaction>();
-		public List<K4Transaction> K4CryptoCurrencyTransactions = new List<K4Transaction>();
+        public List<K4Transaction> K4FiatCurrencyTransactions = new List<K4Transaction>();
+        public List<K4Transaction> K4CryptoCurrencyTransactions = new List<K4Transaction>();
         public List<DetailedTransaction> DetailedTransactions = new List<DetailedTransaction>();
         private int _lineNumber;
         private CurrencyCode _taxCurrencyCode;
 
         public void UpdateK4TransactionListsFromBitstampTransactions(List<BitstampTransaction> bitstampTransactions, List<Rate> rates, int year)
-		{
+        {
             try
             {
                 List<Currency> taxBaseAmounts = new List<Currency>();
@@ -58,15 +58,18 @@ namespace Cryptaxation.Helpers
         {
             try
             {
-                decimal totalSalesPrice = 0, taxBasis = 0, gain = 0, loss = 0;
+                int totalSalesPrice = 0,
+                    taxBasis = 0,
+                    gain = 0,
+                    loss = 0;
 
                 // Total sales price
-                if (sold.Type == CurrencyType.FiatCurrency) totalSalesPrice = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates);
-                else if (sold.Type == CurrencyType.CryptoCurrency) totalSalesPrice = bought.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates);
+                if (sold.Type == CurrencyType.FiatCurrency) totalSalesPrice = (int)(sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates) - fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates));
+                else if (sold.Type == CurrencyType.CryptoCurrency) totalSalesPrice = (int)(bought.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates) - fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates));
                 else ErrorMessage("HandleTransaction", "Sold currency is neither fiat nor crypto.");
 
                 // Tax basis
-                taxBasis = sold.Value * GetTaxBaseRate(sold.CurrencyCode, taxBaseAmounts, taxBaseRates);
+                taxBasis = (int)decimal.Round(sold.Value * GetTaxBaseRate(sold.CurrencyCode, taxBaseAmounts, taxBaseRates));
 
                 // Gain or loss
                 if (totalSalesPrice > taxBasis) gain = totalSalesPrice - taxBasis;
@@ -88,7 +91,7 @@ namespace Cryptaxation.Helpers
                 if (!taxBaseAmounts.Exists(tba => tba.CurrencyCode == bought.CurrencyCode)) taxBaseAmounts.Add(new Currency() { CurrencyCode = bought.CurrencyCode });
                 if (!taxBaseRates.Exists(tbr => tbr.CurrencyCode == bought.CurrencyCode)) taxBaseRates.Add(new Currency() { CurrencyCode = bought.CurrencyCode });
                 if (!taxBaseAmounts.Exists(tba => tba.CurrencyCode == sold.CurrencyCode)) taxBaseAmounts.Add(new Currency() { CurrencyCode = sold.CurrencyCode });
-                if (!taxBaseRates.Exists(tbr => tbr.CurrencyCode == sold.CurrencyCode)) taxBaseRates.Add(new Currency() { CurrencyCode = sold.CurrencyCode });
+                if (!taxBaseRates.Exists(tbr => tbr.CurrencyCode == sold.CurrencyCode)) taxBaseRates.Add(new Currency() { CurrencyCode = sold.CurrencyCode }); //ta bort
 
                 Currency taxBaseAmountBought = taxBaseAmounts.FirstOrDefault(tba => tba.CurrencyCode == bought.CurrencyCode);
                 Currency taxBaseRateBought = taxBaseRates.FirstOrDefault(tbr => tbr.CurrencyCode == bought.CurrencyCode);
@@ -101,16 +104,13 @@ namespace Cryptaxation.Helpers
                     decimal taxBasePriceBought = taxBaseAmountBought.Value * taxBaseRateBought.Value;
 
                     // Quick fix before rate exploration is properly implemented.
-                    decimal boughtPrice = 0;
+                    decimal boughtPrice = 0m;
                     if (bought.Type == CurrencyType.FiatCurrency) boughtPrice = bought.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates) + fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates);
-                    else if (bought.Type == CurrencyType.CryptoCurrency) boughtPrice = bought.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates, rate.Value) + fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates);
+                    else if (bought.Type == CurrencyType.CryptoCurrency) boughtPrice = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates) + fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates);
                     else ErrorMessage("UpdateTaxBases", "CurrencyType for bought undefined.");
-
-                    decimal boughtAmount;
-                    if (bought.CurrencyCode == fee.CurrencyCode) boughtAmount = bought.Value + fee.Value;
-                    else boughtAmount = bought.Value + fee.Value / rate.Value;
+                    
                     // (10 USD * 10 + 5 USD * 20) / (10 + 5) = 200 / 15 = 13,333...   (Old amount * Old rate + New value * Rate at that time) / Sum amount = New rate
-                    taxBaseRateBought.Value = (taxBasePriceBought + boughtPrice) / (taxBaseAmountBought.Value + boughtAmount);
+                    taxBaseRateBought.Value = (taxBasePriceBought + boughtPrice) / (taxBaseAmountBought.Value + bought.Value);
                     taxBaseAmountBought.Value += bought.Value;
                 }
 
@@ -122,28 +122,29 @@ namespace Cryptaxation.Helpers
             }
         }
 
-        private decimal GetRate(DateTime date, CurrencyCode currencyCodeFrom, CurrencyCode currencyCodeTo, List<Rate> rates, decimal parentRate = 1)
+        private decimal GetRate(DateTime date, CurrencyCode currencyCodeFrom, CurrencyCode currencyCodeTo, List<Rate> rates, decimal parentRate = 1m)
         {
             try
             {
-                if (currencyCodeFrom == currencyCodeTo) return 1;
+                if (currencyCodeFrom == currencyCodeTo) return 1m;
 
-                // TODO! SEK can be set to tax currency, as per settings.
                 if (rates.Exists(r => r.OriginCurrency == currencyCodeFrom && r.DestinationCurrency == currencyCodeTo && r.Date <= date))
                 {
                     return parentRate * rates.FirstOrDefault(r => r.OriginCurrency == currencyCodeFrom && r.DestinationCurrency == currencyCodeTo && r.Date <= date).Value;
                 }
-                foreach (Rate rate in rates.Where(r => r.OriginCurrency == currencyCodeFrom && r.Date <= date).ToList().OrderBy(r => r.DestinationCurrency).ThenBy(r => r.OriginCurrency).ThenByDescending(r => r.Date))
+                /*foreach (Rate rate in rates.Where(r => r.OriginCurrency == currencyCodeFrom && r.Date <= date).ToList().OrderBy(r => r.DestinationCurrency).ThenBy(r => r.OriginCurrency).ThenByDescending(r => r.Date))
                 {
+                    // Should iterate in the other direction, meaning check only rates that have currencyCodeFrom as OriginCurrency.
+                    // Fet bugg
                     return parentRate * GetRate(date, rate.DestinationCurrency, currencyCodeTo, rates, rate.Value);
-                }
+                }*/
                 ErrorMessage("GetRate", "Could not find converison rate.");
-                return 0;
+                return 0m;
             }
             catch
             {
                 ErrorMessage("GetRate");
-                return 0;
+                return 0m;
             }
         }
 
@@ -156,7 +157,7 @@ namespace Cryptaxation.Helpers
             catch
             {
                 ErrorMessage("GetTaxBasis");
-                return 0;
+                return 0m;
             }
         }
 
@@ -170,7 +171,7 @@ namespace Cryptaxation.Helpers
             catch
             {
                 ErrorMessage("GetTaxBaseAmount");
-                return 0;
+                return 0m;
             }
         }
 
@@ -178,19 +179,21 @@ namespace Cryptaxation.Helpers
         {
             try
             {
-                if (!taxBaseRates.Exists(tbr => tbr.CurrencyCode == currencyCode)) taxBaseRates.Add(new Currency() { CurrencyCode = currencyCode });
+                // Shouldn't happen
+                //if (!taxBaseRates.Exists(tbr => tbr.CurrencyCode == currencyCode)) taxBaseRates.Add(new Currency() { CurrencyCode = currencyCode });
                 return taxBaseRates.FirstOrDefault(tbr => tbr.CurrencyCode == currencyCode).Value;
             }
             catch
             {
                 ErrorMessage("GetTaxBaseRate");
-                return 0;
+                return 0m;
             }
         }
 
         private void AddDetailedTransaction(DateTime date, Currency bought, Currency sold, Currency rate, Currency fee, SubType subType, ref List<Currency> taxBaseAmounts, ref List<Currency> taxBaseRates, List<Rate> rates)
         {
-            DetailedTransaction detailedTransaction = new DetailedTransaction() {
+            DetailedTransaction detailedTransaction = new DetailedTransaction()
+            {
                 DateTime = date,
                 CurrencyCodeTaxation = _taxCurrencyCode,
                 CurrencyCodeSold = sold.CurrencyCode,
@@ -201,22 +204,22 @@ namespace Cryptaxation.Helpers
                 AmountFee = fee.Value
             };
 
-            decimal totalSalesPrice = 0,
-                    taxBasis = 0,
-                    gain = 0,
-                    loss = 0,
-                    taxBasisRateSold = 0,
-                    taxBasisAmountAfterSold = 0,
-                    taxBasisAmountBeforeSold = 0,
-                    taxBasisRateAfterBought = 0,
-                    taxBasisRateBeforeBought = 0,
-                    taxBasisAmountAfterBought = 0,
-                    taxBasisAmountBeforeBought = 0,
-                    valueTaxationCurrencyFee = 0;
+            decimal totalSalesPrice = 0m,
+                    taxBasis = 0m,
+                    gain = 0m,
+                    loss = 0m,
+                    taxBasisRateSold = 0m,
+                    taxBasisAmountAfterSold = 0m,
+                    taxBasisAmountBeforeSold = 0m,
+                    taxBasisRateAfterBought = 0m,
+                    taxBasisRateBeforeBought = 0m,
+                    taxBasisAmountAfterBought = 0m,
+                    taxBasisAmountBeforeBought = 0m,
+                    valueTaxationCurrencyFee = 0m;
 
             // Total sales price
-            if (sold.Type == CurrencyType.FiatCurrency) totalSalesPrice = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates);
-            else if (sold.Type == CurrencyType.CryptoCurrency) totalSalesPrice = bought.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates);
+            if (sold.Type == CurrencyType.FiatCurrency) totalSalesPrice = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates) - fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates);
+            else if (sold.Type == CurrencyType.CryptoCurrency) totalSalesPrice = bought.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates) - fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates);
             else ErrorMessage("AddDetailedTransaction", "Sold currency is neither fiat nor crypto.");
 
             // Tax basis
@@ -248,18 +251,15 @@ namespace Cryptaxation.Helpers
                 decimal taxBasePriceBought = taxBaseAmountBought.Value * taxBaseRateBought.Value;
 
                 // Quick fix before rate exploration is properly implemented.
-                decimal boughtPrice = 0;
+                decimal boughtPrice = 0m;
                 valueTaxationCurrencyFee = fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates);
-                if (bought.Type == CurrencyType.FiatCurrency)           boughtPrice = bought.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates) + valueTaxationCurrencyFee;
-                else if (bought.Type == CurrencyType.CryptoCurrency)    boughtPrice = bought.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates, rate.Value) + valueTaxationCurrencyFee;
+                if (bought.Type == CurrencyType.FiatCurrency) boughtPrice = bought.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates) + valueTaxationCurrencyFee;
+                else if (bought.Type == CurrencyType.CryptoCurrency) boughtPrice = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates) + valueTaxationCurrencyFee;
                 else ErrorMessage("AddDetailedTransaction", "CurrencyType for bought undefined.");
-
-                decimal boughtAmount;
-                if (bought.CurrencyCode == fee.CurrencyCode) boughtAmount = bought.Value + fee.Value;
-                else boughtAmount = bought.Value + fee.Value / rate.Value;
+                
                 taxBasisRateBeforeBought = taxBaseRateBought.Value;
                 // (10 USD * 10 + 5 USD * 20) / (10 + 5) = 200 / 15 = 13,333...   (Old amount * Old rate + New value * Rate at that time) / Sum amount = New rate
-                taxBasisRateAfterBought = (taxBasePriceBought + boughtPrice) / (taxBaseAmountBought.Value + boughtAmount);
+                taxBasisRateAfterBought = (taxBasePriceBought + boughtPrice) / (taxBaseAmountBought.Value + bought.Value);
                 taxBasisAmountBeforeBought = taxBaseAmountBought.Value;
                 taxBasisAmountAfterBought = taxBasisAmountBeforeBought + bought.Value;
             }
@@ -269,7 +269,7 @@ namespace Cryptaxation.Helpers
             detailedTransaction.Gain = gain;
             detailedTransaction.Loss = loss;
             detailedTransaction.TaxBasisRateSold = taxBasisRateSold;
-            detailedTransaction.TaxBasisAmountAfterSold =  taxBasisAmountAfterSold;
+            detailedTransaction.TaxBasisAmountAfterSold = taxBasisAmountAfterSold;
             detailedTransaction.TaxBasisAmountBeforeSold = taxBasisAmountBeforeSold;
             detailedTransaction.TaxBasisRateAfterBought = taxBasisRateAfterBought;
             detailedTransaction.TaxBasisRateBeforeBought = taxBasisRateBeforeBought;
@@ -280,7 +280,7 @@ namespace Cryptaxation.Helpers
             DetailedTransactions.Add(detailedTransaction);
         }
 
-        private void AddK4Transaction(Currency currency, decimal totalSalesPrice, decimal taxBasis, decimal gain, decimal loss)
+        private void AddK4Transaction(Currency currency, int totalSalesPrice, int taxBasis, int gain, int loss)
         {
             try
             {
