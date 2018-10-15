@@ -74,12 +74,24 @@ namespace Cryptaxation.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string RatesPath {
+        public string RiksbankenRatesPath {
             get {
-                return ((string)(this["RatesPath"]));
+                return ((string)(this["RiksbankenRatesPath"]));
             }
             set {
-                this["RatesPath"] = value;
+                this["RiksbankenRatesPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BitstampRatesPath {
+            get {
+                return ((string)(this["BitstampRatesPath"]));
+            }
+            set {
+                this["BitstampRatesPath"] = value;
             }
         }
         

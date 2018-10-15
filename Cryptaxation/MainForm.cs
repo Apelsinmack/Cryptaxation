@@ -14,7 +14,8 @@ namespace Cryptaxation
     public partial class MainForm : Form
     {
         private OpenFileDialog _browseK4Dialog;
-        private OpenFileDialog _browseRatesDialog;
+        private OpenFileDialog _browseRiksbankenRatesDialog;
+        private OpenFileDialog _browseBitstampRatesDialog;
         private OpenFileDialog _browseBitstampTransactionsDialog;
         private FolderBrowserDialog _browseOutputDialog;
 
@@ -33,7 +34,7 @@ namespace Cryptaxation
         {
             try
             {
-                Logic logic = new Logic(fullNameTextBox.Text, personalIdentificationNumberTextBox.Text, BitstampTransactionsPathTextBox.Text, ratesPathTextBox.Text, k4PathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
+                Logic logic = new Logic(fullNameTextBox.Text, personalIdentificationNumberTextBox.Text, BitstampTransactionsPathTextBox.Text, riksbankenRatesPathTextBox.Text, bitstampRatesPathTextBox.Text, k4PathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
                 logic.Execute(useTestDataCheckBox.Checked);
                 MessageBox.Show("Execution complete.", "Status");
             }
@@ -53,12 +54,21 @@ namespace Cryptaxation
             }
         }
 
-        private void RatesPathButtonClick(object sender, EventArgs e)
+        private void RiksbankenRatesPathButtonClick(object sender, EventArgs e)
         {
-            _browseRatesDialog = new OpenFileDialog();
-            if (_browseRatesDialog.ShowDialog() == DialogResult.OK)
+            _browseRiksbankenRatesDialog = new OpenFileDialog();
+            if (_browseRiksbankenRatesDialog.ShowDialog() == DialogResult.OK)
             {
-                ratesPathTextBox.Text = _browseRatesDialog.FileName;
+                riksbankenRatesPathTextBox.Text = _browseRiksbankenRatesDialog.FileName;
+            }
+        }
+
+        private void bitstampRatesPathButton_Click(object sender, EventArgs e)
+        {
+            _browseBitstampRatesDialog = new OpenFileDialog();
+            if (_browseBitstampRatesDialog.ShowDialog() == DialogResult.OK)
+            {
+                bitstampRatesPathTextBox.Text = _browseBitstampRatesDialog.FileName;
             }
         }
 
@@ -86,9 +96,10 @@ namespace Cryptaxation
             Properties.Settings.Default.PersonalIdentificationNumber = personalIdentificationNumberTextBox.Text;
             Properties.Settings.Default.ProcessName = processNameTextBox.Text;
             Properties.Settings.Default.BitstampTransactionsPath = BitstampTransactionsPathTextBox.Text;
-            Properties.Settings.Default.RatesPath = ratesPathTextBox.Text;
-            Properties.Settings.Default.K4Path = k4PathTextBox.Text;
+            Properties.Settings.Default.RiksbankenRatesPath = riksbankenRatesPathTextBox.Text;
+            Properties.Settings.Default.BitstampRatesPath = bitstampRatesPathTextBox.Text;
             Properties.Settings.Default.OutputPath = outputPathTextBox.Text;
+            Properties.Settings.Default.K4Path = k4PathTextBox.Text;
             Properties.Settings.Default.Save();
         }
     }

@@ -16,7 +16,8 @@ namespace Cryptaxation.Models
 		        {
 		            return CurrencyType.Undefined;
 		        }
-                if (CurrencyCode == CurrencyCode.BTC || CurrencyCode == CurrencyCode.ETH || CurrencyCode == CurrencyCode.LTC)
+		        // TODO: Add other cryptos here.
+                if (CurrencyCode == CurrencyCode.BTC)
 		        {
 		            return CurrencyType.CryptoCurrency;
 		        }

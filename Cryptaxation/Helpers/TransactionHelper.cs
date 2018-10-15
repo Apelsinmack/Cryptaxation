@@ -64,7 +64,7 @@ namespace Cryptaxation.Helpers
                     loss = 0;
 
                 // Total sales price
-                if (sold.Type == CurrencyType.FiatCurrency) totalSalesPrice = (int)(sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates) - fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates));
+                if (sold.Type == CurrencyType.FiatCurrency) {totalSalesPrice = (int)(sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates) - fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates));}
                 else if (sold.Type == CurrencyType.CryptoCurrency) totalSalesPrice = (int)(bought.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates) - fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates));
                 else ErrorMessage("HandleTransaction", "Sold currency is neither fiat nor crypto.");
 

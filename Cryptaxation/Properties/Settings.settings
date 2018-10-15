@@ -14,7 +14,10 @@
     <Setting Name="BitstampTransactionsPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="RatesPath" Type="System.String" Scope="User">
+    <Setting Name="RiksbankenRatesPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="BitstampRatesPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="K4Path" Type="System.String" Scope="User">

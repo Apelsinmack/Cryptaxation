@@ -128,7 +128,15 @@ namespace Cryptaxation
             return new Currency();
         }
 
-        public List<Rate> CreateRateList(string path)
+        public List<Rate> CreateRateList(string riksbankenPath, string bitstampPath)
+        {
+            List<Rate> rateList = CreateRateList(riksbankenPath);
+            rateList.AddRange(CreateRateList(bitstampPath));
+
+            return rateList;
+        }
+        
+        private List<Rate> CreateRateList(string path)
         {
             List<Rate> rates = new List<Rate>();
             using (TextFieldParser parser = new TextFieldParser(path))
@@ -154,7 +162,7 @@ namespace Cryptaxation
             }
             return rates;
         }
-
+        
         private List<Rate> CreateRates(string[] row)
         {
             List<Rate> rates = new List<Rate>();
@@ -164,7 +172,8 @@ namespace Cryptaxation
                 switch ((RateFields)i)
                 {
                     case RateFields.Datum:
-                        date = DateTime.ParseExact(row[i], "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                        string tmp = row[i].Substring(0, 10);
+                        date = DateTime.ParseExact(tmp, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                         break;
                     case RateFields.SEKUSD:
                         rates.Add(new Rate()
@@ -220,13 +229,22 @@ namespace Cryptaxation
                             Value = decimal.Parse(row[i], NumberStyles.Any, CultureInfo.InvariantCulture)
                         });
                         break;
+                    case RateFields.BTCUSD:
+                        rates.Add(new Rate()
+                        {
+                            Date = date.GetValueOrDefault(),
+                            OriginCurrency = CurrencyCode.BTC,
+                            DestinationCurrency = CurrencyCode.USD,
+                            Value = decimal.Parse(row[i], NumberStyles.Any, CultureInfo.InvariantCulture)
+                        });
+                        break;
                     default:
                         throw new Exception("Invalid field");
                 }
             }
             return rates;
         }
-
+        
         private enum BitstampTransactionFields
         {
             Type = 0,
@@ -247,7 +265,8 @@ namespace Cryptaxation
             SEKEUR = 3,
             EURSEK = 4,
             EURUSD = 5,
-            USDEUR = 6
+            USDEUR = 6,
+            BTCUSD = 7
         }
     }
 }

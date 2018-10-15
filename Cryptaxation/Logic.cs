@@ -14,19 +14,21 @@ namespace Cryptaxation
         private string _fullName;
         private string _personalIdentificationNumber;
         private string _bitstampTransactionsPath;
-        private string _ratesPath;
+        private string _riksbankenRatesPath;
+        private string _bitstampRatesPath;
         private string _k4Path;
         private string _outputPath;
         private string _processName;
         private CsvHelper _csvHelper;
         private TransactionHelper _transactionHelper;
 
-        public Logic(string fullName, string personalIdentificationNumber, string bitstampTransactionsPath, string ratesPath, string k4Path, string outputPath, string processName)
+        public Logic(string fullName, string personalIdentificationNumber, string bitstampTransactionsPath, string riksbankenRatesPath, string bitstampRatesPath, string k4Path, string outputPath, string processName)
         {
             _fullName = fullName;
             _personalIdentificationNumber = personalIdentificationNumber;
             _bitstampTransactionsPath = bitstampTransactionsPath;
-            _ratesPath = ratesPath;
+            _riksbankenRatesPath = riksbankenRatesPath;
+            _bitstampRatesPath = bitstampRatesPath;
             _k4Path = k4Path;
             _outputPath = outputPath;
             _processName = processName;
@@ -78,11 +80,11 @@ namespace Cryptaxation
 
         private void ValidateRatesPath()
         {
-            if (string.IsNullOrWhiteSpace(_ratesPath))
+            if (string.IsNullOrWhiteSpace(_riksbankenRatesPath))
             {
                 throw new Exception("Invalid rates path.");
             }
-            if (!File.Exists(_ratesPath))
+            if (!File.Exists(_riksbankenRatesPath))
             {
                 throw new Exception("Rates file does not exist.");
             }
@@ -115,7 +117,7 @@ namespace Cryptaxation
         public void Execute(bool useTestData = false)
         {
             List<BitstampTransaction> bitstampTransactionList = _csvHelper.CreateBitstampTransactionList(_bitstampTransactionsPath);
-            List<Rate> rateList = _csvHelper.CreateRateList(_ratesPath);
+            List<Rate> rateList = _csvHelper.CreateRateList(_riksbankenRatesPath, _bitstampRatesPath);
             
             if (useTestData)
             {
@@ -123,7 +125,7 @@ namespace Cryptaxation
             }
             else
             {
-                _transactionHelper.UpdateK4TransactionListsFromBitstampTransactions(bitstampTransactionList, rateList, 2017);
+                _transactionHelper.UpdateK4TransactionListsFromBitstampTransactions(bitstampTransactionList, rateList, 2014);
                 _csvHelper.CreateDetailedTransactionsCsv(_outputPath + @"\Detailed transactions.csv", _transactionHelper.DetailedTransactions);
                 K4Helper k4Helper = new K4Helper(_fullName, _personalIdentificationNumber, _k4Path, _outputPath, _processName, _transactionHelper.K4FiatCurrencyTransactions, _transactionHelper.K4CryptoCurrencyTransactions);
                 k4Helper.FillForms();
