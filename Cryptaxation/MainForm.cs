@@ -32,16 +32,16 @@ namespace Cryptaxation
 
         private void Execute()
         {
-            try
-            {
+            /*try
+            {*/
                 Logic logic = new Logic(fullNameTextBox.Text, personalIdentificationNumberTextBox.Text, BitstampTransactionsPathTextBox.Text, riksbankenRatesPathTextBox.Text, bitstampRatesPathTextBox.Text, k4PathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
                 logic.Execute(useTestDataCheckBox.Checked);
                 MessageBox.Show("Execution complete.", "Status");
-            }
+            /*}
             catch (Exception exception)
             {
                 MessageBox.Show(exception.StackTrace, exception.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }*/
 
         }
 
