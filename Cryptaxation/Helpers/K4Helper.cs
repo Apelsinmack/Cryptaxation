@@ -14,10 +14,10 @@ namespace Cryptaxation.Helpers
         private const int TAB_INDEX_NUMBERING = 2;
         private const int TAB_INDEX_NAME = 3;
         private const int TAB_INDEX_PERSON_NUMBER = 4;
-        private const int TAB_INDEX_FIRST_CURRENCY_FIELD = 65;
-        private const int TAB_INDEX_FIRST_SUM_CURRENCY_FIELD = 107;
-        private const int TAB_INDEX_FIRST_RESOURCE_FIELD = 111;
-        private const int TAB_INDEX_FIRST_SUM_RESOURCE_FIELD = 153;
+        private const int TAB_INDEX_FIRST_CURRENCY_FIELD = 66;
+        private const int TAB_INDEX_FIRST_SUM_CURRENCY_FIELD = 108;
+        private const int TAB_INDEX_FIRST_RESOURCE_FIELD = 112;
+        private const int TAB_INDEX_FIRST_SUM_RESOURCE_FIELD = 154;
 
         private readonly string _name;
         private readonly string _personalIdentificationNumber;

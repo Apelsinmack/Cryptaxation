@@ -25,8 +25,6 @@ namespace Cryptaxation.Helpers
                 _lineNumber = 0;
                 _taxCurrencyCode = CurrencyCode.SEK;
 
-                rates = rates.OrderBy(r => r.DestinationCurrency).ThenBy(r => r.OriginCurrency).ThenByDescending(r => r.Date).ToList();
-
                 foreach (BitstampTransaction bitstampTransaction in bitstampTransactions)
                 {
                     _lineNumber++;
@@ -41,7 +39,7 @@ namespace Cryptaxation.Helpers
                             }
                             AddDetailedTransaction(date, bitstampTransaction.Amount, bitstampTransaction.Value, bitstampTransaction.Rate, bitstampTransaction.Fee, bitstampTransaction.SubType, ref taxBaseAmounts, ref taxBaseRates, rates);
                             UpdateTaxBases(date, bitstampTransaction.Amount, bitstampTransaction.Value, bitstampTransaction.Rate, bitstampTransaction.Fee, bitstampTransaction.SubType, ref taxBaseAmounts, ref taxBaseRates, rates);
-                    }
+                        }
                         else if (bitstampTransaction.SubType == SubType.Sell)
                         {
                             if (bitstampTransaction.DateTime.Year == year && bitstampTransaction.Amount.CurrencyCode != _taxCurrencyCode)
@@ -50,7 +48,7 @@ namespace Cryptaxation.Helpers
                             }
                             AddDetailedTransaction(date, bitstampTransaction.Value, bitstampTransaction.Amount, bitstampTransaction.Rate, bitstampTransaction.Fee, bitstampTransaction.SubType, ref taxBaseAmounts, ref taxBaseRates, rates);
                             UpdateTaxBases(date, bitstampTransaction.Value, bitstampTransaction.Amount, bitstampTransaction.Rate, bitstampTransaction.Fee, bitstampTransaction.SubType, ref taxBaseAmounts, ref taxBaseRates, rates);
-                    }
+                        }
                     }
                 }
             /*}
@@ -64,38 +62,44 @@ namespace Cryptaxation.Helpers
         {
             /*try
             {*/
-                int totalSalesPrice = 0,
-                    taxBasis = 0,
-                    gain = 0,
-                    loss = 0;
+            int totalSalesPrice = 0,
+                taxBasis = 0,
+                gain = 0,
+                loss = 0;
+            decimal rate = 0m, feeRate = 0m, totalSalesPriceDecimal = 0m;
 
-                // Total sales price
-                if (sold.Type == CurrencyType.Undefined || bought.Type == CurrencyType.Undefined)
-                {
-                    ErrorMessage("HandleTransaction", "Sold and/or bought currency is undefined.");
-                }
-                if (sold.Type < bought.Type)
-                {
-                    totalSalesPrice = (int)(sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates) - fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates));
-                }
-                if (totalSalesPrice == 0)
-                {
-                    totalSalesPrice = (int)(bought.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates) - fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates));
-                }
-                if (totalSalesPrice == 0)
-                {
-                    throw new Exception("Total sales price should not be 0.");
-                }
-                
-                // Tax basis
-                taxBasis = (int)decimal.Round(sold.Value * GetTaxBaseRate(sold.CurrencyCode, taxBaseAmounts, taxBaseRates));
+            // Total sales price
+            if (sold.CurrencyCode == CurrencyCode.Undefined || bought.CurrencyCode == CurrencyCode.Undefined)
+            {
+                ErrorMessage("HandleTransaction", "Sold and/or bought currency is undefined.");
+            }
+            if (sold.CurrencyCode < bought.CurrencyCode)
+            {
+                rate = GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates);
+                feeRate = GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates);
+                totalSalesPriceDecimal = sold.Value * rate - fee.Value * feeRate;
+            }
+            if (totalSalesPriceDecimal == 0m)
+            {
+                rate = GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates);
+                feeRate = GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates);
+                totalSalesPriceDecimal = bought.Value * rate - fee.Value * feeRate;
+            }
+            totalSalesPrice = (int)decimal.Round(totalSalesPriceDecimal);
+            if (rate == 0m || feeRate == 0m)
+            {
+                throw new Exception("rate or fee rate should not be 0.");
+            }
 
-                // Gain or loss
-                if (totalSalesPrice > taxBasis) gain = totalSalesPrice - taxBasis;
-                else if (totalSalesPrice < taxBasis) loss = taxBasis - totalSalesPrice;
+            // Tax basis
+            taxBasis = (int)decimal.Round(sold.Value * GetTaxBaseRate(sold.CurrencyCode, taxBaseAmounts, taxBaseRates));
 
-                // Add transaction
-                AddK4Transaction(sold, totalSalesPrice, taxBasis, gain, loss);
+            // Gain or loss
+            if (totalSalesPrice > taxBasis && sold.CurrencyCode != CurrencyCode.SEK) gain = totalSalesPrice - taxBasis;
+            else if (totalSalesPrice < taxBasis && sold.CurrencyCode != CurrencyCode.SEK) loss = taxBasis - totalSalesPrice;
+
+            // Add transaction
+            AddK4Transaction(sold, totalSalesPrice, taxBasis, gain, loss);
             /*}
             catch
             {
@@ -126,7 +130,7 @@ namespace Cryptaxation.Helpers
                     {
                         valueTaxationCurrencyFee = fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates);
                     }
-                    if (sold.Type < bought.Type)
+                    if (sold.CurrencyCode < bought.CurrencyCode)
                     {
                         boughtPrice = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates) + valueTaxationCurrencyFee;
                     }
@@ -163,7 +167,6 @@ namespace Cryptaxation.Helpers
                     return parentRate * rates.FirstOrDefault(r => r.OriginCurrency == currencyCodeFrom && r.DestinationCurrency == currencyCodeTo && r.Date <= date).Value;
                 }*/
                 List<Rate> originRates = rates.Where(r => r.OriginCurrency == currencyCodeFrom && r.Date <= date).ToList();
-                originRates.OrderBy(r => r.DestinationCurrency).ThenBy(r => r.OriginCurrency).ThenByDescending(r => r.Date);
                 foreach (Rate rate in originRates)
                 {
                     decimal currentRate = parentRate * GetRate(date, rate.DestinationCurrency, currencyCodeTo, rates, rate.Value);
@@ -177,33 +180,6 @@ namespace Cryptaxation.Helpers
             catch
             {
                 ErrorMessage("GetRate", "Could not find converison rate.");
-                return 0m;
-            }*/
-        }
-
-        private decimal GetTaxBasis(CurrencyCode currencyCode, List<Currency> taxBaseAmounts, List<Currency> taxBaseRates)
-        {
-            /*try
-            {*/
-                return GetTaxBaseAmount(currencyCode, taxBaseAmounts, taxBaseRates) * GetTaxBaseRate(currencyCode, taxBaseAmounts, taxBaseRates);
-            /*}
-            catch
-            {
-                ErrorMessage("GetTaxBasis");
-                return 0m;
-            }*/
-        }
-
-        private decimal GetTaxBaseAmount(CurrencyCode currencyCode, List<Currency> taxBaseAmounts, List<Currency> taxBaseRates)
-        {
-            /*try
-            {*/
-                if (!taxBaseAmounts.Exists(tba => tba.CurrencyCode == currencyCode)) taxBaseAmounts.Add(new Currency() { CurrencyCode = currencyCode });
-                return taxBaseAmounts.FirstOrDefault(tba => tba.CurrencyCode == currencyCode).Value;
-            /*}
-            catch
-            {
-                ErrorMessage("GetTaxBaseAmount");
                 return 0m;
             }*/
         }
@@ -262,7 +238,7 @@ namespace Cryptaxation.Helpers
             }
 
             // Total sales price
-            if (sold.Type < bought.Type)
+            if (sold.CurrencyCode < bought.CurrencyCode)
             {
                 totalSalesPrice = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates) - valueTaxationCurrencyFee;
             }
@@ -279,8 +255,8 @@ namespace Cryptaxation.Helpers
             taxBasis = sold.Value * GetTaxBaseRate(sold.CurrencyCode, taxBaseAmounts, taxBaseRates);
 
             // Gain or loss
-            if (totalSalesPrice > taxBasis) gain = totalSalesPrice - taxBasis;
-            else if (totalSalesPrice < taxBasis) loss = taxBasis - totalSalesPrice;
+            if (totalSalesPrice > taxBasis && sold.CurrencyCode != CurrencyCode.SEK) gain = totalSalesPrice - taxBasis;
+            else if (totalSalesPrice < taxBasis && sold.CurrencyCode != CurrencyCode.SEK) loss = taxBasis - totalSalesPrice;
 
 
             if (!taxBaseAmounts.Exists(tba => tba.CurrencyCode == bought.CurrencyCode)) taxBaseAmounts.Add(new Currency() { CurrencyCode = bought.CurrencyCode });
@@ -305,7 +281,7 @@ namespace Cryptaxation.Helpers
                 // Quick fix before rate exploration is properly implemented.
                 decimal boughtPrice = 0m;
                 
-                if (sold.Type < bought.Type)
+                if (sold.CurrencyCode < bought.CurrencyCode)
                 {
                     boughtPrice = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates) + valueTaxationCurrencyFee;
                 }

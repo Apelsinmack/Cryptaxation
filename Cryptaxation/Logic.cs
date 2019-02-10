@@ -116,8 +116,8 @@ namespace Cryptaxation
 
         public void Execute(bool useTestData = false)
         {
-            List<BitstampTransaction> bitstampTransactionList = _csvHelper.CreateBitstampTransactionList(_bitstampTransactionsPath);
             List<Rate> rateList = _csvHelper.CreateRateList(_riksbankenRatesPath, _bitstampRatesPath);
+            List<BitstampTransaction> bitstampTransactionList = _csvHelper.CreateBitstampTransactionList(_bitstampTransactionsPath, rateList);
             
             if (useTestData)
             {

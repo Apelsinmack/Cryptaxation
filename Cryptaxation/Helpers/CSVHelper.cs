@@ -12,9 +12,10 @@ namespace Cryptaxation
 {
     public class CsvHelper
     {
-        public List<BitstampTransaction> CreateBitstampTransactionList(string path)
+        public List<BitstampTransaction> CreateBitstampTransactionList(string path, List<Rate> rates)
         {
             List<BitstampTransaction> bitstampTransactions = new List<BitstampTransaction>();
+
             using (TextFieldParser parser = new TextFieldParser(path))
             {
                 parser.TextFieldType = FieldType.Delimited;
@@ -29,6 +30,36 @@ namespace Cryptaxation
                     if (row != null)
                     {
                         BitstampTransaction bitstampTransaction  = CreateBitstampTransaction(row);
+                        if (bitstampTransaction.Type == BitstampTransactionType.Deposit && bitstampTransaction.Amount.Type == CurrencyType.FiatCurrency)
+                        {
+                            bitstampTransaction.SubType = SubType.Buy;
+                        }
+                        if (bitstampTransaction.Type == BitstampTransactionType.Withdrawal && bitstampTransaction.Amount.Type == CurrencyType.FiatCurrency)
+                        {
+                            bitstampTransaction.SubType = SubType.Sell;
+                        }
+                        if ((bitstampTransaction.Type == BitstampTransactionType.Deposit || bitstampTransaction.Type == BitstampTransactionType.Withdrawal) && bitstampTransaction.Amount.Type == CurrencyType.FiatCurrency)
+                        {
+                            List<Rate> originRates = rates.Where(r => r.OriginCurrency == CurrencyCode.SEK && r.DestinationCurrency == bitstampTransaction.Amount.CurrencyCode && r.Date <= bitstampTransaction.DateTime).ToList();
+
+                            decimal rate = originRates.FirstOrDefault().Value;
+                            bitstampTransaction.Type = BitstampTransactionType.Market;
+                            bitstampTransaction.Value = new Currency()
+                            {
+                                Value = bitstampTransaction.Amount.Value / rate,
+                                CurrencyCode = CurrencyCode.SEK
+                            };
+                            bitstampTransaction.Rate = new Currency()
+                            {
+                                Value = rate,
+                                CurrencyCode = CurrencyCode.SEK
+                            };
+                            bitstampTransaction.Fee = new Currency()
+                            {
+                                Value = 0m,
+                                CurrencyCode = CurrencyCode.SEK
+                            };
+                        }
                         bitstampTransactions.Add(bitstampTransaction);
                     }
                     else
@@ -109,7 +140,7 @@ namespace Cryptaxation
                 }
             }
         }
-
+        
         private Currency ConvertFieldToCurrency(string field, CultureInfo cultureInfo = null, NumberStyles numberStyle = NumberStyles.Any)
         {
             if (!string.IsNullOrWhiteSpace(field))
@@ -133,7 +164,7 @@ namespace Cryptaxation
             List<Rate> rateList = CreateRateList(riksbankenPath);
             rateList.AddRange(CreateRateList(bitstampPath));
 
-            return rateList;
+            return rateList.OrderBy(r => r.DestinationCurrency).ThenBy(r => r.OriginCurrency).ThenByDescending(r => r.Date).ToList();
         }
         
         private List<Rate> CreateRateList(string path)
@@ -169,7 +200,12 @@ namespace Cryptaxation
             DateTime? date = null;
             for (int i = 0; i < row.Length; i++)
             {
-                switch ((RateFields)i)
+                RateFields rateFields = (RateFields)i;
+                if (row.Length == 2 && i == 1)
+                {
+                    rateFields = RateFields.BTCUSD;
+                }
+                switch (rateFields)
                 {
                     case RateFields.Datum:
                         string tmp = row[i].Substring(0, 10);

@@ -23,7 +23,7 @@ namespace Cryptaxation.Models
 		        return CurrencyType.FiatCurrency;
 		    }
 		}
-		public Decimal Value { get; set; }
+		public decimal Value { get; set; }
 	}
 
 	public enum CurrencyCode
