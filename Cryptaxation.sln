@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptaxation", "Cryptaxation\Cryptaxation.csproj", "{786E29A5-7B2D-4BBF-8F2F-3D2E7739F9C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptaxation.Pdf.Logic", "Cryptaxation.Pdf.Logic\Cryptaxation.Pdf.Logic.csproj", "{4E5DA87E-AE91-4E78-B25D-B0E934B7B0DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptaxation.Pdf.Contract", "Cryptaxation.Pdf.Contract\Cryptaxation.Pdf.Contract.csproj", "{60CBE1DE-58C9-418C-B919-FD7966C4FFE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{786E29A5-7B2D-4BBF-8F2F-3D2E7739F9C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{786E29A5-7B2D-4BBF-8F2F-3D2E7739F9C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{786E29A5-7B2D-4BBF-8F2F-3D2E7739F9C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E5DA87E-AE91-4E78-B25D-B0E934B7B0DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E5DA87E-AE91-4E78-B25D-B0E934B7B0DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E5DA87E-AE91-4E78-B25D-B0E934B7B0DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E5DA87E-AE91-4E78-B25D-B0E934B7B0DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60CBE1DE-58C9-418C-B919-FD7966C4FFE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60CBE1DE-58C9-418C-B919-FD7966C4FFE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60CBE1DE-58C9-418C-B919-FD7966C4FFE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60CBE1DE-58C9-418C-B919-FD7966C4FFE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

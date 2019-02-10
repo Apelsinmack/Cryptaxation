@@ -1,64 +1,62 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Cryptaxation.Pdf.Contract;
 
-namespace Cryptaxation
+namespace Cryptaxation.Pdf.Logic
 {
-    public class PdfHelper
+    public class PdfLogic : IPdfLogic
     {
         private readonly string _originalPdfPath;
         private readonly string _outputPath;
         private readonly string _processName;
         private int _tabIndex;
-        private int _numberOfCreatedPdfs;
+        private int _numberOfCopies;
         private Process _currentPdf;
 
         [DllImport("user32.dll")]
         public static extern int SetForegroundWindow(IntPtr hWnd);
 
-        public PdfHelper(string originalPdfPath, string outputPath, string processName)
+        public PdfLogic(string originalPdfPath, string outputPath, string processName)
         {
             _originalPdfPath = originalPdfPath;
             _outputPath = outputPath;
             _processName = processName;
             _tabIndex = 0;
+            _numberOfCopies = 0;
         }
 
-        public void CreateNewPdf()
+        public void CopyPdf()
         {
             _tabIndex = 0;
-            _numberOfCreatedPdfs++;
-            string newPdfPath = GetPdfPath(_numberOfCreatedPdfs);
+            _numberOfCopies++;
+            string newPdfPath = GetPdfPath(_numberOfCopies);
             File.Copy(_originalPdfPath, newPdfPath, true);
         }
 
-        public int GetNumberOfCreatedPdfs()
+        public int GetNumberOfCopies()
         {
-            return _numberOfCreatedPdfs;
+            return _numberOfCopies;
         }
 
-        private string GetPdfPath(int number)
+        public string GetPdfPath(int number)
         {
             return _outputPath + "\\" + Path.GetFileNameWithoutExtension(_originalPdfPath) + "_" + number + Path.GetExtension(_originalPdfPath);
         }
 
         public void OpenPdf()
         {
-            _currentPdf = Process.Start(GetPdfPath(_numberOfCreatedPdfs));
+            _currentPdf = Process.Start(GetPdfPath(_numberOfCopies));
             Thread.Sleep(10000);
         }
 
         public void SaveAndClose()
         {
             SendKeys.SendWait("%{F4}");
-            for (int i = 0; i < _numberOfCreatedPdfs; i++)
+            for (int i = 0; i < _numberOfCopies; i++)
             {
                 Thread.Sleep(1000);
                 SendKeys.SendWait("{ENTER}");
@@ -71,22 +69,16 @@ namespace Cryptaxation
             }
         }
 
-        public void WriteText(string text, bool nextField = true)
+        public void FillField(string text)
         {
             SendKeys.SendWait(text);
-            if (nextField)
-            {
-                NextField();
-            }
+            NextField();
         }
 
-        public void WriteText(decimal text, bool nextField = true)
+        public void FillField(decimal value)
         {
-            SendKeys.SendWait(text.ToString());
-            if (nextField)
-            {
-                NextField();
-            }
+            SendKeys.SendWait(value.ToString());
+            NextField();
         }
 
         public void NextField()
@@ -94,7 +86,7 @@ namespace Cryptaxation
             _tabIndex++;
             SendKeys.SendWait("{TAB}");
         }
-
+        
         public void PreviousField()
         {
             _tabIndex--;

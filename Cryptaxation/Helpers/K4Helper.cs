@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using Cryptaxation.Pdf.Logic;
 
 namespace Cryptaxation.Helpers
 {
@@ -23,7 +19,7 @@ namespace Cryptaxation.Helpers
         private readonly string _personalIdentificationNumber;
         private List<K4Transaction> _cryptoTransactions;
         private List<K4Transaction> _fiatTransactions;
-        private PdfHelper _pdfHelper;
+        private PdfLogic _pdfLogic;
         private int fiatTransactionIndex;
         private int cryptoTransactionIndex;
 
@@ -33,7 +29,7 @@ namespace Cryptaxation.Helpers
             _personalIdentificationNumber = personalIdentificationNumber;
             _cryptoTransactions = cryptoTransactions;
             _fiatTransactions = fiatTransactions;
-            _pdfHelper = new PdfHelper(originalk4Path, outputPath, processName);
+            _pdfLogic = new PdfLogic(originalk4Path, outputPath, processName);
             fiatTransactionIndex = 0;
             cryptoTransactionIndex = 0;
         }
@@ -44,13 +40,13 @@ namespace Cryptaxation.Helpers
             {
                 FillForm();
             }
-            //_pdfHelper.SaveAndClose();
+            //_pdfLogic.SaveAndClose();
         }
 
         private void FillForm()
         {
-            _pdfHelper.CreateNewPdf();
-            _pdfHelper.OpenPdf();
+            _pdfLogic.CopyPdf();
+            _pdfLogic.OpenPdf();
             FillDate();
             FillNumbering();
             FillName();
@@ -61,26 +57,26 @@ namespace Cryptaxation.Helpers
 
         private void FillDate()
         {
-            _pdfHelper.GotoField(TAB_INDEX_DATE);
-            _pdfHelper.WriteText(DateTime.Now.ToString("yyyy-MM-dd"));
+            _pdfLogic.GotoField(TAB_INDEX_DATE);
+            _pdfLogic.FillField(DateTime.Now.ToString("yyyy-MM-dd"));
         }
 
         private void FillNumbering()
         {
-            _pdfHelper.GotoField(TAB_INDEX_NUMBERING);
-            _pdfHelper.WriteText(_pdfHelper.GetNumberOfCreatedPdfs().ToString());
+            _pdfLogic.GotoField(TAB_INDEX_NUMBERING);
+            _pdfLogic.FillField(_pdfLogic.GetNumberOfCopies().ToString());
         }
 
         private void FillName()
         {
-            _pdfHelper.GotoField(TAB_INDEX_NAME);
-            _pdfHelper.WriteText(_name);
+            _pdfLogic.GotoField(TAB_INDEX_NAME);
+            _pdfLogic.FillField(_name);
         }
 
         private void FillPersonalIdentificationNumber()
         {
-            _pdfHelper.GotoField(TAB_INDEX_PERSON_NUMBER);
-            _pdfHelper.WriteText(_personalIdentificationNumber);
+            _pdfLogic.GotoField(TAB_INDEX_PERSON_NUMBER);
+            _pdfLogic.FillField(_personalIdentificationNumber);
         }
 
         private void FillCurrencies()
@@ -91,15 +87,15 @@ namespace Cryptaxation.Helpers
             int gainSum = 0;
             int lossSum = 0;
 
-            _pdfHelper.GotoField(TAB_INDEX_FIRST_CURRENCY_FIELD);
+            _pdfLogic.GotoField(TAB_INDEX_FIRST_CURRENCY_FIELD);
             for (int i = 0; i < 7 && fiatTransactionIndex < _fiatTransactions.Count; i++)
             {
-                _pdfHelper.WriteText(_fiatTransactions[fiatTransactionIndex].Amount);
-                _pdfHelper.WriteText(_fiatTransactions[fiatTransactionIndex].Currency);
-                _pdfHelper.WriteText(decimal.Round(_fiatTransactions[fiatTransactionIndex].SalesPrice));
-                _pdfHelper.WriteText(decimal.Round(_fiatTransactions[fiatTransactionIndex].TaxBasis));
-                _pdfHelper.WriteText(((int)_fiatTransactions[fiatTransactionIndex].Gain == 0 ? string.Empty : ((int)_fiatTransactions[fiatTransactionIndex].Gain).ToString()));
-                _pdfHelper.WriteText(((int)_fiatTransactions[fiatTransactionIndex].Loss == 0 ? string.Empty : ((int)_fiatTransactions[fiatTransactionIndex].Loss).ToString()));
+                _pdfLogic.FillField(_fiatTransactions[fiatTransactionIndex].Amount);
+                _pdfLogic.FillField(_fiatTransactions[fiatTransactionIndex].Currency);
+                _pdfLogic.FillField(decimal.Round(_fiatTransactions[fiatTransactionIndex].SalesPrice));
+                _pdfLogic.FillField(decimal.Round(_fiatTransactions[fiatTransactionIndex].TaxBasis));
+                _pdfLogic.FillField(((int)_fiatTransactions[fiatTransactionIndex].Gain == 0 ? string.Empty : ((int)_fiatTransactions[fiatTransactionIndex].Gain).ToString()));
+                _pdfLogic.FillField(((int)_fiatTransactions[fiatTransactionIndex].Loss == 0 ? string.Empty : ((int)_fiatTransactions[fiatTransactionIndex].Loss).ToString()));
 
                 salesPriceSum += decimal.Round(_fiatTransactions[fiatTransactionIndex].SalesPrice);
                 taxBasisSum += decimal.Round(_fiatTransactions[fiatTransactionIndex].TaxBasis);
@@ -112,11 +108,11 @@ namespace Cryptaxation.Helpers
 
             if (fillSum)
             {
-                _pdfHelper.GotoField(TAB_INDEX_FIRST_SUM_CURRENCY_FIELD);
-                _pdfHelper.WriteText(decimal.Round(salesPriceSum));
-                _pdfHelper.WriteText(decimal.Round(taxBasisSum));
-                _pdfHelper.WriteText(gainSum == 0 ? string.Empty : gainSum.ToString());
-                _pdfHelper.WriteText(lossSum == 0 ? string.Empty : lossSum.ToString());
+                _pdfLogic.GotoField(TAB_INDEX_FIRST_SUM_CURRENCY_FIELD);
+                _pdfLogic.FillField(decimal.Round(salesPriceSum));
+                _pdfLogic.FillField(decimal.Round(taxBasisSum));
+                _pdfLogic.FillField(gainSum == 0 ? string.Empty : gainSum.ToString());
+                _pdfLogic.FillField(lossSum == 0 ? string.Empty : lossSum.ToString());
             }
         }
 
@@ -128,15 +124,15 @@ namespace Cryptaxation.Helpers
             int gainSum = 0;
             int lossSum = 0;
 
-            _pdfHelper.GotoField(TAB_INDEX_FIRST_RESOURCE_FIELD);
+            _pdfLogic.GotoField(TAB_INDEX_FIRST_RESOURCE_FIELD);
             for (int i = 0; i < 7 && cryptoTransactionIndex < _cryptoTransactions.Count; i++)
             {
-                _pdfHelper.WriteText(_cryptoTransactions[cryptoTransactionIndex].Amount);
-                _pdfHelper.WriteText(_cryptoTransactions[cryptoTransactionIndex].Currency);
-                _pdfHelper.WriteText(decimal.Round(_cryptoTransactions[cryptoTransactionIndex].SalesPrice));
-                _pdfHelper.WriteText(decimal.Round(_cryptoTransactions[cryptoTransactionIndex].TaxBasis));
-                _pdfHelper.WriteText(((int)_cryptoTransactions[cryptoTransactionIndex].Gain == 0 ? string.Empty : ((int)_cryptoTransactions[cryptoTransactionIndex].Gain).ToString()));
-                _pdfHelper.WriteText(((int)_cryptoTransactions[cryptoTransactionIndex].Loss == 0 ? string.Empty : ((int)_cryptoTransactions[cryptoTransactionIndex].Loss).ToString()));
+                _pdfLogic.FillField(_cryptoTransactions[cryptoTransactionIndex].Amount);
+                _pdfLogic.FillField(_cryptoTransactions[cryptoTransactionIndex].Currency);
+                _pdfLogic.FillField(decimal.Round(_cryptoTransactions[cryptoTransactionIndex].SalesPrice));
+                _pdfLogic.FillField(decimal.Round(_cryptoTransactions[cryptoTransactionIndex].TaxBasis));
+                _pdfLogic.FillField(((int)_cryptoTransactions[cryptoTransactionIndex].Gain == 0 ? string.Empty : ((int)_cryptoTransactions[cryptoTransactionIndex].Gain).ToString()));
+                _pdfLogic.FillField(((int)_cryptoTransactions[cryptoTransactionIndex].Loss == 0 ? string.Empty : ((int)_cryptoTransactions[cryptoTransactionIndex].Loss).ToString()));
 
                 salesPriceSum += _cryptoTransactions[cryptoTransactionIndex].SalesPrice;
                 taxBasisSum += _cryptoTransactions[cryptoTransactionIndex].TaxBasis;
@@ -150,11 +146,11 @@ namespace Cryptaxation.Helpers
 
             if (fillSum)
             {
-                _pdfHelper.GotoField(TAB_INDEX_FIRST_SUM_RESOURCE_FIELD);
-                _pdfHelper.WriteText(decimal.Round(salesPriceSum));
-                _pdfHelper.WriteText(decimal.Round(taxBasisSum));
-                _pdfHelper.WriteText(gainSum == 0 ? string.Empty : gainSum.ToString());
-                _pdfHelper.WriteText(lossSum == 0 ? string.Empty : lossSum.ToString());
+                _pdfLogic.GotoField(TAB_INDEX_FIRST_SUM_RESOURCE_FIELD);
+                _pdfLogic.FillField(decimal.Round(salesPriceSum));
+                _pdfLogic.FillField(decimal.Round(taxBasisSum));
+                _pdfLogic.FillField(gainSum == 0 ? string.Empty : gainSum.ToString());
+                _pdfLogic.FillField(lossSum == 0 ? string.Empty : lossSum.ToString());
             }
         }
     }
