@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Cryptaxation.Helpers;
 using Cryptaxation.Models;
+using Cryptaxation.Pdf.Logic;
+using Cryptaxation.Pdf.Models;
 
 namespace Cryptaxation
 {
@@ -59,7 +61,6 @@ namespace Cryptaxation
 
         private void ValidatePersonalIdentificationNumber()
         {
-            // TODO
             if (string.IsNullOrWhiteSpace(_personalIdentificationNumber))
             {
                 throw new Exception("Invalid person number.");
@@ -125,10 +126,22 @@ namespace Cryptaxation
             }
             else
             {
-                _transactionHelper.UpdateK4TransactionListsFromBitstampTransactions(bitstampTransactionList, rateList, 2018);
+                int year = 2018;
+                _transactionHelper.UpdateK4TransactionListsFromBitstampTransactions(bitstampTransactionList, rateList, year);
                 _csvHelper.CreateDetailedTransactionsCsv(_outputPath + @"\Detailed transactions.csv", _transactionHelper.DetailedTransactions);
-                K4Helper k4Helper = new K4Helper(_fullName, _personalIdentificationNumber, _k4Path, _outputPath, _processName, _transactionHelper.K4FiatCurrencyTransactions, _transactionHelper.K4CryptoCurrencyTransactions);
-                k4Helper.FillForms();
+                List<ReportYearlySummary> reportYearlySummaries = _csvHelper.CreateReportYearlySummaryList(_transactionHelper.DetailedTransactions);
+                _csvHelper.CreateReportCsv(_outputPath + @"\Yearly reports.csv", reportYearlySummaries);
+                K4ResourceLogic k4ResourceLogic = new K4ResourceLogic();
+                PdfLogic pdfLogic = new PdfLogic(_outputPath, _processName);
+                K4FormLogic k4Logic = new K4FormLogic(pdfLogic, new K4Form()
+                {
+                    TabIndexes = k4ResourceLogic.GetTabIndexesByYear(year),
+                    Name = _fullName,
+                    PersonalIdentificatonNumber = _personalIdentificationNumber,
+                    CryptoTransactions = _transactionHelper.K4CryptoCurrencyTransactions,
+                    FiatTransactions = _transactionHelper.K4FiatCurrencyTransactions
+                });
+                k4Logic.FillForms(year);
             }
         }
 
@@ -162,8 +175,18 @@ namespace Cryptaxation
                 });
             }
 
-            K4Helper k4Helper = new K4Helper(_fullName, _personalIdentificationNumber, _k4Path, _outputPath, _processName, fiatTestList, cryptoTestList);
-            k4Helper.FillForms();
+            int year = 2013;
+            K4ResourceLogic k4ResourceLogic = new K4ResourceLogic();
+            PdfLogic pdfLogic = new PdfLogic(_outputPath, _processName);
+            K4FormLogic k4Logic = new K4FormLogic(pdfLogic, new K4Form()
+            {
+                TabIndexes = k4ResourceLogic.GetTabIndexesByYear(year),
+                Name = _fullName,
+                PersonalIdentificatonNumber = _personalIdentificationNumber,
+                CryptoTransactions = cryptoTestList,
+                FiatTransactions = fiatTestList
+            });
+            k4Logic.FillForms(year);
         }
     }
 }

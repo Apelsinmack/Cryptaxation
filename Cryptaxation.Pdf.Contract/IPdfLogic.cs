@@ -2,10 +2,10 @@
 {
     public interface IPdfLogic
     {
-        void CopyPdf();
-        int GetNumberOfCopies();
-        string GetPdfPath(int number);
-        void OpenPdf();
+        void CopyPdf(int year);
+        int GetNumberOfCopies(int? year);
+        string GetPdfPath(int year, int number);
+        void OpenPdf(int year, int number);
         void SaveAndClose();
         void FillField(string text);
         void FillField(decimal value);
