@@ -74,7 +74,7 @@ namespace Cryptaxation.Pdf.Logic
         {
             Thread.Sleep(3000);
             SendKeys.SendWait("%{F4}");
-            for (var i = 0; i < _numberOfTotalCopies; i++)
+            for (int i = 0; i < _numberOfTotalCopies; i++)
             {
                 Thread.Sleep(1000);
                 SendKeys.SendWait("{ENTER}");

@@ -75,13 +75,13 @@ namespace Cryptaxation.Helpers
             if (sold.CurrencyCode < bought.CurrencyCode)
             {
                 rate = GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates);
-                feeRate = GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates);
+                feeRate = GetRate(date, fee.Value == 0 && fee.CurrencyCode == CurrencyCode.Undefined ? CurrencyCode.SEK : fee.CurrencyCode, _taxCurrencyCode, rates);
                 totalSalesPriceDecimal = sold.Value * rate - fee.Value * feeRate;
             }
             if (totalSalesPriceDecimal == 0m)
             {
                 rate = GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates);
-                feeRate = GetRate(date, fee.CurrencyCode, _taxCurrencyCode, rates);
+                feeRate = GetRate(date, fee.Value == 0 && fee.CurrencyCode == CurrencyCode.Undefined ? CurrencyCode.SEK : fee.CurrencyCode, _taxCurrencyCode, rates);
                 totalSalesPriceDecimal = bought.Value * rate - fee.Value * feeRate;
             }
             totalSalesPrice = (int)decimal.Round(totalSalesPriceDecimal);
