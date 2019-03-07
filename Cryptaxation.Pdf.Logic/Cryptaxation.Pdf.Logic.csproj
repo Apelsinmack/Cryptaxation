@@ -42,8 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="K4FillLogic.cs" />
     <Compile Include="K4FormLogic.cs" />
-    <Compile Include="K4ResourceLogic.cs" />
     <Compile Include="PdfLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

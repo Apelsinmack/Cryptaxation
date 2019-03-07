@@ -9,13 +9,13 @@ namespace Cryptaxation.Helpers
 {
     public class TransactionHelper
     {
-        public List<K4Transaction> K4FiatCurrencyTransactions = new List<K4Transaction>();
-        public List<K4Transaction> K4CryptoCurrencyTransactions = new List<K4Transaction>();
+        public Dictionary<int, List<K4TransactionModel>> K4FiatCurrencyTransactions = new Dictionary<int, List<K4TransactionModel>>();
+        public Dictionary<int, List<K4TransactionModel>> K4CryptoCurrencyTransactions = new Dictionary<int, List<K4TransactionModel>>();
         public List<DetailedTransaction> DetailedTransactions = new List<DetailedTransaction>();
         private int _lineNumber;
         private CurrencyCode _taxCurrencyCode;
 
-        public void UpdateK4TransactionListsFromBitstampTransactions(List<BitstampTransaction> bitstampTransactions, List<Rate> rates, int year)
+        public void UpdateK4TransactionListsFromBitstampTransactions(List<BitstampTransaction> bitstampTransactions, List<Rate> rates)
         {
             /*try
             {*/
@@ -32,7 +32,7 @@ namespace Cryptaxation.Helpers
                         DateTime date = bitstampTransaction.DateTime.Date;
                         if (bitstampTransaction.SubType == SubType.Buy)
                         {
-                            if (bitstampTransaction.DateTime.Year == year && bitstampTransaction.Value.CurrencyCode != _taxCurrencyCode)
+                            if (bitstampTransaction.Value.CurrencyCode != _taxCurrencyCode)
                             {
                                 HandleTransaction(date, bitstampTransaction.Amount, bitstampTransaction.Value, bitstampTransaction.Fee, bitstampTransaction.SubType, rates, taxBaseAmounts, taxBaseRates);
                             }
@@ -41,7 +41,7 @@ namespace Cryptaxation.Helpers
                         }
                         else if (bitstampTransaction.SubType == SubType.Sell)
                         {
-                            if (bitstampTransaction.DateTime.Year == year && bitstampTransaction.Amount.CurrencyCode != _taxCurrencyCode)
+                            if (bitstampTransaction.Amount.CurrencyCode != _taxCurrencyCode)
                             {
                                 HandleTransaction(date, bitstampTransaction.Value, bitstampTransaction.Amount, bitstampTransaction.Fee, bitstampTransaction.SubType, rates, taxBaseAmounts, taxBaseRates);
                             }
@@ -98,7 +98,7 @@ namespace Cryptaxation.Helpers
             else if (totalSalesPrice < taxBasis && sold.CurrencyCode != CurrencyCode.SEK) loss = taxBasis - totalSalesPrice;
 
             // Add transaction
-            AddK4Transaction(sold, totalSalesPrice, taxBasis, gain, loss);
+            AddK4Transaction(date.Year, sold, totalSalesPrice, taxBasis, gain, loss);
             /*}
             catch
             {
@@ -316,39 +316,37 @@ namespace Cryptaxation.Helpers
             DetailedTransactions.Add(detailedTransaction);
         }
 
-        private void AddK4Transaction(Currency currency, int totalSalesPrice, int taxBasis, int gain, int loss)
+        private void AddK4Transaction(int year, Currency currency, int totalSalesPrice, int taxBasis, int gain, int loss)
         {
-            /*try
-            {*/
-                if (currency.Type == CurrencyType.FiatCurrency)
-                {
-                    K4FiatCurrencyTransactions.Add(new K4Transaction()
-                    {
-                        Amount = currency.Value,
-                        Currency = currency.CurrencyCode.ToString(),
-                        SalesPrice = totalSalesPrice,
-                        TaxBasis = taxBasis,
-                        Gain = gain,
-                        Loss = loss
-                    });
-                }
-                else if (currency.Type == CurrencyType.CryptoCurrency)
-                {
-                    K4CryptoCurrencyTransactions.Add(new K4Transaction()
-                    {
-                        Amount = currency.Value,
-                        Currency = currency.CurrencyCode.ToString(),
-                        SalesPrice = totalSalesPrice,
-                        TaxBasis = taxBasis,
-                        Gain = gain,
-                        Loss = loss
-                    });
-                }
-            /*}
-            catch
+            if (!K4FiatCurrencyTransactions.ContainsKey(year) || !K4CryptoCurrencyTransactions.ContainsKey(year))
             {
-                ErrorMessage("AddK4Transaction");
-            }*/
+                K4FiatCurrencyTransactions.Add(year, new List<K4TransactionModel>());
+                K4CryptoCurrencyTransactions.Add(year, new List<K4TransactionModel>());
+            }
+            if (currency.Type == CurrencyType.FiatCurrency)
+            {
+                K4FiatCurrencyTransactions[year].Add(new K4TransactionModel()
+                {
+                    Amount = currency.Value,
+                    Currency = currency.CurrencyCode.ToString(),
+                    SalesPrice = totalSalesPrice,
+                    TaxBasis = taxBasis,
+                    Gain = gain,
+                    Loss = loss
+                });
+            }
+            else if (currency.Type == CurrencyType.CryptoCurrency)
+            {
+                K4CryptoCurrencyTransactions[year].Add(new K4TransactionModel()
+                {
+                    Amount = currency.Value,
+                    Currency = currency.CurrencyCode.ToString(),
+                    SalesPrice = totalSalesPrice,
+                    TaxBasis = taxBasis,
+                    Gain = gain,
+                    Loss = loss
+                });
+            }
         }
 
         private void ErrorMessage(string functionName, string errorMessage = "") //TODO! Refactor into application wide error handling.

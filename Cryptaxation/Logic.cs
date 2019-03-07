@@ -115,78 +115,46 @@ namespace Cryptaxation
             }
         }
 
-        public void Execute(bool useTestData = false)
+        public void Execute()
         {
             List<Rate> rateList = _csvHelper.CreateRateList(_riksbankenRatesPath, _bitstampRatesPath);
             List<BitstampTransaction> bitstampTransactionList = _csvHelper.CreateBitstampTransactionList(_bitstampTransactionsPath, rateList);
-            
-            if (useTestData)
-            {
-                ExecuteWithTestData();
-            }
-            else
-            {
-                int year = 2018;
-                _transactionHelper.UpdateK4TransactionListsFromBitstampTransactions(bitstampTransactionList, rateList, year);
-                _csvHelper.CreateDetailedTransactionsCsv(_outputPath + @"\Detailed transactions.csv", _transactionHelper.DetailedTransactions);
-                List<ReportYearlySummary> reportYearlySummaries = _csvHelper.CreateReportYearlySummaryList(_transactionHelper.DetailedTransactions);
-                _csvHelper.CreateReportCsv(_outputPath + @"\Yearly reports.csv", reportYearlySummaries);
-                K4ResourceLogic k4ResourceLogic = new K4ResourceLogic();
-                PdfLogic pdfLogic = new PdfLogic(_outputPath, _processName);
-                K4FormLogic k4Logic = new K4FormLogic(pdfLogic, new K4Form()
-                {
-                    TabIndexes = k4ResourceLogic.GetTabIndexesByYear(year),
-                    Name = _fullName,
-                    PersonalIdentificatonNumber = _personalIdentificationNumber,
-                    CryptoTransactions = _transactionHelper.K4CryptoCurrencyTransactions,
-                    FiatTransactions = _transactionHelper.K4FiatCurrencyTransactions
-                });
-                k4Logic.FillForms(year);
-            }
-        }
 
-        private void ExecuteWithTestData()
-        {
-            List<K4Transaction> fiatTestList = new List<K4Transaction>();
-            for (int i = 0; i < 8; i++)
+            int[] years = 
             {
-                fiatTestList.Add(new K4Transaction()
-                {
-                    Amount = i,
-                    Currency = "Fiat",
-                    SalesPrice = i,
-                    TaxBasis = i,
-                    Gain = i,
-                    Loss = i
-                });
-            }
+                2014,
+                2015,
+                2016,
+                2017,
+                2018
+            };
+            _transactionHelper.UpdateK4TransactionListsFromBitstampTransactions(bitstampTransactionList, rateList);
+            _csvHelper.CreateDetailedTransactionsCsv(_outputPath + @"\Detailed transactions.csv", _transactionHelper.DetailedTransactions);
+            List<ReportYearlySummary> reportYearlySummaries = _csvHelper.CreateReportYearlySummaryList(_transactionHelper.DetailedTransactions);
+            _csvHelper.CreateReportCsv(_outputPath + @"\Yearly reports.csv", reportYearlySummaries);
 
-            List<K4Transaction> cryptoTestList = new List<K4Transaction>();
-            for (int i = 0; i < 20; i++)
+            K4FormModel k4FormModel = new K4FormModel
             {
-                cryptoTestList.Add(new K4Transaction()
-                {
-                    Amount = i,
-                    Currency = "Crypto",
-                    SalesPrice = i,
-                    TaxBasis = i,
-                    Gain = i,
-                    Loss = i
-                });
-            }
-
-            int year = 2013;
-            K4ResourceLogic k4ResourceLogic = new K4ResourceLogic();
-            PdfLogic pdfLogic = new PdfLogic(_outputPath, _processName);
-            K4FormLogic k4Logic = new K4FormLogic(pdfLogic, new K4Form()
-            {
-                TabIndexes = k4ResourceLogic.GetTabIndexesByYear(year),
-                Name = _fullName,
+                Years = years,
+                FullName = _fullName,
                 PersonalIdentificatonNumber = _personalIdentificationNumber,
-                CryptoTransactions = cryptoTestList,
-                FiatTransactions = fiatTestList
+                CryptoTransactions = _transactionHelper.K4CryptoCurrencyTransactions,
+                FiatTransactions = _transactionHelper.K4FiatCurrencyTransactions
+            };
+            K4FormLogic k4FormLogic = new K4FormLogic(k4FormModel);
+            List<K4FillModel> k4FillModels = k4FormLogic.GetK4FillModels();
+            PdfLogic pdfLogic = new PdfLogic(_outputPath, _processName);
+
+            k4FillModels.ForEach(k4FillModel =>
+            {
+                K4FillLogic k4FillLogic = new K4FillLogic(pdfLogic, k4FillModel);
+                k4FillLogic.FillForms();
             });
-            k4Logic.FillForms(year);
+            
+            if (k4FillModels.Count > 0)
+            {
+                pdfLogic.SaveAndClose();
+            }
         }
     }
 }

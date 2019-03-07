@@ -72,8 +72,9 @@ namespace Cryptaxation.Pdf.Logic
 
         public void SaveAndClose()
         {
+            Thread.Sleep(3000);
             SendKeys.SendWait("%{F4}");
-            for (int i = 0; i < _numberOfTotalCopies; i++)
+            for (var i = 0; i < _numberOfTotalCopies; i++)
             {
                 Thread.Sleep(1000);
                 SendKeys.SendWait("{ENTER}");
@@ -125,17 +126,6 @@ namespace Cryptaxation.Pdf.Logic
                 {
                     PreviousField();
                 }
-            }
-        }
-
-        public void FocusAdobeReader()
-        {
-            Process[] processes = Process.GetProcessesByName(_processName);
-
-            foreach (Process proc in processes)
-            {
-                SetForegroundWindow(proc.MainWindowHandle);
-                Thread.Sleep(5000);
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace Cryptaxation.Pdf.Models
 {
-    public class K4Transaction
+    public class K4TransactionModel
     {
         public decimal Amount { get; set; }
         public string Currency { get; set; }

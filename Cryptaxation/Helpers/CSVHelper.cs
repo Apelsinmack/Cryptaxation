@@ -236,7 +236,7 @@ namespace Cryptaxation
                     List<string> columns = new List<string>();
                     foreach (var property in typeof(DetailedTransaction).GetProperties())
                     {
-                        object csvProperty = detailedTransaction.GetType().GetProperty(property.Name).GetValue(detailedTransaction, null);
+                        object csvProperty = detailedTransaction.GetType().GetProperty(property.FullName).GetValue(detailedTransaction, null);
                         if (csvProperty != null)
                         {
                             columns.Add((csvProperty.ToString().Equals("Undefined") ? string.Empty : csvProperty.ToString()));

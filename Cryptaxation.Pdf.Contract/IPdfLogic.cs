@@ -12,6 +12,5 @@
         void NextField();
         void PreviousField();
         void GotoField(int tabIndex);
-        void FocusAdobeReader();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using Cryptaxation.Pdf.Contract;
@@ -10,135 +11,70 @@ namespace Cryptaxation.Pdf.Logic
 {
     public class K4FormLogic : IK4FormLogic
     {
-        private readonly IPdfLogic _pdfLogic;
-        private readonly K4Form _k4Form;
-        private int _fiatTransactionIndex;
-        private int _cryptoTransactionIndex;
+        private readonly K4FormModel _k4Form;
 
-        public K4FormLogic(IPdfLogic pdfLogic, K4Form k4Form)
+        public K4FormLogic(K4FormModel k4Form)
         {
-            _pdfLogic = pdfLogic;
             _k4Form = k4Form;
-            _fiatTransactionIndex = 0;
-            _cryptoTransactionIndex = 0;
         }
-        
-        public void FillForms(int year)
+
+        public List<K4FillModel> GetK4FillModels()
         {
-            while (_fiatTransactionIndex < _k4Form.FiatTransactions.Count || _cryptoTransactionIndex < _k4Form.CryptoTransactions.Count)
+            List<K4FillModel> k4FillModels = new List<K4FillModel>();
+            var yearsWithTransactions = _k4Form.CryptoTransactions.Keys.Union(_k4Form.FiatTransactions.Keys).OrderBy(t => t).ToList();
+
+            yearsWithTransactions.ForEach(year =>
             {
-                FillForm(year);
-            }
+                if (_k4Form.Years.Contains(year))
+                {
+                    k4FillModels.Add(new K4FillModel
+                    {
+                        Year = year,
+                        TabIndexes = GetTabIndexesByYear(year),
+                        FullName = _k4Form.FullName,
+                        PersonalIdentificatonNumber = _k4Form.PersonalIdentificatonNumber,
+                        CryptoTransactions = _k4Form.CryptoTransactions[year],
+                        FiatTransactions = _k4Form.FiatTransactions[year]
+                    });
+                }
+            });
+
+            return k4FillModels;
         }
 
-        public void FillForm(int year)
+        public K4TabIndexModel GetTabIndexesByYear(int year)
         {
-            _pdfLogic.CopyPdf(year);
-            _pdfLogic.OpenPdf(year, _pdfLogic.GetNumberOfCopies(year));
-            FillDate();
-            FillNumbering(year);
-            FillName();
-            FillPersonalIdentificationNumber();
-            FillCurrencies();
-            FillResources();
-        }
-
-        public void FillDate()
-        {
-            _pdfLogic.GotoField(_k4Form.TabIndexes.TabIndexDate);
-            _pdfLogic.FillField(DateTime.Now.ToString("yyyy-MM-dd"));
-        }
-
-        public void FillNumbering(int year)
-        {
-            _pdfLogic.GotoField(_k4Form.TabIndexes.TabIndexNumbering);
-            _pdfLogic.FillField(_pdfLogic.GetNumberOfCopies(year).ToString());
-        }
-
-        public void FillName()
-        {
-            _pdfLogic.GotoField(_k4Form.TabIndexes.TabIndexName);
-            _pdfLogic.FillField(_k4Form.Name);
-        }
-
-        public void FillPersonalIdentificationNumber()
-        {
-            _pdfLogic.GotoField(_k4Form.TabIndexes.TabIndexPersonalIdentificationNumber);
-            _pdfLogic.FillField(_k4Form.PersonalIdentificatonNumber);
-        }
-
-        public void FillCurrencies()
-        {
-            bool fillSum = false;
-            decimal salesPriceSum = 0;
-            decimal taxBasisSum = 0;
-            int gainSum = 0;
-            int lossSum = 0;
-
-            _pdfLogic.GotoField(_k4Form.TabIndexes.TabIndexFirstCurrencyField);
-            for (int i = 0; i < 7 && _fiatTransactionIndex < _k4Form.FiatTransactions.Count; i++)
+            switch (year)
             {
-                _pdfLogic.FillField(_k4Form.FiatTransactions[_fiatTransactionIndex].Amount);
-                _pdfLogic.FillField(_k4Form.FiatTransactions[_fiatTransactionIndex].Currency);
-                _pdfLogic.FillField(decimal.Round(_k4Form.FiatTransactions[_fiatTransactionIndex].SalesPrice));
-                _pdfLogic.FillField(decimal.Round(_k4Form.FiatTransactions[_fiatTransactionIndex].TaxBasis));
-                _pdfLogic.FillField(_k4Form.FiatTransactions[_fiatTransactionIndex].Gain == 0 ? string.Empty : _k4Form.FiatTransactions[_fiatTransactionIndex].Gain.ToString());
-                _pdfLogic.FillField(_k4Form.FiatTransactions[_fiatTransactionIndex].Loss == 0 ? string.Empty : _k4Form.FiatTransactions[_fiatTransactionIndex].Loss.ToString());
-
-                salesPriceSum += decimal.Round(_k4Form.FiatTransactions[_fiatTransactionIndex].SalesPrice);
-                taxBasisSum += decimal.Round(_k4Form.FiatTransactions[_fiatTransactionIndex].TaxBasis);
-                gainSum += _k4Form.FiatTransactions[_fiatTransactionIndex].Gain;
-                lossSum += _k4Form.FiatTransactions[_fiatTransactionIndex].Loss;
-
-                _fiatTransactionIndex++;
-                fillSum = true;
-            }
-
-            if (fillSum)
-            {
-                _pdfLogic.GotoField(_k4Form.TabIndexes.TabIndexFirstSumCurrencyField);
-                _pdfLogic.FillField(decimal.Round(salesPriceSum));
-                _pdfLogic.FillField(decimal.Round(taxBasisSum));
-                _pdfLogic.FillField(gainSum == 0 ? string.Empty : gainSum.ToString());
-                _pdfLogic.FillField(lossSum == 0 ? string.Empty : lossSum.ToString());
-            }
-        }
-
-        public void FillResources()
-        {
-            bool fillSum = false;
-            decimal salesPriceSum = 0;
-            decimal taxBasisSum = 0;
-            int gainSum = 0;
-            int lossSum = 0;
-
-            _pdfLogic.GotoField(_k4Form.TabIndexes.TabIndexFirstResourceField);
-            for (int i = 0; i < 7 && _cryptoTransactionIndex < _k4Form.CryptoTransactions.Count; i++)
-            {
-                _pdfLogic.FillField(_k4Form.CryptoTransactions[_cryptoTransactionIndex].Amount);
-                _pdfLogic.FillField(_k4Form.CryptoTransactions[_cryptoTransactionIndex].Currency);
-                _pdfLogic.FillField(decimal.Round(_k4Form.CryptoTransactions[_cryptoTransactionIndex].SalesPrice));
-                _pdfLogic.FillField(decimal.Round(_k4Form.CryptoTransactions[_cryptoTransactionIndex].TaxBasis));
-                _pdfLogic.FillField((_k4Form.CryptoTransactions[_cryptoTransactionIndex].Gain == 0 ? string.Empty : (_k4Form.CryptoTransactions[_cryptoTransactionIndex].Gain).ToString()));
-                _pdfLogic.FillField((_k4Form.CryptoTransactions[_cryptoTransactionIndex].Loss == 0 ? string.Empty : (_k4Form.CryptoTransactions[_cryptoTransactionIndex].Loss).ToString()));
-
-                salesPriceSum += _k4Form.CryptoTransactions[_cryptoTransactionIndex].SalesPrice;
-                taxBasisSum += _k4Form.CryptoTransactions[_cryptoTransactionIndex].TaxBasis;
-                gainSum += _k4Form.CryptoTransactions[_cryptoTransactionIndex].Gain;
-                lossSum += _k4Form.CryptoTransactions[_cryptoTransactionIndex].Loss;
-
-                _cryptoTransactionIndex++;
-
-                fillSum = true;
-            }
-
-            if (fillSum)
-            {
-                _pdfLogic.GotoField(_k4Form.TabIndexes.TabIndexFirstSumResourceField);
-                _pdfLogic.FillField(decimal.Round(salesPriceSum));
-                _pdfLogic.FillField(decimal.Round(taxBasisSum));
-                _pdfLogic.FillField(gainSum == 0 ? string.Empty : gainSum.ToString());
-                _pdfLogic.FillField(lossSum == 0 ? string.Empty : lossSum.ToString());
+                case 2013:
+                case 2014:
+                case 2015:
+                case 2016:
+                case 2017:
+                    return new K4TabIndexModel()
+                    {
+                        Date = 1,
+                        Numbering = 2,
+                        Name = 3,
+                        PersonalIdentificationNumber = 4,
+                        FirstCurrencyField = 65,
+                        FirstSumCurrencyField = 107,
+                        FirstResourceField = 111,
+                        FirstSumResourceField = 153
+                    };
+                case 2018:
+                    return new K4TabIndexModel()
+                    {
+                        Date = 1,
+                        Numbering = 2,
+                        Name = 3,
+                        PersonalIdentificationNumber = 4,
+                        FirstCurrencyField = 66,
+                        FirstSumCurrencyField = 108,
+                        FirstResourceField = 112,
+                        FirstSumResourceField = 154
+                    };
+                default: throw new NotImplementedException();
             }
         }
     }

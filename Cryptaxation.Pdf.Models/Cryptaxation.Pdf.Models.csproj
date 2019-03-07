@@ -40,9 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="K4Form.cs" />
-    <Compile Include="K4TabIndexes.cs" />
-    <Compile Include="K4Transaction.cs" />
+    <Compile Include="K4FormModel.cs" />
+    <Compile Include="K4FillModel.cs" />
+    <Compile Include="K4TabIndexModel.cs" />
+    <Compile Include="K4TransactionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

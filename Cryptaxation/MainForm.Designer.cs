@@ -33,7 +33,6 @@
             this.executeButton = new System.Windows.Forms.Button();
             this.processNameTextBox = new System.Windows.Forms.TextBox();
             this.processNameLabel = new System.Windows.Forms.Label();
-            this.useTestDataCheckBox = new System.Windows.Forms.CheckBox();
             this.browseK4Button = new System.Windows.Forms.Button();
             this.k4PathLabel = new System.Windows.Forms.Label();
             this.k4PathTextBox = new System.Windows.Forms.TextBox();
@@ -106,17 +105,6 @@
             this.processNameLabel.Size = new System.Drawing.Size(74, 13);
             this.processNameLabel.TabIndex = 8;
             this.processNameLabel.Text = "Process name";
-            // 
-            // useTestDataCheckBox
-            // 
-            this.useTestDataCheckBox.AutoSize = true;
-            this.useTestDataCheckBox.Location = new System.Drawing.Point(462, 251);
-            this.useTestDataCheckBox.Margin = new System.Windows.Forms.Padding(2);
-            this.useTestDataCheckBox.Name = "useTestDataCheckBox";
-            this.useTestDataCheckBox.Size = new System.Drawing.Size(105, 17);
-            this.useTestDataCheckBox.TabIndex = 12;
-            this.useTestDataCheckBox.Text = "Use dummy data";
-            this.useTestDataCheckBox.UseVisualStyleBackColor = true;
             // 
             // browseK4Button
             // 
@@ -333,7 +321,6 @@
             this.ClientSize = new System.Drawing.Size(634, 277);
             this.Controls.Add(this.PathsGroup);
             this.Controls.Add(this.personalInformationGroup);
-            this.Controls.Add(this.useTestDataCheckBox);
             this.Controls.Add(this.executeButton);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
@@ -357,7 +344,6 @@
         private System.Windows.Forms.TextBox personalIdentificationNumberTextBox;
         private System.Windows.Forms.TextBox processNameTextBox;
         private System.Windows.Forms.Label processNameLabel;
-        private System.Windows.Forms.CheckBox useTestDataCheckBox;
         private System.Windows.Forms.Button browseK4Button;
         private System.Windows.Forms.Label k4PathLabel;
         private System.Windows.Forms.TextBox k4PathTextBox;

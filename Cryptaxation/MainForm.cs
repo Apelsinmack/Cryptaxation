@@ -35,7 +35,7 @@ namespace Cryptaxation
             /*try
             {*/
                 Logic logic = new Logic(fullNameTextBox.Text, personalIdentificationNumberTextBox.Text, BitstampTransactionsPathTextBox.Text, riksbankenRatesPathTextBox.Text, bitstampRatesPathTextBox.Text, k4PathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
-                logic.Execute(useTestDataCheckBox.Checked);
+                logic.Execute();
                 MessageBox.Show("Execution complete.", "Status");
             /*}
             catch (Exception exception)

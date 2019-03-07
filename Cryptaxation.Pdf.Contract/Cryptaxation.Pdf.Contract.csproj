@@ -40,8 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IK4FillLogic.cs" />
     <Compile Include="IK4FormLogic.cs" />
-    <Compile Include="IK4ResourceLogic.cs" />
     <Compile Include="IPdfLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
