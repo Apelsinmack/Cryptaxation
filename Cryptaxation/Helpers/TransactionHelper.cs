@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Cryptaxation.Models;
+using Cryptaxation.Entities;
+using Cryptaxation.Entities.Types;
+using Cryptaxation.Entities.Types.Enums;
 using Cryptaxation.Pdf.Models;
 
 namespace Cryptaxation.Helpers
@@ -15,7 +17,7 @@ namespace Cryptaxation.Helpers
         private int _lineNumber;
         private CurrencyCode _taxCurrencyCode;
 
-        public void UpdateK4TransactionListsFromBitstampTransactions(List<BitstampTransaction> bitstampTransactions, List<Rate> rates)
+        public void UpdateK4TransactionListsFromTransactions(List<Transaction> transactions, List<Rate> rates)
         {
             /*try
             {*/
@@ -24,40 +26,40 @@ namespace Cryptaxation.Helpers
                 _lineNumber = 0;
                 _taxCurrencyCode = CurrencyCode.SEK;
 
-                foreach (BitstampTransaction bitstampTransaction in bitstampTransactions)
+                foreach (Transaction transaction in transactions)
                 {
                     _lineNumber++;
-                    if (bitstampTransaction.Type == BitstampTransactionType.Market)
+                    if (transaction.Type == TransactionType.Market)
                     {
-                        DateTime date = bitstampTransaction.DateTime.Date;
-                        if (bitstampTransaction.SubType == SubType.Buy)
+                        DateTime date = transaction.DateTime.Date;
+                        if (transaction.Action == TradeAction.Buy)
                         {
-                            if (bitstampTransaction.Value.CurrencyCode != _taxCurrencyCode)
+                            if (transaction.Value.CurrencyCode != _taxCurrencyCode)
                             {
-                                HandleTransaction(date, bitstampTransaction.Amount, bitstampTransaction.Value, bitstampTransaction.Fee, bitstampTransaction.SubType, rates, taxBaseAmounts, taxBaseRates);
+                                HandleTransaction(date, transaction.Amount, transaction.Value, transaction.Fee, transaction.Action, rates, taxBaseAmounts, taxBaseRates);
                             }
-                            AddDetailedTransaction(date, bitstampTransaction.Amount, bitstampTransaction.Value, bitstampTransaction.Rate, bitstampTransaction.Fee, bitstampTransaction.SubType, ref taxBaseAmounts, ref taxBaseRates, rates);
-                            UpdateTaxBases(date, bitstampTransaction.Amount, bitstampTransaction.Value, bitstampTransaction.Rate, bitstampTransaction.Fee, bitstampTransaction.SubType, ref taxBaseAmounts, ref taxBaseRates, rates);
+                            AddDetailedTransaction(date, transaction.Amount, transaction.Value, transaction.Rate, transaction.Fee, transaction.Action, ref taxBaseAmounts, ref taxBaseRates, rates);
+                            UpdateTaxBases(date, transaction.Amount, transaction.Value, transaction.Rate, transaction.Fee, transaction.Action, ref taxBaseAmounts, ref taxBaseRates, rates);
                         }
-                        else if (bitstampTransaction.SubType == SubType.Sell)
+                        else if (transaction.Action == TradeAction.Sell)
                         {
-                            if (bitstampTransaction.Amount.CurrencyCode != _taxCurrencyCode)
+                            if (transaction.Amount.CurrencyCode != _taxCurrencyCode)
                             {
-                                HandleTransaction(date, bitstampTransaction.Value, bitstampTransaction.Amount, bitstampTransaction.Fee, bitstampTransaction.SubType, rates, taxBaseAmounts, taxBaseRates);
+                                HandleTransaction(date, transaction.Value, transaction.Amount, transaction.Fee, transaction.Action, rates, taxBaseAmounts, taxBaseRates);
                             }
-                            AddDetailedTransaction(date, bitstampTransaction.Value, bitstampTransaction.Amount, bitstampTransaction.Rate, bitstampTransaction.Fee, bitstampTransaction.SubType, ref taxBaseAmounts, ref taxBaseRates, rates);
-                            UpdateTaxBases(date, bitstampTransaction.Value, bitstampTransaction.Amount, bitstampTransaction.Rate, bitstampTransaction.Fee, bitstampTransaction.SubType, ref taxBaseAmounts, ref taxBaseRates, rates);
+                            AddDetailedTransaction(date, transaction.Value, transaction.Amount, transaction.Rate, transaction.Fee, transaction.Action, ref taxBaseAmounts, ref taxBaseRates, rates);
+                            UpdateTaxBases(date, transaction.Value, transaction.Amount, transaction.Rate, transaction.Fee, transaction.Action, ref taxBaseAmounts, ref taxBaseRates, rates);
                         }
                     }
                 }
             /*}
             catch
             {
-                ErrorMessage("UpdateK4TransactionListsFromBitstampTransactions");
+                ErrorMessage("UpdateK4TransactionListsFromTransactions");
             }*/
         }
 
-        private void HandleTransaction(DateTime date, Currency bought, Currency sold, Currency fee, SubType subType, List<Rate> rates, List<Currency> taxBaseAmounts, List<Currency> taxBaseRates)
+        private void HandleTransaction(DateTime date, Currency bought, Currency sold, Currency fee, TradeAction subType, List<Rate> rates, List<Currency> taxBaseAmounts, List<Currency> taxBaseRates)
         {
             /*try
             {*/
@@ -106,7 +108,7 @@ namespace Cryptaxation.Helpers
             }*/
         }
 
-        private void UpdateTaxBases(DateTime date, Currency bought, Currency sold, Currency rate, Currency fee, SubType subType, ref List<Currency> taxBaseAmounts, ref List<Currency> taxBaseRates, List<Rate> rates)
+        private void UpdateTaxBases(DateTime date, Currency bought, Currency sold, Currency rate, Currency fee, TradeAction subType, ref List<Currency> taxBaseAmounts, ref List<Currency> taxBaseRates, List<Rate> rates)
         {
             /*try
             {*/
@@ -204,7 +206,7 @@ namespace Cryptaxation.Helpers
             }*/
         }
 
-        private void AddDetailedTransaction(DateTime date, Currency bought, Currency sold, Currency rate, Currency fee, SubType subType, ref List<Currency> taxBaseAmounts, ref List<Currency> taxBaseRates, List<Rate> rates)
+        private void AddDetailedTransaction(DateTime date, Currency bought, Currency sold, Currency rate, Currency fee, TradeAction subType, ref List<Currency> taxBaseAmounts, ref List<Currency> taxBaseRates, List<Rate> rates)
         {
             DetailedTransaction detailedTransaction = new DetailedTransaction()
             {

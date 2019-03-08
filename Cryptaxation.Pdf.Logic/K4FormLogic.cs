@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
 using Cryptaxation.Pdf.Contract;
 using Cryptaxation.Pdf.Models;
 
@@ -18,16 +15,16 @@ namespace Cryptaxation.Pdf.Logic
             _k4Form = k4Form;
         }
 
-        public List<K4FillModel> GetK4FillModels()
+        public List<K4FillModel> GetK4FillModelList()
         {
-            List<K4FillModel> k4FillModels = new List<K4FillModel>();
+            List<K4FillModel> k4FillModelList = new List<K4FillModel>();
             var yearsWithTransactions = _k4Form.CryptoTransactions.Keys.Union(_k4Form.FiatTransactions.Keys).OrderBy(t => t).ToList();
 
             yearsWithTransactions.ForEach(year =>
             {
                 if (_k4Form.Years.Contains(year))
                 {
-                    k4FillModels.Add(new K4FillModel
+                    k4FillModelList.Add(new K4FillModel
                     {
                         Year = year,
                         TabIndexes = GetTabIndexesByYear(year),
@@ -39,7 +36,7 @@ namespace Cryptaxation.Pdf.Logic
                 }
             });
 
-            return k4FillModels;
+            return k4FillModelList;
         }
 
         public K4TabIndexModel GetTabIndexesByYear(int year)

@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\CsvHelper.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,13 +53,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TransactionHelper.cs" />
-    <Compile Include="Models\BitstampTransaction.cs" />
-    <Compile Include="Models\Currency.cs" />
-    <Compile Include="Models\ReportCurrency.cs" />
-    <Compile Include="Models\ReportYearlySummary.cs" />
-    <Compile Include="Models\DetailedTransaction.cs" />
     <Compile Include="Logic.cs" />
-    <Compile Include="Models\Rate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -89,6 +82,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cryptaxation.Csv.Fields\Cryptaxation.Csv.Fields.csproj">
+      <Project>{D094EA3C-2604-458C-A612-4826220B6CC4}</Project>
+      <Name>Cryptaxation.Csv.Fields</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cryptaxation.Csv.Logic\Cryptaxation.Csv.Logic.csproj">
+      <Project>{06543a42-5e6e-442d-9b61-3d02bb3a9377}</Project>
+      <Name>Cryptaxation.Csv.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cryptaxation.Entities\Cryptaxation.Entities.csproj">
+      <Project>{8718E4F0-8F8C-4A51-A689-8FAEA63B4175}</Project>
+      <Name>Cryptaxation.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cryptaxation.Pdf.Contract\Cryptaxation.Pdf.Contract.csproj">
       <Project>{60CBE1DE-58C9-418C-B919-FD7966C4FFE6}</Project>
       <Name>Cryptaxation.Pdf.Contract</Name>
@@ -102,5 +107,6 @@
       <Name>Cryptaxation.Pdf.Models</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
