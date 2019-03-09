@@ -74,13 +74,13 @@ namespace Cryptaxation.Helpers
             if (sold.CurrencyCode < bought.CurrencyCode)
             {
                 rate = GetRate(date, sold.CurrencyCode, _taxCurrencyCode, rates);
-                feeRate = GetRate(date, fee.Value == 0 && fee.CurrencyCode == CurrencyCode.Undefined ? CurrencyCode.SEK : fee.CurrencyCode, _taxCurrencyCode, rates);
+                feeRate = GetRate(date, fee.Value == 0 && fee.CurrencyCode == CurrencyCode.Undefined ? _taxCurrencyCode : fee.CurrencyCode, _taxCurrencyCode, rates);
                 totalSalesPriceDecimal = sold.Value * rate - fee.Value * feeRate;
             }
             if (totalSalesPriceDecimal == 0m)
             {
                 rate = GetRate(date, bought.CurrencyCode, _taxCurrencyCode, rates);
-                feeRate = GetRate(date, fee.Value == 0 && fee.CurrencyCode == CurrencyCode.Undefined ? CurrencyCode.SEK : fee.CurrencyCode, _taxCurrencyCode, rates);
+                feeRate = GetRate(date, fee.Value == 0 && fee.CurrencyCode == CurrencyCode.Undefined ? _taxCurrencyCode : fee.CurrencyCode, _taxCurrencyCode, rates);
                 totalSalesPriceDecimal = bought.Value * rate - fee.Value * feeRate;
             }
             totalSalesPrice = (int)decimal.Round(totalSalesPriceDecimal);
@@ -93,8 +93,8 @@ namespace Cryptaxation.Helpers
             taxBasis = (int)decimal.Round(sold.Value * GetTaxBaseRate(sold.CurrencyCode, taxBaseAmounts, taxBaseRates));
 
             // Gain or loss
-            if (totalSalesPrice > taxBasis && sold.CurrencyCode != CurrencyCode.SEK) gain = totalSalesPrice - taxBasis;
-            else if (totalSalesPrice < taxBasis && sold.CurrencyCode != CurrencyCode.SEK) loss = taxBasis - totalSalesPrice;
+            if (totalSalesPrice > taxBasis && sold.CurrencyCode != _taxCurrencyCode) gain = totalSalesPrice - taxBasis;
+            else if (totalSalesPrice < taxBasis && sold.CurrencyCode != _taxCurrencyCode) loss = taxBasis - totalSalesPrice;
 
             // Add transaction
             AddK4Transaction(date.Year, sold, totalSalesPrice, taxBasis, gain, loss);
@@ -253,8 +253,8 @@ namespace Cryptaxation.Helpers
             taxBasis = sold.Value * GetTaxBaseRate(sold.CurrencyCode, taxBaseAmounts, taxBaseRates);
 
             // Gain or loss
-            if (totalSalesPrice > taxBasis && sold.CurrencyCode != CurrencyCode.SEK) gain = totalSalesPrice - taxBasis;
-            else if (totalSalesPrice < taxBasis && sold.CurrencyCode != CurrencyCode.SEK) loss = taxBasis - totalSalesPrice;
+            if (totalSalesPrice > taxBasis && sold.CurrencyCode != _taxCurrencyCode) gain = totalSalesPrice - taxBasis;
+            else if (totalSalesPrice < taxBasis && sold.CurrencyCode != _taxCurrencyCode) loss = taxBasis - totalSalesPrice;
 
 
             if (!taxBaseAmounts.Exists(tba => tba.CurrencyCode == bought.CurrencyCode)) taxBaseAmounts.Add(new Currency { CurrencyCode = bought.CurrencyCode });
