@@ -2,9 +2,9 @@
 
 namespace Cryptaxation.Csv.Contract
 {
-    public interface ITransactionLogic<T>
+    public interface ITransactionLogic<TTransaction>
     {
-        List<T> CreateTransactionList(string path);
-        T CreateTransaction(string[] row);
+        List<TTransaction> CreateTransactionList(string path);
+        TTransaction CreateTransaction(string[] row);
     }
 }

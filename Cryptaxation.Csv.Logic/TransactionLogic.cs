@@ -11,7 +11,7 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace Cryptaxation.Csv.Logic
 {
-    public class TransactionLogic<T> : ITransactionLogic<T> where T : Transaction, new()
+    public class TransactionLogic<TTransaction> : ITransactionLogic<TTransaction> where TTransaction : Transaction, new()
     {
         private readonly List<Rate> _rates;
 
@@ -20,9 +20,9 @@ namespace Cryptaxation.Csv.Logic
             _rates = rates;
         }
 
-        public List<T> CreateTransactionList(string path)
+        public List<TTransaction> CreateTransactionList(string path)
         {
-            List<T> transactionList = new List<T>();
+            var transactionList = new List<TTransaction>();
 
             using (TextFieldParser parser = new TextFieldParser(path))
             {
@@ -30,14 +30,14 @@ namespace Cryptaxation.Csv.Logic
                 parser.SetDelimiters(",");
                 for (int rowIndex = 0; !parser.EndOfData; rowIndex++)
                 {
-                    string[] row = parser.ReadFields();
+                    var row = parser.ReadFields();
                     if (rowIndex == 0)
                     {
                         continue;
                     }
                     if (row != null)
                     {
-                        T transaction = CreateTransaction(row);
+                        var transaction = CreateTransaction(row);
                         if (transaction.Type == TransactionType.Deposit && transaction.Amount.Type == CurrencyType.FiatCurrency)
                         {
                             transaction.Action= TradeAction.Buy;
@@ -48,7 +48,7 @@ namespace Cryptaxation.Csv.Logic
                         }
                         if ((transaction.Type == TransactionType.Deposit || transaction.Type == TransactionType.Withdrawal) && transaction.Amount.Type == CurrencyType.FiatCurrency)
                         {
-                            List<Rate> originRates = _rates.Where(r => r.OriginCurrency == CurrencyCode.SEK && r.DestinationCurrency == transaction.Amount.CurrencyCode && r.Date <= transaction.DateTime).ToList();
+                            var originRates = _rates.Where(r => r.OriginCurrency == CurrencyCode.SEK && r.DestinationCurrency == transaction.Amount.CurrencyCode && r.Date <= transaction.DateTime).ToList();
                             decimal rate = originRates.FirstOrDefault().Value;
                             transaction.Type = TransactionType.Market;
                             transaction.Value = new Currency
@@ -78,9 +78,9 @@ namespace Cryptaxation.Csv.Logic
             return transactionList;
         }
 
-        public T CreateTransaction(string[] row)
+        public TTransaction CreateTransaction(string[] row)
         {
-            T transaction = new T();
+            var transaction = new TTransaction();
             for (int i = 0; i < row.Length; i++)
             {
                 switch ((TransactionFields)i)
@@ -130,7 +130,7 @@ namespace Cryptaxation.Csv.Logic
                 {
                     cultureInfo = CultureInfo.InvariantCulture;
                 }
-                string[] valueCurrency = field.Split(' ');
+                var valueCurrency = field.Split(' ');
                 return new Currency
                 {
                     Value = decimal.Parse(valueCurrency[0], numberStyle, cultureInfo),

@@ -6,15 +6,15 @@ using Cryptaxation.Entities;
 
 namespace Cryptaxation.Csv.Logic
 {
-    public class DetailedTransactionLogic<T> : IDetailedTransactionLogic<T> where T : DetailedTransaction, new()
+    public class DetailedTransactionLogic<TDetailedTransaction> : IDetailedTransactionLogic<TDetailedTransaction> where TDetailedTransaction : DetailedTransaction, new()
     {
-        public void CreateDetailedTransactionsCsv(List<T> detailedTransactions, string path)
+        public void CreateDetailedTransactionsCsv(List<TDetailedTransaction> detailedTransactions, string path)
         {
             string delimter = ";";
             using (TextWriter writer = File.CreateText(path))
             {
                 List<string> headers = new List<string>();
-                foreach (var property in typeof(T).GetProperties())
+                foreach (var property in typeof(TDetailedTransaction).GetProperties())
                 {
                     headers.Add(property.Name);
                 }
@@ -22,7 +22,7 @@ namespace Cryptaxation.Csv.Logic
                 foreach (var detailedTransaction in detailedTransactions)
                 {
                     List<string> columns = new List<string>();
-                    foreach (var property in typeof(T).GetProperties())
+                    foreach (var property in typeof(TDetailedTransaction).GetProperties())
                     {
                         var csvProperty = detailedTransaction.GetType().GetProperty(property.Name);
                         if (csvProperty != null)

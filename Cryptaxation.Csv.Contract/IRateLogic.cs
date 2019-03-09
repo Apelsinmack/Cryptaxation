@@ -2,9 +2,9 @@
 
 namespace Cryptaxation.Csv.Contract
 {
-    public interface IRateLogic<T>
+    public interface IRateLogic<TRate>
     {
-        List<T> CreateRateList(string path);
-        List<T> CreateRates(string[] row);
+        List<TRate> CreateRateList(string path);
+        List<TRate> CreateRates(string[] row);
     }
 }

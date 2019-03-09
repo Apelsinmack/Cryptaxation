@@ -14,7 +14,6 @@ namespace Cryptaxation.Helpers
         public Dictionary<int, List<K4TransactionModel>> K4FiatCurrencyTransactions = new Dictionary<int, List<K4TransactionModel>>();
         public Dictionary<int, List<K4TransactionModel>> K4CryptoCurrencyTransactions = new Dictionary<int, List<K4TransactionModel>>();
         public List<DetailedTransaction> DetailedTransactions = new List<DetailedTransaction>();
-        private int _lineNumber;
         private CurrencyCode _taxCurrencyCode;
 
         public void UpdateK4TransactionListsFromTransactions(List<Transaction> transactions, List<Rate> rates)
@@ -23,12 +22,10 @@ namespace Cryptaxation.Helpers
             {*/
                 List<Currency> taxBaseAmounts = new List<Currency>();
                 List<Currency> taxBaseRates = new List<Currency>();
-                _lineNumber = 0;
                 _taxCurrencyCode = CurrencyCode.SEK;
 
                 foreach (Transaction transaction in transactions)
                 {
-                    _lineNumber++;
                     if (transaction.Type == TransactionType.Market)
                     {
                         DateTime date = transaction.DateTime.Date;
@@ -59,7 +56,7 @@ namespace Cryptaxation.Helpers
             }*/
         }
 
-        private void HandleTransaction(DateTime date, Currency bought, Currency sold, Currency fee, TradeAction subType, List<Rate> rates, List<Currency> taxBaseAmounts, List<Currency> taxBaseRates)
+        private void HandleTransaction(DateTime date, Currency bought, Currency sold, Currency fee, TradeAction action, List<Rate> rates, List<Currency> taxBaseAmounts, List<Currency> taxBaseRates)
         {
             /*try
             {*/
@@ -72,7 +69,7 @@ namespace Cryptaxation.Helpers
             // Total sales price
             if (sold.CurrencyCode == CurrencyCode.Undefined || bought.CurrencyCode == CurrencyCode.Undefined)
             {
-                ErrorMessage("HandleTransaction", "Sold and/or bought currency is undefined.");
+                throw new Exception("HandleTransaction- Sold and/or bought currency is undefined.");
             }
             if (sold.CurrencyCode < bought.CurrencyCode)
             {
@@ -108,7 +105,7 @@ namespace Cryptaxation.Helpers
             }*/
         }
 
-        private void UpdateTaxBases(DateTime date, Currency bought, Currency sold, Currency rate, Currency fee, TradeAction subType, ref List<Currency> taxBaseAmounts, ref List<Currency> taxBaseRates, List<Rate> rates)
+        private void UpdateTaxBases(DateTime date, Currency bought, Currency sold, Currency rate, Currency fee, TradeAction action, ref List<Currency> taxBaseAmounts, ref List<Currency> taxBaseRates, List<Rate> rates)
         {
             /*try
             {*/
@@ -206,7 +203,7 @@ namespace Cryptaxation.Helpers
             }*/
         }
 
-        private void AddDetailedTransaction(DateTime date, Currency bought, Currency sold, Currency rate, Currency fee, TradeAction subType, ref List<Currency> taxBaseAmounts, ref List<Currency> taxBaseRates, List<Rate> rates)
+        private void AddDetailedTransaction(DateTime date, Currency bought, Currency sold, Currency rate, Currency fee, TradeAction action, ref List<Currency> taxBaseAmounts, ref List<Currency> taxBaseRates, List<Rate> rates)
         {
             DetailedTransaction detailedTransaction = new DetailedTransaction()
             {
@@ -260,10 +257,10 @@ namespace Cryptaxation.Helpers
             else if (totalSalesPrice < taxBasis && sold.CurrencyCode != CurrencyCode.SEK) loss = taxBasis - totalSalesPrice;
 
 
-            if (!taxBaseAmounts.Exists(tba => tba.CurrencyCode == bought.CurrencyCode)) taxBaseAmounts.Add(new Currency() { CurrencyCode = bought.CurrencyCode });
-            if (!taxBaseRates.Exists(tbr => tbr.CurrencyCode == bought.CurrencyCode)) taxBaseRates.Add(new Currency() { CurrencyCode = bought.CurrencyCode });
-            if (!taxBaseAmounts.Exists(tba => tba.CurrencyCode == sold.CurrencyCode)) taxBaseAmounts.Add(new Currency() { CurrencyCode = sold.CurrencyCode });
-            if (!taxBaseRates.Exists(tbr => tbr.CurrencyCode == sold.CurrencyCode)) taxBaseRates.Add(new Currency() { CurrencyCode = sold.CurrencyCode });
+            if (!taxBaseAmounts.Exists(tba => tba.CurrencyCode == bought.CurrencyCode)) taxBaseAmounts.Add(new Currency { CurrencyCode = bought.CurrencyCode });
+            if (!taxBaseRates.Exists(tbr => tbr.CurrencyCode == bought.CurrencyCode)) taxBaseRates.Add(new Currency { CurrencyCode = bought.CurrencyCode });
+            if (!taxBaseAmounts.Exists(tba => tba.CurrencyCode == sold.CurrencyCode)) taxBaseAmounts.Add(new Currency { CurrencyCode = sold.CurrencyCode });
+            if (!taxBaseRates.Exists(tbr => tbr.CurrencyCode == sold.CurrencyCode)) taxBaseRates.Add(new Currency { CurrencyCode = sold.CurrencyCode });
 
             Currency taxBaseAmountBought = taxBaseAmounts.FirstOrDefault(tba => tba.CurrencyCode == bought.CurrencyCode);
             Currency taxBaseRateBought = taxBaseRates.FirstOrDefault(tbr => tbr.CurrencyCode == bought.CurrencyCode);
@@ -349,11 +346,6 @@ namespace Cryptaxation.Helpers
                     Loss = loss
                 });
             }
-        }
-
-        private void ErrorMessage(string functionName, string errorMessage = "") //TODO! Refactor into application wide error handling.
-        {
-            Debug.Print("Line " + _lineNumber + ". " + errorMessage + " " + functionName);
         }
     }
 }

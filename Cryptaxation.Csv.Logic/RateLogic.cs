@@ -9,11 +9,11 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace Cryptaxation.Csv.Logic
 {
-    public class RateLogic<T> : IRateLogic<T> where T : Rate, new()
+    public class RateLogic<TRate> : IRateLogic<TRate> where TRate : Rate, new()
     {
-        public List<T> CreateRateList(string[] paths)
+        public List<TRate> CreateRateList(string[] paths)
         {
-            List<T> rateList = new List<T>();
+            var rateList = new List<TRate>();
             foreach (var path in paths)
             {
                 rateList.AddRange(CreateRateList(path));
@@ -21,9 +21,9 @@ namespace Cryptaxation.Csv.Logic
             return rateList;
         }
 
-        public List<T> CreateRateList(string path)
+        public List<TRate> CreateRateList(string path)
         {
-            List<T> rateList = new List<T>();
+            var rateList = new List<TRate>();
             using (TextFieldParser parser = new TextFieldParser(path))
             {
                 parser.TextFieldType = FieldType.Delimited;
@@ -48,9 +48,9 @@ namespace Cryptaxation.Csv.Logic
             return rateList;
         }
 
-        public List<T> CreateRates(string[] row)
+        public List<TRate> CreateRates(string[] row)
         {
-            List<T> rates = new List<T>();
+            var rates = new List<TRate>();
             DateTime? date = null;
             for (int i = 0; i < row.Length; i++)
             {
@@ -66,7 +66,7 @@ namespace Cryptaxation.Csv.Logic
                         date = DateTime.ParseExact(tmp, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                         break;
                     case RateFields.SEKUSD:
-                        rates.Add(new T
+                        rates.Add(new TRate
                         {
                             Date = date.GetValueOrDefault(),
                             OriginCurrency = CurrencyCode.SEK,
@@ -75,7 +75,7 @@ namespace Cryptaxation.Csv.Logic
                         });
                         break;
                     case RateFields.USDSEK:
-                        rates.Add(new T
+                        rates.Add(new TRate
                         {
                             Date = date.GetValueOrDefault(),
                             OriginCurrency = CurrencyCode.USD,
@@ -84,7 +84,7 @@ namespace Cryptaxation.Csv.Logic
                         });
                         break;
                     case RateFields.SEKEUR:
-                        rates.Add(new T
+                        rates.Add(new TRate
                         {
                             Date = date.GetValueOrDefault(),
                             OriginCurrency = CurrencyCode.SEK,
@@ -93,7 +93,7 @@ namespace Cryptaxation.Csv.Logic
                         });
                         break;
                     case RateFields.EURSEK:
-                        rates.Add(new T
+                        rates.Add(new TRate
                         {
                             Date = date.GetValueOrDefault(),
                             OriginCurrency = CurrencyCode.EUR,
@@ -102,7 +102,7 @@ namespace Cryptaxation.Csv.Logic
                         });
                         break;
                     case RateFields.EURUSD:
-                        rates.Add(new T
+                        rates.Add(new TRate
                         {
                             Date = date.GetValueOrDefault(),
                             OriginCurrency = CurrencyCode.EUR,
@@ -111,7 +111,7 @@ namespace Cryptaxation.Csv.Logic
                         });
                         break;
                     case RateFields.USDEUR:
-                        rates.Add(new T
+                        rates.Add(new TRate
                         {
                             Date = date.GetValueOrDefault(),
                             OriginCurrency = CurrencyCode.USD,
@@ -120,7 +120,7 @@ namespace Cryptaxation.Csv.Logic
                         });
                         break;
                     case RateFields.BTCUSD:
-                        rates.Add(new T
+                        rates.Add(new TRate
                         {
                             Date = date.GetValueOrDefault(),
                             OriginCurrency = CurrencyCode.BTC,

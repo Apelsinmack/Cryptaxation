@@ -3,9 +3,9 @@ using Cryptaxation.Pdf.Models;
 
 namespace Cryptaxation.Pdf.Contract
 {
-    public interface IK4FormLogic
+    public interface IK4FormLogic<TK4FillModel, TK4TabIndexModel>
     {
-        List<K4FillModel> GetK4FillModelList();
-         K4TabIndexModel GetTabIndexesByYear(int year);
+        List<TK4FillModel> GetK4FillModelList();
+         TK4TabIndexModel GetTabIndexesByYear(int year);
     }
 }

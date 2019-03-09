@@ -2,8 +2,8 @@
 
 namespace Cryptaxation.Csv.Contract
 {
-    public interface IDetailedTransactionLogic<T>
+    public interface IDetailedTransactionLogic<TDetailedTransaction>
     {
-        void CreateDetailedTransactionsCsv(List<T> detailedTransactions, string path);
+        void CreateDetailedTransactionsCsv(List<TDetailedTransaction> detailedTransactions, string path);
     }
 }

@@ -114,14 +114,14 @@ namespace Cryptaxation
 
         public void Execute()
         {
-            RateLogic<Rate> rateLogic = new RateLogic<Rate>();
-            List<Rate> rateList = rateLogic.CreateRateList(new [] {
+            var rateLogic = new RateLogic<Rate>();
+            var rateList = rateLogic.CreateRateList(new [] {
                 _riksbankenRatesPath,
                 _ratesPath
             }).OrderBy(r => r.DestinationCurrency).ThenBy(r => r.OriginCurrency).ThenByDescending(r => r.Date).ToList();
             
-            TransactionLogic<Transaction> transactionLogic = new TransactionLogic<Transaction>(rateList);
-            List<Transaction> transactionList = transactionLogic.CreateTransactionList(_transactionsPath);
+            var transactionLogic = new TransactionLogic<Transaction>(rateList);
+            var transactionList = transactionLogic.CreateTransactionList(_transactionsPath);
 
             int[] years = 
             {
@@ -133,14 +133,14 @@ namespace Cryptaxation
             };
             _transactionHelper.UpdateK4TransactionListsFromTransactions(transactionList, rateList);
 
-            DetailedTransactionLogic<DetailedTransaction> detailedTransactionLogic = new DetailedTransactionLogic<DetailedTransaction>();
+            var detailedTransactionLogic = new DetailedTransactionLogic<DetailedTransaction>();
             detailedTransactionLogic.CreateDetailedTransactionsCsv(_transactionHelper.DetailedTransactions, _outputPath + @"\Detailed transactions.csv");
 
-            ReportLogic reportLogic = new ReportLogic();
-            List<ReportYearlySummary> reportYearlySummaries = reportLogic.CreateReportYearlySummaryList(_transactionHelper.DetailedTransactions);
+            var reportLogic = new ReportLogic();
+            var reportYearlySummaries = reportLogic.CreateReportYearlySummaryList(_transactionHelper.DetailedTransactions);
             reportLogic.CreateReportCsv(_outputPath + @"\Yearly reports.csv", reportYearlySummaries);
 
-            K4FormModel k4FormModel = new K4FormModel
+            var k4FormModel = new K4FormModel
             {
                 Years = years,
                 FullName = _fullName,
@@ -148,13 +148,13 @@ namespace Cryptaxation
                 CryptoTransactions = _transactionHelper.K4CryptoCurrencyTransactions,
                 FiatTransactions = _transactionHelper.K4FiatCurrencyTransactions
             };
-            K4FormLogic k4FormLogic = new K4FormLogic(k4FormModel);
-            List<K4FillModel> k4FillModels = k4FormLogic.GetK4FillModelList();
-            PdfLogic pdfLogic = new PdfLogic(_outputPath, _processName);
+            var k4FormLogic = new K4FormLogic<K4FillModel, K4TabIndexModel>(k4FormModel);
+            var k4FillModels = k4FormLogic.GetK4FillModelList();
+            var pdfLogic = new PdfLogic(_outputPath, _processName);
 
             k4FillModels.ForEach(k4FillModel =>
             {
-                K4FillLogic k4FillLogic = new K4FillLogic(pdfLogic, k4FillModel);
+                var k4FillLogic = new K4FillLogic(pdfLogic, k4FillModel);
                 k4FillLogic.FillForms();
             });
             
