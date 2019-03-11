@@ -51,8 +51,14 @@ namespace Cryptaxation.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ProcessName {
-            get {
-                return ((string)(this["ProcessName"]));
+            get
+            {
+                string processName = ((string) (this["ProcessName"]));
+                if (string.IsNullOrWhiteSpace(processName))
+                {
+                    processName = "Acrord32.exe";
+                }
+                return processName;
             }
             set {
                 this["ProcessName"] = value;
@@ -92,18 +98,6 @@ namespace Cryptaxation.Properties {
             }
             set {
                 this["BitstampRatesPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string K4Path {
-            get {
-                return ((string)(this["K4Path"]));
-            }
-            set {
-                this["K4Path"] = value;
             }
         }
         

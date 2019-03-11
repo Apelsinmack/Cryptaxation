@@ -70,31 +70,17 @@ namespace Cryptaxation.Pdf.Logic
             Thread.Sleep(10000);
         }
 
-        public void Test()
-        {
-            Thread.Sleep(3000);
-            SendKeys.SendWait("%{F4}");
-            Thread.Sleep(1000);
-            SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(1000);
-            SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(1000);
-            SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(1000);
-            SendKeys.SendWait("y");
-        }
-
         public void SaveAndClose()
         {
             Thread.Sleep(3000);
             SendKeys.SendWait("%{F4}");
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             SendKeys.SendWait("y");
         }
 
@@ -104,13 +90,13 @@ namespace Cryptaxation.Pdf.Logic
             SendKeys.SendWait("%{F4}");
             for (int i = 0; i < _numberOfTotalCopies; i++)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 SendKeys.SendWait("{ENTER}");
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 SendKeys.SendWait("{ENTER}");
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 SendKeys.SendWait("{ENTER}");
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 SendKeys.SendWait("y");
             }
         }

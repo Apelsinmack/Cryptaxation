@@ -1,4 +1,4 @@
-﻿namespace Cryptaxation
+﻿namespace Cryptaxation.GUI
 {
     partial class MainForm
     {
@@ -28,32 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Cryptaxation.Properties.Settings settings = new Cryptaxation.Properties.Settings();
             this.fullNameLabel = new System.Windows.Forms.Label();
             this.personalIdentificationNumberLabel = new System.Windows.Forms.Label();
             this.executeButton = new System.Windows.Forms.Button();
             this.processNameTextBox = new System.Windows.Forms.TextBox();
             this.processNameLabel = new System.Windows.Forms.Label();
-            this.browseK4Button = new System.Windows.Forms.Button();
-            this.k4PathLabel = new System.Windows.Forms.Label();
-            this.k4PathTextBox = new System.Windows.Forms.TextBox();
             this.outputPathTextBox = new System.Windows.Forms.TextBox();
             this.outputPathLabel = new System.Windows.Forms.Label();
             this.outputPathButton = new System.Windows.Forms.Button();
             this.riksbankenRatesPathTextBox = new System.Windows.Forms.TextBox();
             this.riksbankenRatesPathLabel = new System.Windows.Forms.Label();
             this.riksbankenRatesPathButton = new System.Windows.Forms.Button();
-            this.BitstampTransactionsPathTextBox = new System.Windows.Forms.TextBox();
-            this.BitstampTransactionsPathLabel = new System.Windows.Forms.Label();
+            this.bitstampTransactionsPathLabel = new System.Windows.Forms.Label();
             this.bitstampTransactionsPathButton = new System.Windows.Forms.Button();
             this.personalInformationGroup = new System.Windows.Forms.GroupBox();
             this.fullNameTextBox = new System.Windows.Forms.TextBox();
             this.personalIdentificationNumberTextBox = new System.Windows.Forms.TextBox();
-            this.PathsGroup = new System.Windows.Forms.GroupBox();
+            this.pathsGroup = new System.Windows.Forms.GroupBox();
+            this.bitstampRatesPathTextBox = new System.Windows.Forms.TextBox();
+            this.bitstampTransactionsPathTextBox = new System.Windows.Forms.TextBox();
             this.bitstampRatesPathLabel = new System.Windows.Forms.Label();
             this.bitstampRatesPathButton = new System.Windows.Forms.Button();
-            this.bitstampRatesPathTextBox = new System.Windows.Forms.TextBox();
+            this.years = new System.Windows.Forms.GroupBox();
+            this.year2018 = new System.Windows.Forms.CheckBox();
+            this.year2017 = new System.Windows.Forms.CheckBox();
+            this.year2016 = new System.Windows.Forms.CheckBox();
+            this.year2015 = new System.Windows.Forms.CheckBox();
+            this.year2014 = new System.Windows.Forms.CheckBox();
             this.personalInformationGroup.SuspendLayout();
-            this.PathsGroup.SuspendLayout();
+            this.pathsGroup.SuspendLayout();
+            this.years.SuspendLayout();
             this.SuspendLayout();
             // 
             // fullNameLabel
@@ -78,11 +83,11 @@
             // 
             // executeButton
             // 
-            this.executeButton.Location = new System.Drawing.Point(569, 249);
+            this.executeButton.Location = new System.Drawing.Point(569, 287);
             this.executeButton.Margin = new System.Windows.Forms.Padding(2);
             this.executeButton.Name = "executeButton";
-            this.executeButton.Size = new System.Drawing.Size(56, 19);
-            this.executeButton.TabIndex = 11;
+            this.executeButton.Size = new System.Drawing.Size(56, 25);
+            this.executeButton.TabIndex = 26;
             this.executeButton.Text = "Execute";
             this.executeButton.UseVisualStyleBackColor = true;
             this.executeButton.Click += new System.EventHandler(this.ExecuteClick);
@@ -90,11 +95,10 @@
             // processNameTextBox
             // 
             this.processNameTextBox.Location = new System.Drawing.Point(7, 115);
-            this.processNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.processNameTextBox.Name = "processNameTextBox";
             this.processNameTextBox.Size = new System.Drawing.Size(151, 20);
             this.processNameTextBox.TabIndex = 2;
-            this.processNameTextBox.Text = global::Cryptaxation.Properties.Settings.Default.ProcessName;
+            this.processNameTextBox.Text = settings.ProcessName;
             // 
             // processNameLabel
             // 
@@ -106,49 +110,18 @@
             this.processNameLabel.TabIndex = 8;
             this.processNameLabel.Text = "Process name";
             // 
-            // browseK4Button
-            // 
-            this.browseK4Button.Location = new System.Drawing.Point(386, 155);
-            this.browseK4Button.Margin = new System.Windows.Forms.Padding(2);
-            this.browseK4Button.Name = "browseK4Button";
-            this.browseK4Button.Size = new System.Drawing.Size(56, 19);
-            this.browseK4Button.TabIndex = 8;
-            this.browseK4Button.Text = "Browse";
-            this.browseK4Button.UseVisualStyleBackColor = true;
-            this.browseK4Button.Click += new System.EventHandler(this.BrowseK4ButtonClick);
-            // 
-            // k4PathLabel
-            // 
-            this.k4PathLabel.AutoSize = true;
-            this.k4PathLabel.Location = new System.Drawing.Point(4, 139);
-            this.k4PathLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.k4PathLabel.Name = "k4PathLabel";
-            this.k4PathLabel.Size = new System.Drawing.Size(44, 13);
-            this.k4PathLabel.TabIndex = 12;
-            this.k4PathLabel.Text = "K4 path";
-            // 
-            // k4PathTextBox
-            // 
-            this.k4PathTextBox.Location = new System.Drawing.Point(7, 155);
-            this.k4PathTextBox.Margin = new System.Windows.Forms.Padding(2);
-            this.k4PathTextBox.Name = "k4PathTextBox";
-            this.k4PathTextBox.Size = new System.Drawing.Size(376, 20);
-            this.k4PathTextBox.TabIndex = 7;
-            this.k4PathTextBox.Text = global::Cryptaxation.Properties.Settings.Default.K4Path;
-            // 
             // outputPathTextBox
             // 
-            this.outputPathTextBox.Location = new System.Drawing.Point(7, 195);
-            this.outputPathTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this.outputPathTextBox.Location = new System.Drawing.Point(7, 155);
             this.outputPathTextBox.Name = "outputPathTextBox";
             this.outputPathTextBox.Size = new System.Drawing.Size(376, 20);
-            this.outputPathTextBox.TabIndex = 9;
-            this.outputPathTextBox.Text = global::Cryptaxation.Properties.Settings.Default.OutputPath;
+            this.outputPathTextBox.TabIndex = 6;
+            this.outputPathTextBox.Text = settings.OutputPath;
             // 
             // outputPathLabel
             // 
             this.outputPathLabel.AutoSize = true;
-            this.outputPathLabel.Location = new System.Drawing.Point(4, 179);
+            this.outputPathLabel.Location = new System.Drawing.Point(4, 139);
             this.outputPathLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.outputPathLabel.Name = "outputPathLabel";
             this.outputPathLabel.Size = new System.Drawing.Size(63, 13);
@@ -157,11 +130,11 @@
             // 
             // outputPathButton
             // 
-            this.outputPathButton.Location = new System.Drawing.Point(386, 196);
+            this.outputPathButton.Location = new System.Drawing.Point(382, 154);
             this.outputPathButton.Margin = new System.Windows.Forms.Padding(2);
             this.outputPathButton.Name = "outputPathButton";
-            this.outputPathButton.Size = new System.Drawing.Size(56, 19);
-            this.outputPathButton.TabIndex = 10;
+            this.outputPathButton.Size = new System.Drawing.Size(60, 22);
+            this.outputPathButton.TabIndex = 7;
             this.outputPathButton.Text = "Browse";
             this.outputPathButton.UseVisualStyleBackColor = true;
             this.outputPathButton.Click += new System.EventHandler(this.OutputPathButtonClick);
@@ -169,11 +142,10 @@
             // riksbankenRatesPathTextBox
             // 
             this.riksbankenRatesPathTextBox.Location = new System.Drawing.Point(7, 75);
-            this.riksbankenRatesPathTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.riksbankenRatesPathTextBox.Name = "riksbankenRatesPathTextBox";
             this.riksbankenRatesPathTextBox.Size = new System.Drawing.Size(376, 20);
-            this.riksbankenRatesPathTextBox.TabIndex = 5;
-            this.riksbankenRatesPathTextBox.Text = global::Cryptaxation.Properties.Settings.Default.RiksbankenRatesPath;
+            this.riksbankenRatesPathTextBox.TabIndex = 2;
+            this.riksbankenRatesPathTextBox.Text = settings.RiksbankenRatesPath;
             // 
             // riksbankenRatesPathLabel
             // 
@@ -187,41 +159,32 @@
             // 
             // riksbankenRatesPathButton
             // 
-            this.riksbankenRatesPathButton.Location = new System.Drawing.Point(386, 75);
+            this.riksbankenRatesPathButton.Location = new System.Drawing.Point(382, 74);
             this.riksbankenRatesPathButton.Margin = new System.Windows.Forms.Padding(2);
             this.riksbankenRatesPathButton.Name = "riksbankenRatesPathButton";
-            this.riksbankenRatesPathButton.Size = new System.Drawing.Size(56, 19);
-            this.riksbankenRatesPathButton.TabIndex = 6;
+            this.riksbankenRatesPathButton.Size = new System.Drawing.Size(60, 22);
+            this.riksbankenRatesPathButton.TabIndex = 3;
             this.riksbankenRatesPathButton.Text = "Browse";
             this.riksbankenRatesPathButton.UseVisualStyleBackColor = true;
             this.riksbankenRatesPathButton.Click += new System.EventHandler(this.RiksbankenRatesPathButtonClick);
             // 
-            // BitstampTransactionsPathTextBox
+            // bitstampTransactionsPathLabel
             // 
-            this.BitstampTransactionsPathTextBox.Location = new System.Drawing.Point(7, 35);
-            this.BitstampTransactionsPathTextBox.Margin = new System.Windows.Forms.Padding(2);
-            this.BitstampTransactionsPathTextBox.Name = "BitstampTransactionsPathTextBox";
-            this.BitstampTransactionsPathTextBox.Size = new System.Drawing.Size(376, 20);
-            this.BitstampTransactionsPathTextBox.TabIndex = 3;
-            this.BitstampTransactionsPathTextBox.Text = global::Cryptaxation.Properties.Settings.Default.BitstampTransactionsPath;
-            // 
-            // BitstampTransactionsPathLabel
-            // 
-            this.BitstampTransactionsPathLabel.AutoSize = true;
-            this.BitstampTransactionsPathLabel.Location = new System.Drawing.Point(4, 19);
-            this.BitstampTransactionsPathLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.BitstampTransactionsPathLabel.Name = "BitstampTransactionsPathLabel";
-            this.BitstampTransactionsPathLabel.Size = new System.Drawing.Size(131, 13);
-            this.BitstampTransactionsPathLabel.TabIndex = 21;
-            this.BitstampTransactionsPathLabel.Text = "Bitstamp transactions path";
+            this.bitstampTransactionsPathLabel.AutoSize = true;
+            this.bitstampTransactionsPathLabel.Location = new System.Drawing.Point(4, 19);
+            this.bitstampTransactionsPathLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.bitstampTransactionsPathLabel.Name = "bitstampTransactionsPathLabel";
+            this.bitstampTransactionsPathLabel.Size = new System.Drawing.Size(131, 13);
+            this.bitstampTransactionsPathLabel.TabIndex = 21;
+            this.bitstampTransactionsPathLabel.Text = "Bitstamp transactions path";
             // 
             // bitstampTransactionsPathButton
             // 
-            this.bitstampTransactionsPathButton.Location = new System.Drawing.Point(386, 35);
+            this.bitstampTransactionsPathButton.Location = new System.Drawing.Point(382, 34);
             this.bitstampTransactionsPathButton.Margin = new System.Windows.Forms.Padding(2);
             this.bitstampTransactionsPathButton.Name = "bitstampTransactionsPathButton";
-            this.bitstampTransactionsPathButton.Size = new System.Drawing.Size(56, 19);
-            this.bitstampTransactionsPathButton.TabIndex = 4;
+            this.bitstampTransactionsPathButton.Size = new System.Drawing.Size(60, 22);
+            this.bitstampTransactionsPathButton.TabIndex = 1;
             this.bitstampTransactionsPathButton.Text = "Browse";
             this.bitstampTransactionsPathButton.UseVisualStyleBackColor = true;
             this.bitstampTransactionsPathButton.Click += new System.EventHandler(this.BitstampTransactionsPathButtonClick);
@@ -238,7 +201,7 @@
             this.personalInformationGroup.Margin = new System.Windows.Forms.Padding(2);
             this.personalInformationGroup.Name = "personalInformationGroup";
             this.personalInformationGroup.Padding = new System.Windows.Forms.Padding(2);
-            this.personalInformationGroup.Size = new System.Drawing.Size(164, 182);
+            this.personalInformationGroup.Size = new System.Drawing.Size(164, 152);
             this.personalInformationGroup.TabIndex = 23;
             this.personalInformationGroup.TabStop = false;
             this.personalInformationGroup.Text = "Personal information";
@@ -246,46 +209,57 @@
             // fullNameTextBox
             // 
             this.fullNameTextBox.Location = new System.Drawing.Point(7, 35);
-            this.fullNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.fullNameTextBox.Name = "fullNameTextBox";
             this.fullNameTextBox.Size = new System.Drawing.Size(151, 20);
             this.fullNameTextBox.TabIndex = 0;
-            this.fullNameTextBox.Text = global::Cryptaxation.Properties.Settings.Default.FullName;
+            this.fullNameTextBox.Text = settings.FullName;
             // 
             // personalIdentificationNumberTextBox
             // 
             this.personalIdentificationNumberTextBox.Location = new System.Drawing.Point(7, 75);
-            this.personalIdentificationNumberTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.personalIdentificationNumberTextBox.Name = "personalIdentificationNumberTextBox";
             this.personalIdentificationNumberTextBox.Size = new System.Drawing.Size(151, 20);
             this.personalIdentificationNumberTextBox.TabIndex = 1;
-            this.personalIdentificationNumberTextBox.Text = global::Cryptaxation.Properties.Settings.Default.PersonalIdentificationNumber;
+            this.personalIdentificationNumberTextBox.Text = settings.PersonalIdentificationNumber;
             // 
-            // PathsGroup
+            // pathsGroup
             // 
-            this.PathsGroup.Controls.Add(this.bitstampRatesPathLabel);
-            this.PathsGroup.Controls.Add(this.bitstampRatesPathButton);
-            this.PathsGroup.Controls.Add(this.bitstampRatesPathTextBox);
-            this.PathsGroup.Controls.Add(this.BitstampTransactionsPathLabel);
-            this.PathsGroup.Controls.Add(this.bitstampTransactionsPathButton);
-            this.PathsGroup.Controls.Add(this.outputPathTextBox);
-            this.PathsGroup.Controls.Add(this.riksbankenRatesPathTextBox);
-            this.PathsGroup.Controls.Add(this.outputPathLabel);
-            this.PathsGroup.Controls.Add(this.outputPathButton);
-            this.PathsGroup.Controls.Add(this.riksbankenRatesPathLabel);
-            this.PathsGroup.Controls.Add(this.BitstampTransactionsPathTextBox);
-            this.PathsGroup.Controls.Add(this.k4PathTextBox);
-            this.PathsGroup.Controls.Add(this.riksbankenRatesPathButton);
-            this.PathsGroup.Controls.Add(this.k4PathLabel);
-            this.PathsGroup.Controls.Add(this.browseK4Button);
-            this.PathsGroup.Location = new System.Drawing.Point(177, 11);
-            this.PathsGroup.Margin = new System.Windows.Forms.Padding(2);
-            this.PathsGroup.Name = "PathsGroup";
-            this.PathsGroup.Padding = new System.Windows.Forms.Padding(2);
-            this.PathsGroup.Size = new System.Drawing.Size(448, 234);
-            this.PathsGroup.TabIndex = 24;
-            this.PathsGroup.TabStop = false;
-            this.PathsGroup.Text = "Paths";
+            this.pathsGroup.Controls.Add(this.bitstampRatesPathTextBox);
+            this.pathsGroup.Controls.Add(this.bitstampTransactionsPathTextBox);
+            this.pathsGroup.Controls.Add(this.bitstampRatesPathLabel);
+            this.pathsGroup.Controls.Add(this.bitstampRatesPathButton);
+            this.pathsGroup.Controls.Add(this.bitstampTransactionsPathLabel);
+            this.pathsGroup.Controls.Add(this.bitstampTransactionsPathButton);
+            this.pathsGroup.Controls.Add(this.outputPathTextBox);
+            this.pathsGroup.Controls.Add(this.riksbankenRatesPathTextBox);
+            this.pathsGroup.Controls.Add(this.outputPathLabel);
+            this.pathsGroup.Controls.Add(this.outputPathButton);
+            this.pathsGroup.Controls.Add(this.riksbankenRatesPathLabel);
+            this.pathsGroup.Controls.Add(this.riksbankenRatesPathButton);
+            this.pathsGroup.Location = new System.Drawing.Point(177, 11);
+            this.pathsGroup.Margin = new System.Windows.Forms.Padding(2);
+            this.pathsGroup.Name = "pathsGroup";
+            this.pathsGroup.Padding = new System.Windows.Forms.Padding(2);
+            this.pathsGroup.Size = new System.Drawing.Size(448, 194);
+            this.pathsGroup.TabIndex = 24;
+            this.pathsGroup.TabStop = false;
+            this.pathsGroup.Text = "Paths";
+            // 
+            // bitstampRatesPathTextBox
+            // 
+            this.bitstampRatesPathTextBox.Location = new System.Drawing.Point(7, 115);
+            this.bitstampRatesPathTextBox.Name = "bitstampRatesPathTextBox";
+            this.bitstampRatesPathTextBox.Size = new System.Drawing.Size(376, 20);
+            this.bitstampRatesPathTextBox.TabIndex = 4;
+            this.bitstampRatesPathTextBox.Text = settings.BitstampRatesPath;
+            // 
+            // bitstampTransactionsPathTextBox
+            // 
+            this.bitstampTransactionsPathTextBox.Location = new System.Drawing.Point(7, 35);
+            this.bitstampTransactionsPathTextBox.Name = "bitstampTransactionsPathTextBox";
+            this.bitstampTransactionsPathTextBox.Size = new System.Drawing.Size(376, 20);
+            this.bitstampTransactionsPathTextBox.TabIndex = 0;
+            this.bitstampTransactionsPathTextBox.Text = settings.BitstampTransactionsPath;
             // 
             // bitstampRatesPathLabel
             // 
@@ -298,28 +272,87 @@
             // 
             // bitstampRatesPathButton
             // 
-            this.bitstampRatesPathButton.Location = new System.Drawing.Point(386, 115);
+            this.bitstampRatesPathButton.Location = new System.Drawing.Point(382, 114);
             this.bitstampRatesPathButton.Name = "bitstampRatesPathButton";
-            this.bitstampRatesPathButton.Size = new System.Drawing.Size(56, 19);
-            this.bitstampRatesPathButton.TabIndex = 23;
+            this.bitstampRatesPathButton.Size = new System.Drawing.Size(60, 22);
+            this.bitstampRatesPathButton.TabIndex = 5;
             this.bitstampRatesPathButton.Text = "Browse";
             this.bitstampRatesPathButton.UseVisualStyleBackColor = true;
             this.bitstampRatesPathButton.Click += new System.EventHandler(this.bitstampRatesPathButton_Click);
             // 
-            // bitstampRatesPathTextBox
+            // years
             // 
-            this.bitstampRatesPathTextBox.Location = new System.Drawing.Point(7, 115);
-            this.bitstampRatesPathTextBox.Name = "bitstampRatesPathTextBox";
-            this.bitstampRatesPathTextBox.Size = new System.Drawing.Size(376, 20);
-            this.bitstampRatesPathTextBox.TabIndex = 22;
-            this.bitstampRatesPathTextBox.Text = global::Cryptaxation.Properties.Settings.Default.BitstampRatesPath;
+            this.years.Controls.Add(this.year2018);
+            this.years.Controls.Add(this.year2017);
+            this.years.Controls.Add(this.year2016);
+            this.years.Controls.Add(this.year2015);
+            this.years.Controls.Add(this.year2014);
+            this.years.Location = new System.Drawing.Point(9, 168);
+            this.years.Name = "years";
+            this.years.Size = new System.Drawing.Size(164, 144);
+            this.years.TabIndex = 25;
+            this.years.TabStop = false;
+            this.years.Text = "Years";
+            // 
+            // year2018
+            // 
+            this.year2018.AutoSize = true;
+            this.year2018.Checked = true;
+            this.year2018.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.year2018.Location = new System.Drawing.Point(7, 115);
+            this.year2018.Name = "year2018";
+            this.year2018.Size = new System.Drawing.Size(50, 17);
+            this.year2018.TabIndex = 4;
+            this.year2018.Text = "2018";
+            this.year2018.UseVisualStyleBackColor = true;
+            // 
+            // year2017
+            // 
+            this.year2017.AutoSize = true;
+            this.year2017.Location = new System.Drawing.Point(7, 92);
+            this.year2017.Name = "year2017";
+            this.year2017.Size = new System.Drawing.Size(50, 17);
+            this.year2017.TabIndex = 3;
+            this.year2017.Text = "2017";
+            this.year2017.UseVisualStyleBackColor = true;
+            // 
+            // year2016
+            // 
+            this.year2016.AutoSize = true;
+            this.year2016.Location = new System.Drawing.Point(7, 68);
+            this.year2016.Name = "year2016";
+            this.year2016.Size = new System.Drawing.Size(50, 17);
+            this.year2016.TabIndex = 2;
+            this.year2016.Text = "2016";
+            this.year2016.UseVisualStyleBackColor = true;
+            // 
+            // year2015
+            // 
+            this.year2015.AutoSize = true;
+            this.year2015.Location = new System.Drawing.Point(7, 44);
+            this.year2015.Name = "year2015";
+            this.year2015.Size = new System.Drawing.Size(50, 17);
+            this.year2015.TabIndex = 1;
+            this.year2015.Text = "2015";
+            this.year2015.UseVisualStyleBackColor = true;
+            // 
+            // year2014
+            // 
+            this.year2014.AutoSize = true;
+            this.year2014.Location = new System.Drawing.Point(7, 20);
+            this.year2014.Name = "year2014";
+            this.year2014.Size = new System.Drawing.Size(50, 17);
+            this.year2014.TabIndex = 0;
+            this.year2014.Text = "2014";
+            this.year2014.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(634, 277);
-            this.Controls.Add(this.PathsGroup);
+            this.ClientSize = new System.Drawing.Size(634, 318);
+            this.Controls.Add(this.years);
+            this.Controls.Add(this.pathsGroup);
             this.Controls.Add(this.personalInformationGroup);
             this.Controls.Add(this.executeButton);
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -328,10 +361,11 @@
             this.Closed += new System.EventHandler(this.SaveSettings);
             this.personalInformationGroup.ResumeLayout(false);
             this.personalInformationGroup.PerformLayout();
-            this.PathsGroup.ResumeLayout(false);
-            this.PathsGroup.PerformLayout();
+            this.pathsGroup.ResumeLayout(false);
+            this.pathsGroup.PerformLayout();
+            this.years.ResumeLayout(false);
+            this.years.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -344,22 +378,25 @@
         private System.Windows.Forms.TextBox personalIdentificationNumberTextBox;
         private System.Windows.Forms.TextBox processNameTextBox;
         private System.Windows.Forms.Label processNameLabel;
-        private System.Windows.Forms.Button browseK4Button;
-        private System.Windows.Forms.Label k4PathLabel;
-        private System.Windows.Forms.TextBox k4PathTextBox;
         private System.Windows.Forms.TextBox outputPathTextBox;
         private System.Windows.Forms.Label outputPathLabel;
         private System.Windows.Forms.Button outputPathButton;
         private System.Windows.Forms.TextBox riksbankenRatesPathTextBox;
         private System.Windows.Forms.Label riksbankenRatesPathLabel;
         private System.Windows.Forms.Button riksbankenRatesPathButton;
-        private System.Windows.Forms.TextBox BitstampTransactionsPathTextBox;
-        private System.Windows.Forms.Label BitstampTransactionsPathLabel;
+        private System.Windows.Forms.Label bitstampTransactionsPathLabel;
         private System.Windows.Forms.Button bitstampTransactionsPathButton;
         private System.Windows.Forms.GroupBox personalInformationGroup;
-        private System.Windows.Forms.GroupBox PathsGroup;
+        private System.Windows.Forms.GroupBox pathsGroup;
         private System.Windows.Forms.Label bitstampRatesPathLabel;
         private System.Windows.Forms.Button bitstampRatesPathButton;
+        private System.Windows.Forms.GroupBox years;
+        private System.Windows.Forms.CheckBox year2018;
+        private System.Windows.Forms.CheckBox year2017;
+        private System.Windows.Forms.CheckBox year2016;
+        private System.Windows.Forms.CheckBox year2015;
+        private System.Windows.Forms.CheckBox year2014;
+        private System.Windows.Forms.TextBox bitstampTransactionsPathTextBox;
         private System.Windows.Forms.TextBox bitstampRatesPathTextBox;
     }
 }

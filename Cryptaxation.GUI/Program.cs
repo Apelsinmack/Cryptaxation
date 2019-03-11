@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Cryptaxation
+namespace Cryptaxation.GUI
 {
     static class Program
     {

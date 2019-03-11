@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{786E29A5-7B2D-4BBF-8F2F-3D2E7739F9C6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Cryptaxation</RootNamespace>
-    <AssemblyName>Cryptaxation</AssemblyName>
+    <RootNamespace>Cryptaxation.GUI</RootNamespace>
+    <AssemblyName>Cryptaxation.GUI</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -60,6 +60,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ValidationLogic.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

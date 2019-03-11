@@ -3,6 +3,7 @@
     public interface IK4FillLogic
     {
         void FillForms();
+        void FillAndSaveForms();
         void FillForm();
         void FillDate();
         void FillNumbering();

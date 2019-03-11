@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,12 +9,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.VisualBasic;
 
-namespace Cryptaxation
+namespace Cryptaxation.GUI
 {
     public partial class MainForm : Form
     {
-        private OpenFileDialog _browseK4Dialog;
         private OpenFileDialog _browseRiksbankenRatesDialog;
         private OpenFileDialog _browseBitstampRatesDialog;
         private OpenFileDialog _browseBitstampTransactionsDialog;
@@ -32,17 +33,39 @@ namespace Cryptaxation
 
         private void Execute()
         {
-            /*try
-            {*/
-                Logic logic = new Logic(fullNameTextBox.Text, personalIdentificationNumberTextBox.Text, BitstampTransactionsPathTextBox.Text, riksbankenRatesPathTextBox.Text, bitstampRatesPathTextBox.Text, k4PathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
+            try
+            {
+                List<int> years = GetYearsList();
+                Logic logic = new Logic(fullNameTextBox.Text, personalIdentificationNumberTextBox.Text, years, bitstampTransactionsPathTextBox.Text, riksbankenRatesPathTextBox.Text, bitstampRatesPathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
                 logic.Execute();
                 MessageBox.Show("Execution complete.", "Status");
-            /*}
+            }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.StackTrace, exception.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }*/
+            }
+        }
 
+        private List<int> GetYearsList()
+        {
+            List<int> returnYears = new List<int>();
+            foreach (Control year in years.Controls)
+            {
+                if(year is CheckBox) {
+                    if (((CheckBox) year).Checked)
+                    {
+                        try
+                        {
+                            returnYears.Add(Convert.ToInt32(year.Name.Substring(4)));
+                        }
+                        catch
+                        {
+                            throw new Exception("Invalid year ChecBox name. Must have format yearYYYY");
+                        }
+                    }
+                }
+            }
+            return returnYears.OrderBy(y => y).ToList();
         }
 
         private void BitstampTransactionsPathButtonClick(object sender, EventArgs e)
@@ -50,7 +73,7 @@ namespace Cryptaxation
             _browseBitstampTransactionsDialog = new OpenFileDialog();
             if (_browseBitstampTransactionsDialog.ShowDialog() == DialogResult.OK)
             {
-                BitstampTransactionsPathTextBox.Text = _browseBitstampTransactionsDialog.FileName;
+                bitstampTransactionsPathTextBox.Text = _browseBitstampTransactionsDialog.FileName;
             }
         }
 
@@ -72,15 +95,6 @@ namespace Cryptaxation
             }
         }
 
-        private void BrowseK4ButtonClick(object sender, EventArgs e)
-        {
-            _browseK4Dialog = new OpenFileDialog();
-            if (_browseK4Dialog.ShowDialog() == DialogResult.OK)
-            {
-                k4PathTextBox.Text = _browseK4Dialog.FileName;
-            }
-        }
-
         private void OutputPathButtonClick(object sender, EventArgs e)
         {
             _browseOutputDialog = new FolderBrowserDialog();
@@ -95,11 +109,10 @@ namespace Cryptaxation
             Properties.Settings.Default.FullName = fullNameTextBox.Text;
             Properties.Settings.Default.PersonalIdentificationNumber = personalIdentificationNumberTextBox.Text;
             Properties.Settings.Default.ProcessName = processNameTextBox.Text;
-            Properties.Settings.Default.BitstampTransactionsPath = BitstampTransactionsPathTextBox.Text;
+            Properties.Settings.Default.BitstampTransactionsPath = bitstampTransactionsPathTextBox.Text;
             Properties.Settings.Default.RiksbankenRatesPath = riksbankenRatesPathTextBox.Text;
             Properties.Settings.Default.BitstampRatesPath = bitstampRatesPathTextBox.Text;
             Properties.Settings.Default.OutputPath = outputPathTextBox.Text;
-            Properties.Settings.Default.K4Path = k4PathTextBox.Text;
             Properties.Settings.Default.Save();
         }
     }

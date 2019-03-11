@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Cryptaxation.Pdf.Contract;
 using Cryptaxation.Pdf.Models;
 
@@ -26,6 +24,15 @@ namespace Cryptaxation.Pdf.Logic
             while (_fiatTransactionIndex < _k4Fill.FiatTransactions.Count || _cryptoTransactionIndex < _k4Fill.CryptoTransactions.Count)
             {
                 FillForm();
+            }
+        }
+
+        public void FillAndSaveForms()
+        {
+            while (_fiatTransactionIndex < _k4Fill.FiatTransactions.Count || _cryptoTransactionIndex < _k4Fill.CryptoTransactions.Count)
+            {
+                FillForm();
+                _pdfLogic.SaveAndClose();
             }
         }
 
