@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Cryptaxation.Csv.Logic;
 using Cryptaxation.Entities;
-using Cryptaxation.Helpers;
 using Cryptaxation.Pdf.Logic;
 using Cryptaxation.Pdf.Models;
+using Cryptaxation.Transaction.Logic;
 
 namespace Cryptaxation
 {
@@ -20,7 +19,6 @@ namespace Cryptaxation
         private readonly string _k4Path;
         private readonly string _outputPath;
         private readonly string _processName;
-        private readonly TransactionHelper _transactionHelper;
 
         public Logic(string fullName, string personalIdentificationNumber, string transactionsPath, string riksbankenRatesPath, string ratesPath, string k4Path, string outputPath, string processName)
         {
@@ -34,8 +32,6 @@ namespace Cryptaxation
             _processName = processName;
 
             ValidateInput();
-            
-            _transactionHelper = new TransactionHelper();
         }
 
         private void ValidateInput()
@@ -120,8 +116,11 @@ namespace Cryptaxation
                 _ratesPath
             }).OrderBy(r => r.DestinationCurrency).ThenBy(r => r.OriginCurrency).ThenByDescending(r => r.Date).ToList();
             
-            var transactionLogic = new TransactionLogic<Transaction>(rateList);
+            var transactionLogic = new TransactionLogic<Entities.Transaction>(rateList);
             var transactionList = transactionLogic.CreateTransactionList(_transactionsPath);
+
+            var parseLogic = new ParseLogic<Entities.Transaction, DetailedTransaction, K4TransactionModel>(rateList);
+            parseLogic.ParseTransactions(transactionList);
 
             int[] years = 
             {
@@ -131,13 +130,12 @@ namespace Cryptaxation
                 2017,
                 2018
             };
-            _transactionHelper.UpdateK4TransactionListsFromTransactions(transactionList, rateList);
 
             var detailedTransactionLogic = new DetailedTransactionLogic<DetailedTransaction>();
-            detailedTransactionLogic.CreateDetailedTransactionsCsv(_transactionHelper.DetailedTransactions, _outputPath + @"\Detailed transactions.csv");
+            detailedTransactionLogic.CreateDetailedTransactionsCsv(parseLogic.DetailedTransactions, _outputPath + @"\Detailed transactions.csv");
 
             var reportLogic = new ReportLogic();
-            var reportYearlySummaries = reportLogic.CreateReportYearlySummaryList(_transactionHelper.DetailedTransactions);
+            var reportYearlySummaries = reportLogic.CreateReportYearlySummaryList(parseLogic.DetailedTransactions);
             reportLogic.CreateReportCsv(_outputPath + @"\Yearly reports.csv", reportYearlySummaries);
 
             var k4FormModel = new K4FormModel
@@ -145,8 +143,8 @@ namespace Cryptaxation
                 Years = years,
                 FullName = _fullName,
                 PersonalIdentificatonNumber = _personalIdentificationNumber,
-                CryptoTransactions = _transactionHelper.K4CryptoCurrencyTransactions,
-                FiatTransactions = _transactionHelper.K4FiatCurrencyTransactions
+                CryptoTransactions = parseLogic.K4CryptoCurrencyTransactions,
+                FiatTransactions = parseLogic.K4FiatCurrencyTransactions
             };
             var k4FormLogic = new K4FormLogic<K4FillModel, K4TabIndexModel>(k4FormModel);
             var k4FillModels = k4FormLogic.GetK4FillModelList();
@@ -156,12 +154,8 @@ namespace Cryptaxation
             {
                 var k4FillLogic = new K4FillLogic(pdfLogic, k4FillModel);
                 k4FillLogic.FillForms();
-            });
-            
-            if (k4FillModels.Count > 0)
-            {
                 pdfLogic.SaveAndClose();
-            }
+            });
         }
     }
 }

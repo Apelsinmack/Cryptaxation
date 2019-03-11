@@ -7,6 +7,7 @@
         string GetPdfPath(int year, int number);
         void OpenPdf(int year, int number);
         void SaveAndClose();
+        void SaveAndCloseAll();
         void FillField(string text);
         void FillField(decimal value);
         void NextField();

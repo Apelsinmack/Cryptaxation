@@ -70,7 +70,35 @@ namespace Cryptaxation.Pdf.Logic
             Thread.Sleep(10000);
         }
 
+        public void Test()
+        {
+            Thread.Sleep(3000);
+            SendKeys.SendWait("%{F4}");
+            Thread.Sleep(1000);
+            SendKeys.SendWait("{ENTER}");
+            Thread.Sleep(1000);
+            SendKeys.SendWait("{ENTER}");
+            Thread.Sleep(1000);
+            SendKeys.SendWait("{ENTER}");
+            Thread.Sleep(1000);
+            SendKeys.SendWait("y");
+        }
+
         public void SaveAndClose()
+        {
+            Thread.Sleep(3000);
+            SendKeys.SendWait("%{F4}");
+            Thread.Sleep(1000);
+            SendKeys.SendWait("{ENTER}");
+            Thread.Sleep(1000);
+            SendKeys.SendWait("{ENTER}");
+            Thread.Sleep(1000);
+            SendKeys.SendWait("{ENTER}");
+            Thread.Sleep(1000);
+            SendKeys.SendWait("y");
+        }
+
+        public void SaveAndCloseAll()
         {
             Thread.Sleep(3000);
             SendKeys.SendWait("%{F4}");

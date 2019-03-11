@@ -52,7 +52,6 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\TransactionHelper.cs" />
     <Compile Include="Logic.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,6 +104,10 @@
     <ProjectReference Include="..\Cryptaxation.Pdf.Models\Cryptaxation.Pdf.Models.csproj">
       <Project>{85644F50-004D-45AD-B1A6-F1B30C1C559D}</Project>
       <Name>Cryptaxation.Pdf.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cryptaxation.Transaction.Logic\Cryptaxation.Transaction.Logic.csproj">
+      <Project>{1EE65CC1-18B0-4A5C-9B33-30808D4A1F1C}</Project>
+      <Name>Cryptaxation.Transaction.Logic</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
