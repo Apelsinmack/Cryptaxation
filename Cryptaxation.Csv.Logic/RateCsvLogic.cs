@@ -9,22 +9,25 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace Cryptaxation.Csv.Logic
 {
-    public class RateLogic<TRate> : IRateLogic<TRate> where TRate : Rate, new()
+    public class RateCsvLogic<TRate> : IRateCsvLogic<TRate> where TRate : Rate, new()
     {
+        private string _path;
+
         public List<TRate> CreateRateList(string[] paths)
         {
             var rateList = new List<TRate>();
             foreach (var path in paths)
             {
-                rateList.AddRange(CreateRateList(path));
+                _path = path;
+                rateList.AddRange(CreateRateList());
             }
             return rateList;
         }
 
-        public List<TRate> CreateRateList(string path)
+        public List<TRate> CreateRateList()
         {
             var rateList = new List<TRate>();
-            using (TextFieldParser parser = new TextFieldParser(path))
+            using (TextFieldParser parser = new TextFieldParser(_path))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
@@ -48,7 +51,7 @@ namespace Cryptaxation.Csv.Logic
             return rateList;
         }
 
-        public List<TRate> CreateRates(string[] row)
+        private List<TRate> CreateRates(string[] row)
         {
             var rates = new List<TRate>();
             DateTime? date = null;

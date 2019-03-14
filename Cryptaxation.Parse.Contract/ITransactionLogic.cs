@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Cryptaxation.Transaction.Contract
+namespace Cryptaxation.Parse.Contract
 {
-    public interface IParseLogic<TTransaction>
+    public interface ITransactionLogic<TTransaction>
     {
         void ParseTransactions(List<TTransaction> transactions);
     }

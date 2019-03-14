@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cryptaxation.Transaction.Contract;
 using Cryptaxation.Entities;
 using Cryptaxation.Entities.Types;
 using Cryptaxation.Entities.Types.Enums;
 using Cryptaxation.Pdf.Models;
+using Cryptaxation.Parse.Contract;
 
-namespace Cryptaxation.Transaction.Logic
+namespace Cryptaxation.Parse.Logic
 {
-    public class ParseLogic<TTransaction, TDetailedTransaction, TK4TransactionModel> : IParseLogic<TTransaction> where TTransaction : Entities.Transaction where TDetailedTransaction : DetailedTransaction, new() where TK4TransactionModel : K4TransactionModel, new()
+    public class TransactionLogic<TTransaction, TDetailedTransaction, TK4TransactionModel> : ITransactionLogic<TTransaction> where TTransaction : Entities.Transaction where TDetailedTransaction : DetailedTransaction, new() where TK4TransactionModel : K4TransactionModel, new()
     {
         private readonly List<Rate> _rates;
         private readonly CurrencyCode _taxCurrencyCode;
@@ -20,7 +20,7 @@ namespace Cryptaxation.Transaction.Logic
         public Dictionary<int, List<TK4TransactionModel>> K4CryptoCurrencyTransactions = new Dictionary<int, List<TK4TransactionModel>>();
         public List<TDetailedTransaction> DetailedTransactions = new List<TDetailedTransaction>();
 
-        public ParseLogic(List<Rate> rates, CurrencyCode taxCurrencyCode = CurrencyCode.SEK)
+        public TransactionLogic(List<Rate> rates, CurrencyCode taxCurrencyCode = CurrencyCode.SEK)
         {
             _rates = rates;
             _taxCurrencyCode = taxCurrencyCode;

@@ -174,9 +174,9 @@
             this.bitstampTransactionsPathLabel.Location = new System.Drawing.Point(4, 19);
             this.bitstampTransactionsPathLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.bitstampTransactionsPathLabel.Name = "bitstampTransactionsPathLabel";
-            this.bitstampTransactionsPathLabel.Size = new System.Drawing.Size(131, 13);
+            this.bitstampTransactionsPathLabel.Size = new System.Drawing.Size(92, 13);
             this.bitstampTransactionsPathLabel.TabIndex = 21;
-            this.bitstampTransactionsPathLabel.Text = "Bitstamp transactions path";
+            this.bitstampTransactionsPathLabel.Text = "Transactions path";
             // 
             // bitstampTransactionsPathButton
             // 

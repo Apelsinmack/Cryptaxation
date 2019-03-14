@@ -40,10 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ITransactionLogic.cs" />
-    <Compile Include="IDetailedTransactionLogic.cs" />
-    <Compile Include="IRateLogic.cs" />
-    <Compile Include="IReportLogic.cs" />
+    <Compile Include="ITransactionCsvLogic.cs" />
+    <Compile Include="IDetailedTransactionCsvLogic.cs" />
+    <Compile Include="IRateCsvLogic.cs" />
+    <Compile Include="IReportCsvLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

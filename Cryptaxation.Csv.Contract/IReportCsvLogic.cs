@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cryptaxation.Csv.Contract
 {
-    public interface IReportLogic
+    public interface IReportCsvLogic<TReportYearlySummary>
     {
     }
 }

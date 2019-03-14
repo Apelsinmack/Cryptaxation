@@ -2,9 +2,9 @@
 using System.Linq;
 using Cryptaxation.Csv.Logic;
 using Cryptaxation.Entities;
+using Cryptaxation.Parse.Logic;
 using Cryptaxation.Pdf.Logic;
 using Cryptaxation.Pdf.Models;
-using Cryptaxation.Transaction.Logic;
 
 namespace Cryptaxation.GUI
 {
@@ -36,27 +36,30 @@ namespace Cryptaxation.GUI
         public void Execute()
         {
             _validationLogic.ValidateInput();
-            var rateLogic = new RateLogic<Rate>();
-            var rateList = rateLogic.CreateRateList(new [] {
+            var rateCsvLogic = new RateCsvLogic<Rate>();
+            var rateList = rateCsvLogic.CreateRateList(new [] {
                 _riksbankenRatesPath,
                 _ratesPath
-            }).OrderBy(r => r.DestinationCurrency).ThenBy(r => r.OriginCurrency).ThenByDescending(r => r.Date).ToList();           
-            var transactionLogic = new TransactionLogic<Entities.Transaction>(rateList);
-            var transactionList = transactionLogic.CreateTransactionList(_transactionsPath);
-            var parseLogic = new ParseLogic<Entities.Transaction, DetailedTransaction, K4TransactionModel>(rateList);
-            parseLogic.ParseTransactions(transactionList);
-            var detailedTransactionLogic = new DetailedTransactionLogic<DetailedTransaction>();
-            detailedTransactionLogic.CreateDetailedTransactionsCsv(parseLogic.DetailedTransactions, _outputPath + @"\Detailed transactions.csv");
-            var reportLogic = new ReportLogic();
-            var reportYearlySummaries = reportLogic.CreateReportYearlySummaryList(parseLogic.DetailedTransactions);
-            reportLogic.CreateReportCsv(_outputPath + @"\Yearly reports.csv", reportYearlySummaries);
+            }).OrderBy(r => r.DestinationCurrency).ThenBy(r => r.OriginCurrency).ThenByDescending(r => r.Date).ToList();
+            var transactionCsvLogic = new TransactionCsvLogic<Transaction>(_transactionsPath, rateList);
+            var transactionList = transactionCsvLogic.CreateTransactionList();
+            var transactionLogic = new TransactionLogic<Transaction, DetailedTransaction, K4TransactionModel>(rateList);
+            transactionLogic.ParseTransactions(transactionList);
+            var detailedTransactionCsvLogic = new DetailedTransactionCsvLogic<DetailedTransaction>(_outputPath + @"\Detailed transactions.csv");
+            detailedTransactionCsvLogic.CreateDetailedTransactionsCsv(transactionLogic.DetailedTransactions);
+
+            var reportLogic = new ReportLogic<ReportYearlySummary>(transactionLogic.DetailedTransactions);
+            var reportYearlySummaries = reportLogic.CreateReportYearlySummaryList();
+            var reportCsvLogic = new ReportCsvLogic<ReportYearlySummary>(_outputPath + @"\Yearly reports.csv");
+            reportCsvLogic.CreateReportCsv(reportYearlySummaries);
+
             var k4FormModel = new K4FormModel
             {
                 FullName = _fullName,
                 PersonalIdentificatonNumber = _personalIdentificationNumber,
                 Years = _years,
-                CryptoTransactions = parseLogic.K4CryptoCurrencyTransactions,
-                FiatTransactions = parseLogic.K4FiatCurrencyTransactions
+                CryptoTransactions = transactionLogic.K4CryptoCurrencyTransactions,
+                FiatTransactions = transactionLogic.K4FiatCurrencyTransactions
             };
             var k4FormLogic = new K4FormLogic<K4FillModel, K4TabIndexModel>(k4FormModel);
             var k4FillModels = k4FormLogic.GetK4FillModelList();

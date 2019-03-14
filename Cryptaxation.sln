@@ -19,9 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptaxation.Entities", "Cr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptaxation.Csv.Fields", "Cryptaxation.Csv.Fields\Cryptaxation.Csv.Fields.csproj", "{D094EA3C-2604-458C-A612-4826220B6CC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptaxation.Transaction.Logic", "Cryptaxation.Transaction.Logic\Cryptaxation.Transaction.Logic.csproj", "{1EE65CC1-18B0-4A5C-9B33-30808D4A1F1C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptaxation.Parse.Logic", "Cryptaxation.Parse.Logic\Cryptaxation.Parse.Logic.csproj", "{1EE65CC1-18B0-4A5C-9B33-30808D4A1F1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptaxation.Transaction.Contract", "Cryptaxation.Transaction.Contract\Cryptaxation.Transaction.Contract.csproj", "{C36F40BE-8E8F-4D7D-8DA1-0F7F67FAEAB6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptaxation.Parse.Contract", "Cryptaxation.Parse.Contract\Cryptaxation.Parse.Contract.csproj", "{C36F40BE-8E8F-4D7D-8DA1-0F7F67FAEAB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

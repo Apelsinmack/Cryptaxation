@@ -33,17 +33,17 @@ namespace Cryptaxation.GUI
 
         private void Execute()
         {
-            try
-            {
+            /*try
+            {*/
                 List<int> years = GetYearsList();
                 Logic logic = new Logic(fullNameTextBox.Text, personalIdentificationNumberTextBox.Text, years, bitstampTransactionsPathTextBox.Text, riksbankenRatesPathTextBox.Text, bitstampRatesPathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
                 logic.Execute();
                 MessageBox.Show("Execution complete.", "Status");
-            }
+            /*}
             catch (Exception exception)
             {
                 MessageBox.Show(exception.StackTrace, exception.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }*/
         }
 
         private List<int> GetYearsList()

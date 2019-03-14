@@ -11,20 +11,22 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace Cryptaxation.Csv.Logic
 {
-    public class TransactionLogic<TTransaction> : ITransactionLogic<TTransaction> where TTransaction : Transaction, new()
+    public class TransactionCsvLogic<TTransaction> : ITransactionCsvLogic<TTransaction> where TTransaction : Transaction, new()
     {
+        private readonly string _path;
         private readonly List<Rate> _rates;
-
-        public TransactionLogic(List<Rate> rates)
+        
+        public TransactionCsvLogic(string path, List<Rate> rates)
         {
+            _path = path;
             _rates = rates;
         }
 
-        public List<TTransaction> CreateTransactionList(string path)
+        public List<TTransaction> CreateTransactionList()
         {
             var transactionList = new List<TTransaction>();
 
-            using (TextFieldParser parser = new TextFieldParser(path))
+            using (TextFieldParser parser = new TextFieldParser(_path))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
