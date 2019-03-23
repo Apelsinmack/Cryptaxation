@@ -66,6 +66,13 @@ namespace Cryptaxation.Pdf.Logic
         public void OpenPdf(int year, int number)
         {
             _tabIndex = 0;
+            try
+            {
+                _currentPdf?.Kill(); // This is a bugfix for certain computers.
+            }
+            catch
+            {
+            }
             _currentPdf = Process.Start(GetPdfPath(year, number));
             Thread.Sleep(10000);
         }
