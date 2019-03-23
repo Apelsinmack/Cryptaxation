@@ -10,18 +10,18 @@ namespace Cryptaxation.GUI
         private readonly string _personalIdentificationNumber;
         private readonly List<int> _years;
         private readonly string _transactionsPath;
-        private readonly string _riksbankenRatesPath;
+        private readonly string _fiatRatesPath;
         private readonly string _ratesPath;
         private readonly string _outputPath;
         private readonly string _processName;
 
-        public ValidationLogic(string fullName, string personalIdentificationNumber, List<int> years, string transactionsPath, string riksbankenRatesPath, string ratesPath, string outputPath, string processName)
+        public ValidationLogic(string fullName, string personalIdentificationNumber, List<int> years, string transactionsPath, string fiatRatesPath, string ratesPath, string outputPath, string processName)
         {
             _fullName = fullName;
             _personalIdentificationNumber = personalIdentificationNumber;
             _years = years;
             _transactionsPath = transactionsPath;
-            _riksbankenRatesPath = riksbankenRatesPath;
+            _fiatRatesPath = fiatRatesPath;
             _ratesPath = ratesPath;
             _outputPath = outputPath;
             _processName = processName;
@@ -33,7 +33,7 @@ namespace Cryptaxation.GUI
             ValidatePersonalIdentificationNumber();
             ValidateYears();
             ValidateTransactionsPath();
-            ValidateRiksbankenRatesPath();
+            ValidateFiatRatesPath();
             ValidateRatesPath();
             ValidateOutputPath();
             ValidateProcessName();
@@ -71,15 +71,15 @@ namespace Cryptaxation.GUI
             }
         }
 
-        public void ValidateRiksbankenRatesPath()
+        public void ValidateFiatRatesPath()
         {
-            if (string.IsNullOrWhiteSpace(_riksbankenRatesPath))
+            if (string.IsNullOrWhiteSpace(_fiatRatesPath))
             {
-                throw new Exception("Invalid riksbanken rates path.");
+                throw new Exception("Invalid fiat rates path.");
             }
-            if (!File.Exists(_riksbankenRatesPath))
+            if (!File.Exists(_fiatRatesPath))
             {
-                throw new Exception("Riksbanken rates file does not exist.");
+                throw new Exception("Fiat rates file does not exist.");
             }
         }
 

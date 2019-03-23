@@ -15,9 +15,9 @@ namespace Cryptaxation.GUI
 {
     public partial class MainForm : Form
     {
-        private OpenFileDialog _browseRiksbankenRatesDialog;
-        private OpenFileDialog _browseBitstampRatesDialog;
-        private OpenFileDialog _browseBitstampTransactionsDialog;
+        private OpenFileDialog _browseFiatRatesDialog;
+        private OpenFileDialog _browseCryptoToFiatRatesDialog;
+        private OpenFileDialog _browseTransactionsDialog;
         private FolderBrowserDialog _browseOutputDialog;
 
         public MainForm()
@@ -33,17 +33,21 @@ namespace Cryptaxation.GUI
 
         private void Execute()
         {
-            /*try
-            {*/
+#if RELEASE
+            try
+            {
+#endif
                 List<int> years = GetYearsList();
-                Logic logic = new Logic(fullNameTextBox.Text, personalIdentificationNumberTextBox.Text, years, bitstampTransactionsPathTextBox.Text, riksbankenRatesPathTextBox.Text, bitstampRatesPathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
+                Logic logic = new Logic(fullNameTextBox.Text, personalIdentificationNumberTextBox.Text, years, transactionsPathTextBox.Text, fiatRatesPathTextBox.Text, cryptoToFiatRatesPathTextBox.Text, outputPathTextBox.Text, processNameTextBox.Text);
                 logic.Execute();
                 MessageBox.Show("Execution complete.", "Status");
-            /*}
+#if RELEASE
+            }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.StackTrace, exception.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }*/
+            }
+#endif
         }
 
         private List<int> GetYearsList()
@@ -68,30 +72,30 @@ namespace Cryptaxation.GUI
             return returnYears.OrderBy(y => y).ToList();
         }
 
-        private void BitstampTransactionsPathButtonClick(object sender, EventArgs e)
+        private void TransactionsPathButtonClick(object sender, EventArgs e)
         {
-            _browseBitstampTransactionsDialog = new OpenFileDialog();
-            if (_browseBitstampTransactionsDialog.ShowDialog() == DialogResult.OK)
+            _browseTransactionsDialog = new OpenFileDialog();
+            if (_browseTransactionsDialog.ShowDialog() == DialogResult.OK)
             {
-                bitstampTransactionsPathTextBox.Text = _browseBitstampTransactionsDialog.FileName;
+                transactionsPathTextBox.Text = _browseTransactionsDialog.FileName;
             }
         }
 
-        private void RiksbankenRatesPathButtonClick(object sender, EventArgs e)
+        private void FiatRatesPathButtonClick(object sender, EventArgs e)
         {
-            _browseRiksbankenRatesDialog = new OpenFileDialog();
-            if (_browseRiksbankenRatesDialog.ShowDialog() == DialogResult.OK)
+            _browseFiatRatesDialog = new OpenFileDialog();
+            if (_browseFiatRatesDialog.ShowDialog() == DialogResult.OK)
             {
-                riksbankenRatesPathTextBox.Text = _browseRiksbankenRatesDialog.FileName;
+                fiatRatesPathTextBox.Text = _browseFiatRatesDialog.FileName;
             }
         }
 
-        private void bitstampRatesPathButton_Click(object sender, EventArgs e)
+        private void cryptoToFiatRatesPathButton_Click(object sender, EventArgs e)
         {
-            _browseBitstampRatesDialog = new OpenFileDialog();
-            if (_browseBitstampRatesDialog.ShowDialog() == DialogResult.OK)
+            _browseCryptoToFiatRatesDialog = new OpenFileDialog();
+            if (_browseCryptoToFiatRatesDialog.ShowDialog() == DialogResult.OK)
             {
-                bitstampRatesPathTextBox.Text = _browseBitstampRatesDialog.FileName;
+                cryptoToFiatRatesPathTextBox.Text = _browseCryptoToFiatRatesDialog.FileName;
             }
         }
 
@@ -109,9 +113,9 @@ namespace Cryptaxation.GUI
             Properties.Settings.Default.FullName = fullNameTextBox.Text;
             Properties.Settings.Default.PersonalIdentificationNumber = personalIdentificationNumberTextBox.Text;
             Properties.Settings.Default.ProcessName = processNameTextBox.Text;
-            Properties.Settings.Default.BitstampTransactionsPath = bitstampTransactionsPathTextBox.Text;
-            Properties.Settings.Default.RiksbankenRatesPath = riksbankenRatesPathTextBox.Text;
-            Properties.Settings.Default.BitstampRatesPath = bitstampRatesPathTextBox.Text;
+            Properties.Settings.Default.TransactionsPath = transactionsPathTextBox.Text;
+            Properties.Settings.Default.FiatRatesPath = fiatRatesPathTextBox.Text;
+            Properties.Settings.Default.CryptoToFiatRatesPath = cryptoToFiatRatesPathTextBox.Text;
             Properties.Settings.Default.OutputPath = outputPathTextBox.Text;
             Properties.Settings.Default.Save();
         }

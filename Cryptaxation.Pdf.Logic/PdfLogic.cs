@@ -24,7 +24,7 @@ namespace Cryptaxation.Pdf.Logic
 
         public PdfLogic(string outputPath, string processName)
         {
-            _originalPath = AppDomain.CurrentDomain.BaseDirectory + @"Resources\\K4 original";
+            _originalPath = AppDomain.CurrentDomain.BaseDirectory + @"Resources\K4 original";
             _outputPath = outputPath.TrimEnd('\\');
             _processName = processName;
             _tabIndex = 0;

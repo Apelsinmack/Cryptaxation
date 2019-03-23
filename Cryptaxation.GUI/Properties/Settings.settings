@@ -11,13 +11,13 @@
     <Setting Name="ProcessName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="BitstampTransactionsPath" Type="System.String" Scope="User">
+    <Setting Name="TransactionsPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="RiksbankenRatesPath" Type="System.String" Scope="User">
+    <Setting Name="FiatRatesPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="BitstampRatesPath" Type="System.String" Scope="User">
+    <Setting Name="CryptoToFiatRatesPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="OutputPath" Type="System.String" Scope="User">

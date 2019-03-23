@@ -59,24 +59,24 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Resources\K4 original\2013.pdf">
+    <EmbeddedResource Include="Resources\K4 original\2013.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\K4 original\2014.pdf">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\K4 original\2014.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\K4 original\2015.pdf">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\K4 original\2015.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\K4 original\2016.pdf">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\K4 original\2016.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\K4 original\2017.pdf">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\K4 original\2017.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\K4 original\2018.pdf">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\K4 original\2018.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

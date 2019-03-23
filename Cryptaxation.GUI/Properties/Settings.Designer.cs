@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cryptaxation.Properties {
+namespace Cryptaxation.GUI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -68,36 +68,46 @@ namespace Cryptaxation.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string BitstampTransactionsPath {
+        public string TransactionsPath {
             get {
-                return ((string)(this["BitstampTransactionsPath"]));
+                return ((string)(this["TransactionsPath"]));
             }
             set {
-                this["BitstampTransactionsPath"] = value;
+                this["TransactionsPath"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string RiksbankenRatesPath {
+        public string FiatRatesPath {
             get {
-                return ((string)(this["RiksbankenRatesPath"]));
+                string fiatRatesPath = ((string)(this["FiatRatesPath"]));
+                if (string.IsNullOrWhiteSpace(fiatRatesPath))
+                {
+                    fiatRatesPath = System.AppDomain.CurrentDomain.BaseDirectory + @"Resources\Rates\Riksbanken rates 2014-01-02 to 2019-02-09.csv";
+                }
+                return fiatRatesPath;
             }
             set {
-                this["RiksbankenRatesPath"] = value;
+                this["FiatRatesPath"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string BitstampRatesPath {
+        public string CryptoToFiatRatesPath {
             get {
-                return ((string)(this["BitstampRatesPath"]));
+                string cryptoToFiatRatesPath = ((string)(this["CryptoToFiatRatesPath"]));
+                if (string.IsNullOrWhiteSpace(cryptoToFiatRatesPath))
+                {
+                    cryptoToFiatRatesPath = System.AppDomain.CurrentDomain.BaseDirectory + @"Resources\Rates\Bitstamp BTC price data 2010-07-31 to 2019-02-08.csv";
+                }
+                return cryptoToFiatRatesPath;
             }
             set {
-                this["BitstampRatesPath"] = value;
+                this["CryptoToFiatRatesPath"] = value;
             }
         }
         

@@ -9,7 +9,7 @@ using Cryptaxation.Parse.Contract;
 
 namespace Cryptaxation.Parse.Logic
 {
-    public class TransactionLogic<TTransaction, TDetailedTransaction, TK4TransactionModel> : ITransactionLogic<TTransaction> where TTransaction : Entities.Transaction where TDetailedTransaction : DetailedTransaction, new() where TK4TransactionModel : K4TransactionModel, new()
+    public class TransactionLogic<TTransaction, TDetailedTransaction, TK4TransactionModel> : ITransactionLogic<TTransaction> where TTransaction : Transaction where TDetailedTransaction : DetailedTransaction, new() where TK4TransactionModel : K4TransactionModel, new()
     {
         private readonly List<Rate> _rates;
         private readonly CurrencyCode _taxCurrencyCode;

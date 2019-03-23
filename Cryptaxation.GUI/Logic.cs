@@ -15,22 +15,22 @@ namespace Cryptaxation.GUI
         private readonly string _personalIdentificationNumber;
         private readonly List<int> _years;
         private readonly string _transactionsPath;
-        private readonly string _riksbankenRatesPath;
+        private readonly string _fiatRatesPath;
         private readonly string _ratesPath;
         private readonly string _outputPath;
         private readonly string _processName;
 
-        public Logic(string fullName, string personalIdentificationNumber, List<int> years, string transactionsPath, string riksbankenRatesPath, string ratesPath, string outputPath, string processName)
+        public Logic(string fullName, string personalIdentificationNumber, List<int> years, string transactionsPath, string fiatRatesPath, string ratesPath, string outputPath, string processName)
         {
             _fullName = fullName;
             _personalIdentificationNumber = personalIdentificationNumber;
             _years = years;
             _transactionsPath = transactionsPath;
-            _riksbankenRatesPath = riksbankenRatesPath;
+            _fiatRatesPath = fiatRatesPath;
             _ratesPath = ratesPath;
             _outputPath = outputPath;
             _processName = processName;
-            _validationLogic = new ValidationLogic(fullName, personalIdentificationNumber, years, transactionsPath, riksbankenRatesPath, ratesPath, outputPath, processName);
+            _validationLogic = new ValidationLogic(fullName, personalIdentificationNumber, years, transactionsPath, fiatRatesPath, ratesPath, outputPath, processName);
         }
 
         public void Execute()
@@ -38,7 +38,7 @@ namespace Cryptaxation.GUI
             _validationLogic.ValidateInput();
             var rateCsvLogic = new RateCsvLogic<Rate>();
             var rateList = rateCsvLogic.CreateRateList(new [] {
-                _riksbankenRatesPath,
+                _fiatRatesPath,
                 _ratesPath
             }).OrderBy(r => r.DestinationCurrency).ThenBy(r => r.OriginCurrency).ThenByDescending(r => r.Date).ToList();
             var transactionCsvLogic = new TransactionCsvLogic<Transaction>(_transactionsPath, rateList);
