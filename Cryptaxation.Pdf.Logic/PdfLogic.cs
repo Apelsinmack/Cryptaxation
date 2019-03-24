@@ -66,13 +66,6 @@ namespace Cryptaxation.Pdf.Logic
         public void OpenPdf(int year, int number)
         {
             _tabIndex = 0;
-            try
-            {
-                _currentPdf?.Kill(); // This is a bugfix for certain computers.
-            }
-            catch
-            {
-            }
             _currentPdf = Process.Start(GetPdfPath(year, number));
             Thread.Sleep(10000);
         }
@@ -89,6 +82,7 @@ namespace Cryptaxation.Pdf.Logic
             SendKeys.SendWait("{ENTER}");
             Thread.Sleep(2000);
             SendKeys.SendWait("y");
+            _currentPdf.WaitForExit();
         }
 
         public void SaveAndCloseAll()
@@ -106,6 +100,7 @@ namespace Cryptaxation.Pdf.Logic
                 Thread.Sleep(2000);
                 SendKeys.SendWait("y");
             }
+            Thread.Sleep(2000);
         }
 
         public void FillField(string text)

@@ -25,6 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptaxation.Parse.Contract
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C8E565DA-8C44-4AAA-A214-252DE4CABF2B}"
 	ProjectSection(SolutionItems) = preProject
+		cryptaxation_p2sh_donation_address_qr_code.png = cryptaxation_p2sh_donation_address_qr_code.png
 		README.md = README.md
 	EndProjectSection
 EndProject
