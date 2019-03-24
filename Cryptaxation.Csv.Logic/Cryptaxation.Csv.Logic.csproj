@@ -22,7 +22,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -61,10 +61,9 @@
       <Name>Cryptaxation.Entities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resources\Examples\" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Resources\Examples\Example transactions.csv" />
     <None Include="Resources\Rates\Bitstamp BTC price data 2010-07-31 to 2019-02-08.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
