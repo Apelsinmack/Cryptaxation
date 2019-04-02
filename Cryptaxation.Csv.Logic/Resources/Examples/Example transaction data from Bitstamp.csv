@@ -1,0 +1,6 @@
+Type,Datetime,Account,Amount,Value,Rate,Fee,Sub Type
+Deposit,"Feb. 03, 2016, 08:02 PM",Main Account,1000.00 USD,,,,
+Market,"May. 07, 2016, 02:27 AM",Main Account,2.00000000 BTC,917.10 USD,458.55 USD,2.29 USD,Buy
+Market,"May. 07, 2016, 02:28 AM",Main Account,0.17535710 BTC,80.41 USD,458.55 USD,0.20 USD,Buy
+Market,"Mar. 18, 2018, 02:21 AM",Main Account,2.17535710 BTC,13512.30 EUR,6227.10 EUR,33.87 EUR,Sell
+Withdrawal,"Mar. 23, 2018, 10:36 AM",Main Account,13511.40 EUR,,,0.90 EUR,
