@@ -63,7 +63,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Resources\Examples\Example transaction data from Bitstamp.csv" />
+    <None Include="Resources\Examples\Example transaction data from Bitstamp.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Rates\Bitstamp BTC price data 2010-07-31 to 2019-02-08.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
