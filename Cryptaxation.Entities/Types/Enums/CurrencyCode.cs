@@ -8,6 +8,7 @@
         EUR,
         BTC,
         LTC,
-        ETH
+        ETH,
+        XRP
     }
 }

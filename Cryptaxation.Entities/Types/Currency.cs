@@ -19,7 +19,9 @@ namespace Cryptaxation.Entities.Types
 		                return CurrencyType.CryptoCurrency;
 		            case CurrencyCode.LTC:
 		                return CurrencyType.CryptoCurrency;
-		            case CurrencyCode.USD:
+					case CurrencyCode.XRP:
+						return CurrencyType.CryptoCurrency;
+					case CurrencyCode.USD:
 		                return CurrencyType.FiatCurrency;
 		            case CurrencyCode.EUR:
 		                return CurrencyType.FiatCurrency;

@@ -72,6 +72,18 @@ namespace Cryptaxation.Pdf.Logic
                         FirstResourceField = 112,
                         FirstSumResourceField = 154
                     };
+                case 2019:
+                    return new TK4TabIndexModel
+                    {
+                        Date = 1,
+                        Numbering = 2,
+                        Name = 3,
+                        PersonalIdentificationNumber = 4,
+                        FirstCurrencyField = 66,
+                        FirstSumCurrencyField = 108,
+                        FirstResourceField = 112,
+                        FirstSumResourceField = 154
+                    };
                 default: throw new NotImplementedException();
             }
         }

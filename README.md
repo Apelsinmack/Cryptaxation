@@ -16,8 +16,8 @@ If Cryptaxation helped you out, why not make a donation to show your gratitude? 
 
 ## Limitations
 * Supports SEK, USD, EUR, BTC, ETH and LTC
-* Current version only has Skatteverkets K4 forms from 2014 to 2018
-* Rates from Riksbanken until 2019-02-09, so if you have made trades after that, delete them from the transactions CSV
+* Current version only has Skatteverkets K4 forms from 2014 to 2019
+* Rates from Riksbanken until 2020-03-28, so if you have made trades after that, delete them from the transactions CSV
 
 ## Requirements
 The program might work with other versions, but it’s tested with these:
@@ -87,7 +87,7 @@ cryptaxation@protonmail.com
 ## License
 MIT License
 
-Copyright (c) [2019] [Cryptaxation]
+Copyright (c) [2020] [Cryptaxation]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

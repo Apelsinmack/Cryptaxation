@@ -85,7 +85,7 @@ namespace Cryptaxation.GUI.Properties {
                 string fiatRatesPath = ((string)(this["FiatRatesPath"]));
                 if (string.IsNullOrWhiteSpace(fiatRatesPath))
                 {
-                    fiatRatesPath = System.AppDomain.CurrentDomain.BaseDirectory + @"Resources\Rates\Riksbanken rates 2014-01-02 to 2019-02-09.csv";
+                    fiatRatesPath = System.AppDomain.CurrentDomain.BaseDirectory + @"Resources\Rates\Riksbanken rates 2014-01-02 to 2020-03-28.csv";
                 }
                 return fiatRatesPath;
             }
