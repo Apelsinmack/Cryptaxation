@@ -9,15 +9,16 @@ namespace Cryptaxation.Csv.Logic
     public class DetailedTransactionCsvLogic<TDetailedTransaction> : IDetailedTransactionCsvLogic<TDetailedTransaction> where TDetailedTransaction : DetailedTransaction, new()
     {
         private readonly string _path;
+        private readonly string _delimiter;
 
         public DetailedTransactionCsvLogic(string path)
         {
             _path = path;
+            _delimiter = ";";
         }
 
         public void CreateDetailedTransactionsCsv(List<TDetailedTransaction> detailedTransactions)
         {
-            string delimter = ";";
             using (TextWriter writer = File.CreateText(_path))
             {
                 List<string> headers = new List<string>();
@@ -25,7 +26,7 @@ namespace Cryptaxation.Csv.Logic
                 {
                     headers.Add(property.Name);
                 }
-                writer.WriteLine(string.Join(delimter, headers));
+                writer.WriteLine(string.Join(_delimiter, headers));
                 foreach (var detailedTransaction in detailedTransactions)
                 {
                     List<string> columns = new List<string>();
@@ -38,7 +39,7 @@ namespace Cryptaxation.Csv.Logic
                             columns.Add((csvPropertyValue.ToString().Equals("Undefined") ? string.Empty : csvPropertyValue.ToString()));
                         }
                     }
-                    writer.WriteLine(string.Join(delimter, columns));
+                    writer.WriteLine(string.Join(_delimiter, columns));
                 }
             }
         }

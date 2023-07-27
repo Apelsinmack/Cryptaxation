@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="K4ReportLogic.cs" />
     <Compile Include="TransactionLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportLogic.cs" />
@@ -48,10 +49,6 @@
     <ProjectReference Include="..\Cryptaxation.Entities\Cryptaxation.Entities.csproj">
       <Project>{8718e4f0-8f8c-4a51-a689-8faea63b4175}</Project>
       <Name>Cryptaxation.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Cryptaxation.Pdf.Models\Cryptaxation.Pdf.Models.csproj">
-      <Project>{85644F50-004D-45AD-B1A6-F1B30C1C559D}</Project>
-      <Name>Cryptaxation.Pdf.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cryptaxation.Parse.Contract\Cryptaxation.Parse.Contract.csproj">
       <Project>{C36F40BE-8E8F-4D7D-8DA1-0F7F67FAEAB6}</Project>

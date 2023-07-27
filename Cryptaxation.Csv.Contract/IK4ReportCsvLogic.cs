@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Cryptaxation.Csv.Contract
 {
-    public interface IReportCsvLogic<TReportYearlySummary>
+    public interface IK4ReportCsvLogic<TK4ReportYearlySummary>
     {
-        void CreateReportCsv(List<TReportYearlySummary> reportYearlySummaries);
+        void CreateK4ReportCsv(Dictionary<int, TK4ReportYearlySummary> k4reportYearlySummaries);
     }
 }

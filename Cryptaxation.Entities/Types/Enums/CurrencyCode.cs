@@ -1,5 +1,6 @@
 ﻿namespace Cryptaxation.Entities.Types.Enums
 {
+    // The order of this enum determines the recursive GetRates function hierarchy.
     public enum CurrencyCode
     {
         Undefined,
@@ -9,6 +10,7 @@
         BTC,
         LTC,
         ETH,
-        XRP
+        XRP,
+        BCH
     }
 }

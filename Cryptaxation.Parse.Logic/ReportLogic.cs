@@ -47,7 +47,7 @@ namespace Cryptaxation.Parse.Logic
                 }
 
                 UpdateTaxBaseRate(filteredDetailedTransactions[i]);
-                UpdateReportCurrenies(reportYearlySummary, filteredDetailedTransactions[i]);
+                UpdateReportCurrencies(reportYearlySummary, filteredDetailedTransactions[i]);
 
                 if (i == filteredDetailedTransactions.Count - 1 || reportYearlySummary.Year < filteredDetailedTransactions[i + 1].DateTime.Year)
                 {
@@ -62,7 +62,7 @@ namespace Cryptaxation.Parse.Logic
                     if (cryptoNetProfit > 0) reportYearlySummary.CryptoAccumulatedTaxes = cryptoNetProfit * _taxRate;
 
                     reportYearlySummary.AccumulatedTaxes = reportYearlySummary.FiatAccumulatedTaxes + reportYearlySummary.CryptoAccumulatedTaxes;
-                    openingReportCurrencies = reportYearlySummary.ReportCurrencies.Select(rc => new ReportCurrency { CurrencyCode = rc.CurrencyCode, OpeningTaxbaseRate = rc.ClosingTaxbaseRate }).ToList();
+                    openingReportCurrencies = reportYearlySummary.ReportCurrencies.Select(rc => new ReportCurrency(rc.CurrencyCode) { OpeningTaxBaseRate = rc.ClosingTaxBaseRate }).ToList();
                     reportYearlySummary.ReportCurrencies = reportYearlySummary.ReportCurrencies.Where(rc => rc.CurrencyCode != _taxCurrencyCode).ToList();
                     reportYearlySummaries.Add(reportYearlySummary);
                 }
@@ -71,11 +71,11 @@ namespace Cryptaxation.Parse.Logic
             return reportYearlySummaries;
         }
 
-        private void UpdateReportCurrenies(ReportYearlySummary reportYearlySummary, DetailedTransaction detailedTransaction)
+        private void UpdateReportCurrencies(ReportYearlySummary reportYearlySummary, DetailedTransaction detailedTransaction)
         {
             AddReportCurrencyIfNotExist(reportYearlySummary.ReportCurrencies, detailedTransaction.CurrencyCodeBought);
             var reportCurrencyBought = reportYearlySummary.ReportCurrencies.FirstOrDefault(c => c.CurrencyCode == detailedTransaction.CurrencyCodeBought);
-            reportCurrencyBought.ClosingTaxbaseRate = _taxBaseRates.FirstOrDefault(c => c.CurrencyCode == detailedTransaction.CurrencyCodeBought).Value;
+            reportCurrencyBought.ClosingTaxBaseRate = _taxBaseRates.FirstOrDefault(c => c.CurrencyCode == detailedTransaction.CurrencyCodeBought).Value;
             AddReportCurrencyIfNotExist(reportYearlySummary.ReportCurrencies, detailedTransaction.CurrencyCodeSold);
             var reportCurrencySold = reportYearlySummary.ReportCurrencies.FirstOrDefault(c => c.CurrencyCode == detailedTransaction.CurrencyCodeSold);
             reportCurrencySold.AccumulatedProfit += detailedTransaction.Gain;
@@ -100,7 +100,7 @@ namespace Cryptaxation.Parse.Logic
         {
             if (!reportCurrencies.Exists(rc => rc.CurrencyCode == currencyCode))
             {
-                reportCurrencies.Add(new ReportCurrency { CurrencyCode = currencyCode });
+                reportCurrencies.Add(new ReportCurrency(currencyCode));
             }
         }
     }

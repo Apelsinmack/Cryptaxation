@@ -16,16 +16,17 @@ namespace Cryptaxation.Csv.Logic
     public class ReportCsvLogic<TReportYearlySummary> : IReportCsvLogic<TReportYearlySummary> where TReportYearlySummary : ReportYearlySummary
     {
         private readonly string _path;
+        private readonly string _delimiter;
 
         public ReportCsvLogic(string path)
         {
             _path = path;
+            _delimiter = ";";
         }
 
         public void CreateReportCsv(List<TReportYearlySummary> reportYearlySummaries)
         {
             List<CurrencyCode> allReportCurrencies = GetAllReportCurrencies(reportYearlySummaries);
-            string delimter = ";";
             CultureInfo cultureInfo = CultureInfo.InvariantCulture;
             string cellFormat = "F2";
             using (TextWriter writer = File.CreateText(_path))
@@ -51,8 +52,8 @@ namespace Cryptaxation.Csv.Logic
                         var reportCurrency = reportYearlySummary.ReportCurrencies.FirstOrDefault(rc => rc.CurrencyCode == currencyCode);
                         if (reportCurrency != null)
                         {
-                            cells.Add(reportCurrency.OpeningTaxbaseRate.ToString(cellFormat, cultureInfo));
-                            cells.Add(reportCurrency.ClosingTaxbaseRate.ToString(cellFormat, cultureInfo));
+                            cells.Add(reportCurrency.OpeningTaxBaseRate.ToString(cellFormat, cultureInfo));
+                            cells.Add(reportCurrency.ClosingTaxBaseRate.ToString(cellFormat, cultureInfo));
                             cells.Add(reportCurrency.AccumulatedProfit.ToString(cellFormat, cultureInfo));
                             cells.Add(reportCurrency.AccumulatedLoss.ToString(cellFormat, cultureInfo));
                         }
@@ -65,7 +66,7 @@ namespace Cryptaxation.Csv.Logic
                         }
                     }
 
-                    writer.WriteLine(string.Join(delimter, cells));
+                    writer.WriteLine(string.Join(_delimiter, cells));
                 }
             }
         }
@@ -73,7 +74,6 @@ namespace Cryptaxation.Csv.Logic
         private void CreateReportYearlySummaryHeader(TextWriter writer, List<TReportYearlySummary> reportYearlySummaries)
         {
             List<CurrencyCode> allReportCurrencies = GetAllReportCurrencies(reportYearlySummaries);
-            string delimter = ";";
             List<string> headers = new List<string>();
             foreach (var property in typeof(TReportYearlySummary).GetProperties())
             {
@@ -95,7 +95,7 @@ namespace Cryptaxation.Csv.Logic
                     headers.Add(property.Name);
                 }
             }
-            writer.WriteLine(string.Join(delimter, headers));
+            writer.WriteLine(string.Join(_delimiter, headers));
         }
 
         private List<CurrencyCode> GetAllReportCurrencies(List<TReportYearlySummary> reportYearlySummaries)

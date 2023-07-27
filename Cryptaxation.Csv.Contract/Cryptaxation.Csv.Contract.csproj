@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IK4ReportCsvLogic.cs" />
     <Compile Include="ITransactionCsvLogic.cs" />
     <Compile Include="IDetailedTransactionCsvLogic.cs" />
     <Compile Include="IRateCsvLogic.cs" />

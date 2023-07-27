@@ -1,26 +1,25 @@
 # Cryptaxation
 ## Background
-Cryptaxation in its current form is used to generate completed Swedish tax forms, for trades made on Bitstamp, but if the CSV files with transactions from another exchange are adapted to Bitstamp’s format, that should work as well. Without some program to do generate these forms, it becomes very burdensome to calculate all relevant values, and to fill in all the K4 PDFs.
+Cryptaxation in its current form is used to generate completed Swedish tax forms, for trades made on Bitstamp, but if the CSV files with transactions from another exchange are adapted to Bitstampï¿½s format, that should work as well. Without some program to do generate these forms, it becomes very burdensome to calculate all relevant values, and to fill in all the K4 PDFs.
 
 The first version of Cryptaxation was finished 2018, in time for the tax declaration. The project was initiated in a hurry and was built for own use in order to submit a correct tax declaration in time that year. It was used by a handful of people, and all the tax declarations were accepted by Skatteverket.
-Cryptaxation uses Adobe Acrobat Reader to fill in the K4 forms, which technically definitely isn’t the best solution, but works for now.
+Cryptaxation uses Adobe Acrobat Reader to fill in the K4 forms, which technically definitely isnï¿½t the best solution, but works for now.
 
-Please note that Cryptaxation is a tool to fill in K4 forms, but it doesn’t take any responsibility for errors. Please use it with caution!
+Please note that Cryptaxation is a tool to fill in K4 forms, but it doesnï¿½t take any responsibility for errors. Please use it with caution!
 
 ## Donation
-If Cryptaxation helped you out, why not make a donation to show your gratitude? It’s definitely a motivator for future improvements. 
+If Cryptaxation helped you out, why not make a donation to show your gratitude? Itï¿½s definitely a motivator for future improvements. 
 ### Bitcoin address as QR code:
 ![alt text](cryptaxation_p2sh_donation_address_qr_code.png "Bitcoin address")
 ### Bitcoin address:
 32onXJMvZeFA8rp2KY5VC25QqKKxNiMZEp
 
 ## Limitations
-* Supports SEK, USD, EUR, BTC, ETH and LTC
-* Current version only has Skatteverkets K4 forms from 2014 to 2019
+* Supports SEK, USD, EUR, BTC, ETH, LTC and BCH
 * Rates from Riksbanken until 2020-03-28, so if you have made trades after that, delete them from the transactions CSV
 
 ## Requirements
-The program might work with other versions, but it’s tested with these:
+The program might work with other versions, but itï¿½s tested with these:
 * Windows 10
 * Acrobat Reader must be set as the default application for PDFs. It is used when filling in the forms. It has only been tested with version 2018.011.20035 and 2019.010.20098, but most new versions should work
 * .NET Framework 4.6.1 or newer
@@ -31,7 +30,7 @@ The program might work with other versions, but it’s tested with these:
 2. Set Adobe Acrobat Reader as the default application for PDFs
 3. Download and install .NET Framework (4.6.1)
 4. Download the whole transaction history that you want to use. It should be a CSV-file with the format explained in the [Fields explanation](#Fields-explanation) section. There is also an example file in /Resources/Examples
-5. Make sure not to have anything of importance open when running Cryptaxation since it will “press” the keys in order to fill the forms with Adobe Acrobat Reader. If something goes wrong, it could write the form data somewhere else or even close other programs.
+5. Make sure not to have anything of importance open when running Cryptaxation since it will ï¿½pressï¿½ the keys in order to fill the forms with Adobe Acrobat Reader. If something goes wrong, it could write the form data somewhere else or even close other programs.
 
 ### Step by step
 1. Open Cryptaxation.GUI.exe
@@ -40,8 +39,8 @@ The program might work with other versions, but it’s tested with these:
 4. If you want to use rates from other sources, browse these files. The included files rates are taken from Riksbanken and Bitstamp.
 5. Pick an output path where the filled forms, detailed transactions.csv and report.csv will placed.
 6. Pick which years you want to fill K4 forms for. The Detailed transactions.csv and Yearly report.csv will be created for all the data.
-7. Press the Execute button and make sure not to press any keys until Cryptaxation informs it’s done. It might take a while.
-8. It’s a good idea to check if the filled K4 forms looks correct.
+7. Press the Execute button and make sure not to press any keys until Cryptaxation informs itï¿½s done. It might take a while.
+8. Itï¿½s a good idea to check if the filled K4 forms looks correct.
 9. If you want to know how much tax you will pay, you can find a summary for every year in the Yearly report.csv.
 
 ## Fields explanation

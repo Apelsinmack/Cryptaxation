@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IK4ReportLogic.cs" />
     <Compile Include="ITransactionLogic.cs" />
     <Compile Include="IReportLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

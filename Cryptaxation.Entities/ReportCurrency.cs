@@ -5,7 +5,14 @@ namespace Cryptaxation.Entities
 {
     public class ReportCurrency
     {
-        public CurrencyCode CurrencyCode { get; set; }
+        private CurrencyCode _currencyCode;
+        public CurrencyCode CurrencyCode { get { return _currencyCode; } set { _currencyCode = value; } }
+
+        public ReportCurrency(CurrencyCode currencyCode)
+        {
+            _currencyCode = currencyCode;
+        }
+
         public CurrencyType CurrencyType
         {
             get
@@ -22,6 +29,8 @@ namespace Cryptaxation.Entities
                         return CurrencyType.CryptoCurrency;
                     case CurrencyCode.XRP:
                         return CurrencyType.CryptoCurrency;
+                    case CurrencyCode.BCH:
+                        return CurrencyType.CryptoCurrency;
                     case CurrencyCode.USD:
                         return CurrencyType.FiatCurrency;
                     case CurrencyCode.EUR:
@@ -32,8 +41,8 @@ namespace Cryptaxation.Entities
                 }
             }
         }
-        public decimal OpeningTaxbaseRate { get; set; }
-        public decimal ClosingTaxbaseRate { get; set; }
+        public decimal OpeningTaxBaseRate { get; set; }
+        public decimal ClosingTaxBaseRate { get; set; }
         public decimal AccumulatedProfit { get; set; }
         public decimal AccumulatedLoss { get; set; }
     }

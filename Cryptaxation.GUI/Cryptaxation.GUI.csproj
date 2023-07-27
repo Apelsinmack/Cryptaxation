@@ -98,18 +98,6 @@
       <Project>{1ee65cc1-18b0-4a5c-9b33-30808d4a1f1c}</Project>
       <Name>Cryptaxation.Parse.Logic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cryptaxation.Pdf.Contract\Cryptaxation.Pdf.Contract.csproj">
-      <Project>{60CBE1DE-58C9-418C-B919-FD7966C4FFE6}</Project>
-      <Name>Cryptaxation.Pdf.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Cryptaxation.Pdf.Logic\Cryptaxation.Pdf.Logic.csproj">
-      <Project>{4e5da87e-ae91-4e78-b25d-b0e934b7b0db}</Project>
-      <Name>Cryptaxation.Pdf.Logic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Cryptaxation.Pdf.Models\Cryptaxation.Pdf.Models.csproj">
-      <Project>{85644F50-004D-45AD-B1A6-F1B30C1C559D}</Project>
-      <Name>Cryptaxation.Pdf.Models</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

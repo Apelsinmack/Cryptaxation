@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="K4ReportCurrencySummary.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="DetailedTransaction.cs" />
     <Compile Include="ReportCurrency.cs" />

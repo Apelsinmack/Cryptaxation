@@ -26,48 +26,6 @@ namespace Cryptaxation.GUI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FullName {
-            get {
-                return ((string)(this["FullName"]));
-            }
-            set {
-                this["FullName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string PersonalIdentificationNumber {
-            get {
-                return ((string)(this["PersonalIdentificationNumber"]));
-            }
-            set {
-                this["PersonalIdentificationNumber"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ProcessName {
-            get
-            {
-                string processName = ((string) (this["ProcessName"]));
-                if (string.IsNullOrWhiteSpace(processName))
-                {
-                    processName = "Acrord32.exe";
-                }
-                return processName;
-            }
-            set {
-                this["ProcessName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string TransactionsPath {
             get {
                 return ((string)(this["TransactionsPath"]));

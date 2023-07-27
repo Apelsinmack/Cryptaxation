@@ -4,26 +4,23 @@ using System.Linq;
 using Cryptaxation.Entities;
 using Cryptaxation.Entities.Types;
 using Cryptaxation.Entities.Types.Enums;
-using Cryptaxation.Pdf.Models;
 using Cryptaxation.Parse.Contract;
 
 namespace Cryptaxation.Parse.Logic
 {
-    public class TransactionLogic<TTransaction, TDetailedTransaction, TK4TransactionModel> : ITransactionLogic<TTransaction> where TTransaction : Transaction where TDetailedTransaction : DetailedTransaction, new() where TK4TransactionModel : K4TransactionModel, new()
+    public class TransactionLogic<TTransaction, TDetailedTransaction> : ITransactionLogic<TTransaction> where TTransaction : Transaction where TDetailedTransaction : DetailedTransaction, new()
     {
-        private readonly List<Rate> _rates;
         private readonly CurrencyCode _taxCurrencyCode;
+        private readonly List<Rate> _rates;
         private readonly List<Currency> _taxBaseAmounts;
         private readonly List<Currency> _taxBaseRates;
 
-        public Dictionary<int, List<TK4TransactionModel>> K4FiatCurrencyTransactions = new Dictionary<int, List<TK4TransactionModel>>();
-        public Dictionary<int, List<TK4TransactionModel>> K4CryptoCurrencyTransactions = new Dictionary<int, List<TK4TransactionModel>>();
         public List<TDetailedTransaction> DetailedTransactions = new List<TDetailedTransaction>();
 
-        public TransactionLogic(List<Rate> rates, CurrencyCode taxCurrencyCode = CurrencyCode.SEK)
+        public TransactionLogic(CurrencyCode taxCurrencyCode, List<Rate> rates)
         {
-            _rates = rates;
             _taxCurrencyCode = taxCurrencyCode;
+            _rates = rates;
             _taxBaseAmounts = new List<Currency>();
             _taxBaseRates = new List<Currency>();
         }
@@ -36,19 +33,11 @@ namespace Cryptaxation.Parse.Logic
                 {
                     if (transaction.Action == TradeAction.Buy)
                     {
-                        if (transaction.Value.CurrencyCode != _taxCurrencyCode)
-                        {
-                            AddK4Transaction(transaction);
-                        }
                         AddDetailedTransaction(transaction);
                         UpdateTaxBases(transaction);
                     }
                     else if (transaction.Action == TradeAction.Sell)
                     {
-                        if (transaction.Amount.CurrencyCode != _taxCurrencyCode)
-                        {
-                            AddK4Transaction(transaction);
-                        }
                         AddDetailedTransaction(transaction);
                         UpdateTaxBases(transaction);
                     }
@@ -56,63 +45,9 @@ namespace Cryptaxation.Parse.Logic
             }
         }
 
-        private void AddK4Transaction(TTransaction transaction)
-        {
-            DateTime date = transaction.DateTime.Date;
-            Currency bought = transaction.Action == TradeAction.Buy ? transaction.Amount : transaction.Value;
-            Currency sold = transaction.Action == TradeAction.Buy ? transaction.Value : transaction.Amount;
-            Currency fee = transaction.Fee;
-          
-            if (sold.CurrencyCode == CurrencyCode.Undefined || bought.CurrencyCode == CurrencyCode.Undefined)
-            {
-                throw new Exception("Sold and/or bought currency is undefined.");
-            }
-
-            decimal totalSalesPriceDecimal = GetTotalSalesPrice(date, bought, sold, fee);
-            int totalSalesPrice = (int)decimal.Round(totalSalesPriceDecimal);
-            int taxBasis = (int)decimal.Round(sold.Value * GetTaxBaseRate(sold.CurrencyCode).Value);
-            int gain = (int)GetGain(sold, totalSalesPrice, taxBasis);
-            int loss = (int)GetLoss(sold, totalSalesPrice, taxBasis);
-            
-            AddK4Transaction(date.Year, sold, totalSalesPrice, taxBasis, gain, loss);
-        }
-
-        private void AddK4Transaction(int year, Currency currency, int totalSalesPrice, int taxBasis, int gain, int loss)
-        {
-            if (!K4FiatCurrencyTransactions.ContainsKey(year) || !K4CryptoCurrencyTransactions.ContainsKey(year))
-            {
-                K4FiatCurrencyTransactions.Add(year, new List<TK4TransactionModel>());
-                K4CryptoCurrencyTransactions.Add(year, new List<TK4TransactionModel>());
-            }
-            if (currency.Type == CurrencyType.FiatCurrency)
-            {
-                K4FiatCurrencyTransactions[year].Add(new TK4TransactionModel()
-                {
-                    Amount = currency.Value,
-                    Currency = currency.CurrencyCode.ToString(),
-                    SalesPrice = totalSalesPrice,
-                    TaxBasis = taxBasis,
-                    Gain = gain,
-                    Loss = loss
-                });
-            }
-            else if (currency.Type == CurrencyType.CryptoCurrency)
-            {
-                K4CryptoCurrencyTransactions[year].Add(new TK4TransactionModel()
-                {
-                    Amount = currency.Value,
-                    Currency = currency.CurrencyCode.ToString(),
-                    SalesPrice = totalSalesPrice,
-                    TaxBasis = taxBasis,
-                    Gain = gain,
-                    Loss = loss
-                });
-            }
-        }
-
         private void AddDetailedTransaction(TTransaction transaction)
         {
-            DateTime date = transaction.DateTime.Date;
+            DateTime dateTime = transaction.DateTime.Date;
             Currency bought = transaction.Action == TradeAction.Buy ? transaction.Amount : transaction.Value;
             Currency sold = transaction.Action == TradeAction.Buy ? transaction.Value : transaction.Amount;
             Currency fee = transaction.Fee;
@@ -120,8 +55,8 @@ namespace Cryptaxation.Parse.Logic
             Currency taxBaseRateBought = GetTaxBaseRate(bought.CurrencyCode);
             Currency taxBaseAmountSold = GetTaxBaseAmount(sold.CurrencyCode);
 
-            decimal totalSalesPrice = GetSalesPrice(date, bought, sold, fee);
-            decimal valueTaxationCurrencyFee = GetValueTaxationCurrencyFee(date, fee);
+            decimal totalSalesPrice = GetSalesPrice(dateTime, bought, sold, fee);
+            decimal valueTaxationCurrencyFee = GetValueTaxationCurrencyFee(dateTime, fee);
             decimal taxBasis = sold.Value * GetTaxBaseRate(sold.CurrencyCode).Value;
             decimal gain = GetGain(sold, totalSalesPrice, taxBasis);
             decimal loss = GetLoss(sold, totalSalesPrice, taxBasis);
@@ -132,7 +67,7 @@ namespace Cryptaxation.Parse.Logic
 
             if (bought.CurrencyCode != _taxCurrencyCode)
             {
-                decimal boughtPrice = GetBoughtPrice(date, bought, sold, fee);
+                decimal boughtPrice = GetBoughtPrice(dateTime, bought, sold, fee);
                 taxBasisRateBeforeBought = GetTaxBasisRateBeforeBought(taxBaseRateBought);
                 taxBasisRateAfterBought = GetTaxBasisRateAfterBought(bought, taxBaseAmountBought, taxBaseRateBought, boughtPrice);
                 taxBasisAmountBeforeBought = GetTaxBasisAmountBeforeBought(taxBaseAmountBought);
@@ -141,7 +76,7 @@ namespace Cryptaxation.Parse.Logic
 
             DetailedTransactions.Add(new TDetailedTransaction
             {
-                DateTime = date,
+                DateTime = dateTime,
                 CurrencyCodeTaxation = _taxCurrencyCode,
                 CurrencyCodeSold = sold.CurrencyCode,
                 AmountSold = sold.Value,
@@ -187,60 +122,34 @@ namespace Cryptaxation.Parse.Logic
             if (sold.CurrencyCode != _taxCurrencyCode) taxBaseAmountSold.Value -= sold.Value;
         }
 
-        private decimal GetTotalSalesPrice(DateTime date, Currency bought, Currency sold, Currency fee)
-        {
-            decimal rate = 0m, feeRate = 0m, totalSalesPrice = 0m;
-            if (sold.CurrencyCode < bought.CurrencyCode)
-            {
-                rate = GetRate(date, sold.CurrencyCode, _taxCurrencyCode);
-                feeRate = GetRate(date, fee.Value == 0 && fee.CurrencyCode == CurrencyCode.Undefined ? _taxCurrencyCode : fee.CurrencyCode, _taxCurrencyCode);
-                totalSalesPrice = sold.Value * rate - fee.Value * feeRate;
-            }
-            if (totalSalesPrice == 0m)
-            {
-                rate = GetRate(date, bought.CurrencyCode, _taxCurrencyCode);
-                feeRate = GetRate(date, fee.Value == 0 && fee.CurrencyCode == CurrencyCode.Undefined ? _taxCurrencyCode : fee.CurrencyCode, _taxCurrencyCode);
-                totalSalesPrice = bought.Value * rate - fee.Value * feeRate;
-            }
-            if (rate == 0m || feeRate == 0m)
-            {
-                throw new Exception("Rate or fee rate should not be 0.");
-            }
-            return totalSalesPrice;
-        }
-
         private decimal GetValueTaxationCurrencyFee(DateTime date, Currency fee)
         {
-            if (fee.CurrencyCode != CurrencyCode.Undefined) return fee.Value * GetRate(date, fee.CurrencyCode, _taxCurrencyCode);
+            if (fee.CurrencyCode != CurrencyCode.Undefined) return fee.Value * GetRate(date, fee.CurrencyCode);
             return 0m;
         }
 
         private decimal GetBoughtPrice(DateTime date, Currency bought, Currency sold, Currency fee)
         {
             decimal valueTaxationCurrencyFee = GetValueTaxationCurrencyFee(date, fee);
-            return GetPrize(date, bought, sold, valueTaxationCurrencyFee);
+            return GetPrice(date, bought, sold, valueTaxationCurrencyFee);
         }
 
         private decimal GetSalesPrice(DateTime date, Currency bought, Currency sold, Currency fee)
         {
             decimal valueTaxationCurrencyFee = GetValueTaxationCurrencyFee(date, fee);
-            return GetPrize(date, bought, sold, -1 * valueTaxationCurrencyFee);
+            return GetPrice(date, bought, sold, -1 * valueTaxationCurrencyFee);
         }
 
-        private decimal GetPrize(DateTime date, Currency bought, Currency sold, decimal valueTaxationCurrencyFee)
+        private decimal GetPrice(DateTime date, Currency bought, Currency sold, decimal valueTaxationCurrencyFee)
         {
             decimal price = 0m;
-            if (sold.CurrencyCode < bought.CurrencyCode)
+            if (sold.CurrencyCode <= bought.CurrencyCode)
             {
-                price = sold.Value * GetRate(date, sold.CurrencyCode, _taxCurrencyCode) + valueTaxationCurrencyFee;
+                price = sold.Value * GetRate(date, sold.CurrencyCode) + valueTaxationCurrencyFee;
             }
-            if (price == 0)
+            else if (bought.CurrencyCode < sold.CurrencyCode)
             {
-                price = bought.Value * GetRate(date, bought.CurrencyCode, _taxCurrencyCode) + valueTaxationCurrencyFee;
-            }
-            if (price == 0)
-            {
-                throw new Exception("Price should not be 0.");
+                price = bought.Value * GetRate(date, bought.CurrencyCode) + valueTaxationCurrencyFee;
             }
             return price;
         }
@@ -309,11 +218,11 @@ namespace Cryptaxation.Parse.Logic
             return _taxBaseRates.FirstOrDefault(tbr => tbr.CurrencyCode == currencyCode);
         }
 
-        private decimal GetRate(DateTime date, CurrencyCode currencyCodeFrom, CurrencyCode currencyCodeTo, decimal parentRate = 1m)
+        private decimal GetRate(DateTime date, CurrencyCode currency, decimal parentRate = 1m)
         {
-            if (currencyCodeFrom == currencyCodeTo) return parentRate;
-            List<Rate> originRates = _rates.Where(r => r.OriginCurrency == currencyCodeFrom && r.Date <= date).ToList();
-            return originRates.Select(rate => parentRate * GetRate(date, rate.DestinationCurrency, currencyCodeTo, rate.Value)).FirstOrDefault(currentRate => currentRate > 0);
+            if (currency == _taxCurrencyCode) return parentRate;
+            List<Rate> originRates = _rates.Where(r => r.OriginCurrency == currency && r.Date <= date).ToList();
+            return originRates.Select(rate => parentRate * GetRate(date, rate.DestinationCurrency, rate.Value)).FirstOrDefault(currentRate => currentRate > 0);
         }
     }
 }
