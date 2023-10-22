@@ -40,10 +40,17 @@ namespace Cryptaxation.Csv.Logic
         private void CreateK4ReportHeader(TextWriter writer)
         {
             List<string> headers = new List<string>();
+            List<string> ignoreColumns = new List<string>
+            {
+                nameof(K4ReportCurrencySummary.AverageSellingPriceSEK)
+            };
 
             foreach (var property in typeof(TK4ReportCurrencySummary).GetProperties())
             {
-                headers.Add(property.Name);
+                if (!ignoreColumns.Contains(property.Name))
+                {
+                    headers.Add(property.Name);
+                }
             }
 
             writer.WriteLine(string.Join(_delimiter, headers));
@@ -53,14 +60,12 @@ namespace Cryptaxation.Csv.Logic
         {
             List<string> cells = new List<string>();
             CultureInfo cultureInfo = CultureInfo.InvariantCulture;
-            string cellFormat = "F2";
+            string cellFormat = "F0";
 
             cells.Add(k4ReportCurrencySummary.Currency.CurrencyCode.ToString());
             cells.Add(k4ReportCurrencySummary.Amount.ToString(cellFormat, cultureInfo));
             cells.Add(k4ReportCurrencySummary.TotalSellingPriceSEK.ToString(cellFormat, cultureInfo));
-            cells.Add(k4ReportCurrencySummary.AverageSellingPriceSEK.ToString(cellFormat, cultureInfo));
             cells.Add(k4ReportCurrencySummary.TotalTaxBasisSEK.ToString(cellFormat, cultureInfo));
-            cells.Add(k4ReportCurrencySummary.AverageTaxBasisSEK.ToString(cellFormat, cultureInfo));
             cells.Add(k4ReportCurrencySummary.ProfitSEK.ToString(cellFormat, cultureInfo));
             cells.Add(k4ReportCurrencySummary.LossesSEK.ToString(cellFormat, cultureInfo));
 

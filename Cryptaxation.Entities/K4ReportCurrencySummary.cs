@@ -10,7 +10,6 @@ namespace Cryptaxation.Entities
         public decimal TotalSellingPriceSEK { get; set; }
         public decimal AverageSellingPriceSEK { get; set; }
         public decimal TotalTaxBasisSEK { get; set; }
-        public decimal AverageTaxBasisSEK { get; set; }
         public decimal ProfitSEK { get; set; }
         public decimal LossesSEK { get; set; }
     }

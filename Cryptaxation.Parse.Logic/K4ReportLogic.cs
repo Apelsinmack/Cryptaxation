@@ -56,7 +56,6 @@ namespace Cryptaxation.Parse.Logic
                 foreach(TK4ReportCurrencySummary currencySummary in yearlySummary)
                 {
                     currencySummary.AverageSellingPriceSEK = currencySummary.TotalSellingPriceSEK / currencySummary.Amount;
-                    currencySummary.AverageTaxBasisSEK = currencySummary.TotalTaxBasisSEK / currencySummary.Amount;
                     if (currencySummary.ProfitSEK < 0)
                     {
                         currencySummary.LossesSEK = currencySummary.ProfitSEK;
