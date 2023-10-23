@@ -63,7 +63,7 @@ namespace Cryptaxation.Csv.Logic
             string cellFormat = "F0";
 
             cells.Add(k4ReportCurrencySummary.Currency.CurrencyCode.ToString());
-            cells.Add(k4ReportCurrencySummary.Amount.ToString(cellFormat, cultureInfo));
+            cells.Add(k4ReportCurrencySummary.Amount.ToString());
             cells.Add(k4ReportCurrencySummary.TotalSellingPriceSEK.ToString(cellFormat, cultureInfo));
             cells.Add(k4ReportCurrencySummary.TotalTaxBasisSEK.ToString(cellFormat, cultureInfo));
             cells.Add(k4ReportCurrencySummary.ProfitSEK.ToString(cellFormat, cultureInfo));
